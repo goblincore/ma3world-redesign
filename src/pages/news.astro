@@ -28,6 +28,7 @@ const newsItems = [
   }
 ];
 const base = import.meta.env.BASE_URL;
+const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : base;
 ---
 
 <Layout title="News | MA3.0 World">
@@ -51,7 +52,7 @@ const base = import.meta.env.BASE_URL;
           <NewsCard 
             {...item} 
             href={item.href.startsWith('/') ? `${base}${item.href.slice(1)}` : item.href}
-            image={item.image.startsWith('/') ? `${base}${item.image.slice(1)}` : item.image}
+            image={item.image.startsWith('/') ? `${assetBase}${item.image.slice(1)}` : item.image}
           />
         ))}
       </div>

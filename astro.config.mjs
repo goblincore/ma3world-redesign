@@ -11,7 +11,8 @@ export default defineConfig({
   // BASE: The name of your repository /ma3world-redesign/
   base: '/ma3world-redesign/',
   build: {
-    assets: 'assets'
+    assets: 'assets',
+    assetsPrefix: 'https://ma3worldbunny.b-cdn.net'
   },
   integrations: [react()],
   vite: {

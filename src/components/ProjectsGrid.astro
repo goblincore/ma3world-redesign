@@ -30,6 +30,7 @@ const projects = [
   },
 ];
 const base = import.meta.env.BASE_URL;
+const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : base;
 ---
 
 <section id="projects" class="bg-theme py-16 md:py-24 lg:py-32 px-6 md:px-12 flex items-center justify-center border-b border-theme">
@@ -60,7 +61,7 @@ const base = import.meta.env.BASE_URL;
           <div class="aspect-[4/3] bg-theme-muted rounded-sm overflow-hidden mb-6 relative">
             {project.image ? (
               <img 
-                src={`${base}${project.image.startsWith('/') ? project.image.slice(1) : project.image}`} 
+                src={`${assetBase}${project.image.startsWith('/') ? project.image.slice(1) : project.image}`} 
                 alt={project.title}
                 class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
