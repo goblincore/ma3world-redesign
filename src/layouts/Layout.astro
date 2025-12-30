@@ -39,7 +39,41 @@ const { title, description = "Digital-first Design Agency" } = Astro.props;
 		</script>
 	</head>
 	<body>
+		<div id="theme-transition-overlay" class="fixed inset-0 z-[9999] pointer-events-none opacity-0 transition-opacity duration-300 bg-black"></div>
 		<slot />
+		
+		<script is:inline>
+			// Global theme transition handler
+			window.addEventListener('theme-transition', (e) => {
+				const { theme } = e.detail;
+				const overlay = document.getElementById('theme-transition-overlay');
+				if (!overlay) return;
+
+				// Set overlay color based on target theme
+				overlay.style.backgroundColor = theme === 'light' ? '#ffffff' : '#000000';
+				
+				// Phase 1: Fade In
+				overlay.classList.remove('opacity-0');
+				overlay.classList.add('opacity-100');
+
+				// Mid-point: Switch theme
+				setTimeout(() => {
+					if (theme === 'light') {
+						document.documentElement.setAttribute('data-theme', 'light');
+					} else {
+						document.documentElement.removeAttribute('data-theme');
+					}
+					localStorage.setItem('theme', theme);
+					window.dispatchEvent(new CustomEvent('theme-changed', { detail: { theme } }));
+					
+					// Phase 2: Fade Out
+					setTimeout(() => {
+						overlay.classList.remove('opacity-100');
+						overlay.classList.add('opacity-0');
+					}, 50);
+				}, 350);
+			});
+		</script>
 		<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
 		<script is:inline>
 			const isHomepage = window.location.pathname === '/' || window.location.pathname === '/index.html';

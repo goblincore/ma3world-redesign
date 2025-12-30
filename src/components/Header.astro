@@ -150,19 +150,18 @@ const isHome = Astro.url.pathname === '/';
     
     // Initial icon state
     updateIcons();
+
+    // Listen for theme changes to update icons
+    window.addEventListener('theme-changed', updateIcons);
     
     toggle.addEventListener('click', () => {
       const currentTheme = html.getAttribute('data-theme');
       const newTheme = currentTheme === 'light' ? 'dark' : 'light';
       
-      if (newTheme === 'light') {
-        html.setAttribute('data-theme', 'light');
-      } else {
-        html.removeAttribute('data-theme');
-      }
-      
-      localStorage.setItem('theme', newTheme);
-      updateIcons();
+      // Dispatch transition event
+      window.dispatchEvent(new CustomEvent('theme-transition', { 
+        detail: { theme: newTheme } 
+      }));
     });
   };
 
