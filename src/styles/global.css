@@ -17,6 +17,8 @@
   font-display: swap;
 }
 
+
+
 @theme {
   --font-sans: 'Helvetica Now Display', 'Noto Sans JP', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-serif: 'PP Locomotive New', 'Shippori Mincho', Georgia, serif;

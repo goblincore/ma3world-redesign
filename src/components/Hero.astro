@@ -4,6 +4,7 @@ interface Props {
   subtitle?: string;
 }
 
+import SvgLogo from './SvgLogo.astro';
 import WireframeGlobe from './WireframeGlobe';
 
 const { title = "Digital-first Design Agency", subtitle = "We craft immersive digital experiences" } = Astro.props;
@@ -38,11 +39,7 @@ const { title = "Digital-first Design Agency", subtitle = "We craft immersive di
     <!-- Logo -->
     <!-- Logo & Wireframe Globe -->
     <div class="relative w-100 md:w-200 lg:w-260 mb-8">
-      <img 
-        src="/logo/noglobe-logo.png" 
-        alt="MA3.0 World" 
-        class="w-full h-auto object-contain relative z-10"
-      />
+      <SvgLogo color="white" class="w-full h-auto object-contain relative z-10" aria-label="MA3.0 World" />
       <!-- The globe is positioned to overlay the "O" in "WORLD" -->
       <div class="absolute left-[38%] top-[50%] -translate-y-[52%] w-[38%] aspect-square z-20">
         <WireframeGlobe client:only="react" />
