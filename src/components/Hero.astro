@@ -30,7 +30,7 @@ const { title = "Digital-first Design Agency", subtitle = "We craft immersive di
         class="w-full h-full object-cover"
       />
     </video>
-    <div class="absolute inset-0 bg-black/40"></div>
+    <div class="absolute inset-0 bg-black/20"></div>
   </div>
   
   <!-- Content -->
@@ -95,7 +95,7 @@ const { title = "Digital-first Design Agency", subtitle = "We craft immersive di
   
   const updateVideoSource = () => {
     const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-    const newSrc = isLight ? '/video/lightloop1.mp4' : '/video/loopingyua.mp4';
+    const newSrc = isLight ? '/video/lightloop2.mp4' : '/video/loopingyua.mp4';
     
     if (source.getAttribute('src') !== newSrc) {
       source.setAttribute('src', newSrc);

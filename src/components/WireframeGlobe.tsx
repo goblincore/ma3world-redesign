@@ -95,42 +95,11 @@ const GlobeMesh = ({ color = "#ffffff" }: { color?: string }) => {
 };
 
 export const WireframeGlobe = () => {
-  // We can't easily use hooks for theme here if it's not a React app throughout,
-  // so we'll use a simple approach: look at the document element's data-theme.
-  // Or just use a CSS color that maps to a theme variable.
-  // Actually, Three.js materials usually need hex colors.
-  
-  const [color, setColor] = React.useState("#ffffff");
-
-  React.useEffect(() => {
-    const updateColor = () => {
-      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-      setColor(isLight ? "#000000" : "#ffffff");
-    };
-
-    updateColor();
-
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-          updateColor();
-        }
-      });
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-theme']
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }}>
       <Canvas camera={{ position: [0, 0, 2.5], fov: 45 }} alpha={true}>
         <ambientLight intensity={0.5} />
-        <GlobeMesh color={color} />
+        <GlobeMesh color="#ffffff" />
       </Canvas>
     </div>
   );
