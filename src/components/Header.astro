@@ -15,11 +15,26 @@ const { transparent = true } = Astro.props;
     
     <!-- Navigation Links -->
     <div class="hidden md:flex items-center gap-8 text-sm tracking-wide">
-      <a href="#about" class="hover:opacity-60 transition-opacity">About</a>
-      <a href="#news" class="hover:opacity-60 transition-opacity">News</a>
-      <a href="#projects" class="hover:opacity-60 transition-opacity">Projects</a>
-      <a href="#contact" class="hover:opacity-60 transition-opacity">Contact</a>
+      <a href="#about" class="hover:opacity-60 transition-opacity">
+        <span class="lang-en">About</span>
+        <span class="lang-ja">私たちについて</span>
+      </a>
+      <a href="#projects" class="hover:opacity-60 transition-opacity">
+        <span class="lang-en">Projects</span>
+        <span class="lang-ja">プロジェクト</span>
+      </a>
+      <a href="#contact" class="hover:opacity-60 transition-opacity">
+        <span class="lang-en">Contact</span>
+        <span class="lang-ja">お問い合わせ</span>
+      </a>
       
+      <!-- Language Toggle -->
+      <div class="flex items-center gap-3 text-xs font-bold tracking-widest border border-current rounded-full px-4 py-1.5 opacity-60 hover:opacity-100 transition-opacity">
+        <button id="lang-en" class="hover:opacity-100 transition-opacity px-1">EN</button>
+        <span class="opacity-30">/</span>
+        <button id="lang-ja" class="hover:opacity-100 transition-opacity px-1">JP</button>
+      </div>
+
       <!-- Theme Toggle -->
       <button id="theme-toggle" class="w-8 h-8 flex items-center justify-center rounded-full border border-current opacity-60 hover:opacity-100 transition-opacity" aria-label="Toggle theme">
         <svg class="w-4 h-4 dark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -41,15 +56,33 @@ const { transparent = true } = Astro.props;
   <!-- Mobile Menu Overlay -->
   <div id="mobile-menu" class="fixed inset-0 bg-theme z-40 translate-x-full transition-transform duration-500 ease-expo pointer-events-none">
     <div class="flex flex-col items-center justify-center h-full gap-12 text-3xl font-serif">
-      <a href="#about" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-100">About</a>
-      <a href="#news" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-200">News</a>
-      <a href="#work" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-300">Work</a>
-      <a href="#contact" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-400">Contact</a>
+      <a href="#about" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-100">
+        <span class="lang-en">About</span>
+        <span class="lang-ja">私たちについて</span>
+      </a>
+      <a href="#projects" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-200">
+        <span class="lang-en">Projects</span>
+        <span class="lang-ja">プロジェクト</span>
+      </a>
+      <a href="#work" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-300">
+        <span class="lang-en">Work</span>
+        <span class="lang-ja">実績</span>
+      </a>
+      <a href="#contact" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-400">
+        <span class="lang-en">Contact</span>
+        <span class="lang-ja">お問い合わせ</span>
+      </a>
       
-      <!-- Theme Toggle in Mobile Menu -->
       <button id="mobile-theme-toggle" class="mt-8 px-6 py-3 rounded-full border border-current text-sm tracking-widest uppercase opacity-0 translate-y-4 transition-all duration-500 delay-500">
         Switch Theme
       </button>
+
+      <!-- Language Toggle in Mobile Menu -->
+      <div id="mobile-lang-toggle" class="mt-8 flex items-center gap-6 text-lg font-bold tracking-widest opacity-0 translate-y-4 transition-all duration-500 delay-600">
+        <button id="mobile-lang-en" class="hover:opacity-60 transition-opacity">EN</button>
+        <span class="opacity-30 text-2xl">/</span>
+        <button id="mobile-lang-ja" class="hover:opacity-60 transition-opacity">JP</button>
+      </div>
     </div>
   </div>
 </header>
@@ -80,6 +113,45 @@ const { transparent = true } = Astro.props;
 
   setupThemeToggle('theme-toggle');
   setupThemeToggle('mobile-theme-toggle');
+
+  // Language toggle functionality
+  const setupLangToggle = (enId: string, jaId: string) => {
+    const enBtn = document.getElementById(enId);
+    const jaBtn = document.getElementById(jaId);
+    const html = document.documentElement;
+
+    const updateActiveState = () => {
+      const currentLang = html.getAttribute('lang') || 'en';
+      if (currentLang === 'en') {
+        enBtn?.classList.add('opacity-100');
+        enBtn?.classList.remove('opacity-40');
+        jaBtn?.classList.add('opacity-40');
+        jaBtn?.classList.remove('opacity-100');
+      } else {
+        jaBtn?.classList.add('opacity-100');
+        jaBtn?.classList.remove('opacity-40');
+        enBtn?.classList.add('opacity-40');
+        enBtn?.classList.remove('opacity-100');
+      }
+    };
+
+    const setLang = (lang: string) => {
+      html.setAttribute('lang', lang);
+      localStorage.setItem('lang', lang);
+      updateActiveState();
+      // Dispatch event for other components
+      window.dispatchEvent(new CustomEvent('lang-changed', { detail: { lang } }));
+    };
+
+    enBtn?.addEventListener('click', () => setLang('en'));
+    jaBtn?.addEventListener('click', () => setLang('ja'));
+    
+    // Initial state
+    updateActiveState();
+  };
+
+  setupLangToggle('lang-en', 'lang-ja');
+  setupLangToggle('mobile-lang-en', 'mobile-lang-ja');
 
   // Mobile Menu Functionality
   const menuToggle = document.getElementById('mobile-menu-toggle');

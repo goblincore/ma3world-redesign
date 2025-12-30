@@ -9,10 +9,10 @@ const socialLinks = [
 ];
 
 const navLinks = [
-  { name: "Work", url: "#work" },
-  { name: "About", url: "#about" },
-  { name: "Clients", url: "#clients" },
-  { name: "Contact", url: "#contact" },
+  { name: "Work", nameJa: "実績", url: "#work" },
+  { name: "About", nameJa: "私たちについて", url: "#about" },
+  { name: "Clients", nameJa: "クライアント", url: "#clients" },
+  { name: "Contact", nameJa: "お問い合わせ", url: "#contact" },
 ];
 ---
 
@@ -22,9 +22,13 @@ const navLinks = [
     <div class="grid md:grid-cols-2 gap-16 md:gap-24 mb-24">
       <!-- CTA -->
       <div>
-        <span class="text-xs tracking-widest uppercase text-theme-muted block mb-4">Get in Touch</span>
+        <span class="text-xs tracking-widest uppercase text-theme-muted block mb-4">
+          <span class="lang-en">Get in Touch</span>
+          <span class="lang-ja">お問い合わせ</span>
+        </span>
         <h2 class="font-serif text-4xl md:text-6xl mb-8">
-          Let's create<br/>something together
+          <span class="lang-en">Let's create<br/>something together</span>
+          <span class="lang-ja">共に、新しい価値を<br/>創り上げましょう</span>
         </h2>
         <a href="mailto:hello@ma3world.com" class="inline-block text-2xl md:text-3xl hover:opacity-60 transition-opacity border-b border-current pb-2">
           hello@ma3world.com
@@ -35,11 +39,17 @@ const navLinks = [
       <div class="flex flex-col md:flex-row gap-12 md:gap-24">
         <!-- Navigation -->
         <div>
-          <span class="text-xs tracking-widest uppercase text-theme-muted block mb-4">Navigation</span>
+          <span class="text-xs tracking-widest uppercase text-theme-muted block mb-4">
+            <span class="lang-en">Navigation</span>
+            <span class="lang-ja">ナビゲーション</span>
+          </span>
           <ul class="space-y-3">
             {navLinks.map((link) => (
               <li>
-                <a href={link.url} class="text-lg hover:opacity-60 transition-opacity">{link.name}</a>
+                <a href={link.url} class="text-lg hover:opacity-60 transition-opacity">
+                  <span class="lang-en">{link.name}</span>
+                  <span class="lang-ja">{link.nameJa}</span>
+                </a>
               </li>
             ))}
           </ul>
@@ -47,7 +57,10 @@ const navLinks = [
         
         <!-- Social -->
         <div>
-          <span class="text-xs tracking-widest uppercase text-theme-muted block mb-4">Follow</span>
+          <span class="text-xs tracking-widest uppercase text-theme-muted block mb-4">
+            <span class="lang-en">Follow</span>
+            <span class="lang-ja">フォロー</span>
+          </span>
           <ul class="space-y-3">
             {socialLinks.map((link) => (
               <li>
@@ -68,7 +81,8 @@ const navLinks = [
       
       <!-- Copyright -->
       <p class="text-sm text-theme-muted">
-        © {currentYear} MA3.0 World. All rights reserved.
+        <span class="lang-en">© {currentYear} MA3.0 World. All rights reserved.</span>
+        <span class="lang-ja">© {currentYear} MA3.0 World. 無断複写・転載を禁じます。</span>
       </p>
     </div>
   </div>
@@ -78,4 +92,8 @@ const navLinks = [
   h2, .font-serif {
     font-family: var(--font-serif);
   }
+
+  /* Language visibility logic */
+  :global(html[lang="ja"]) .lang-en { display: none; }
+  :global(html[lang="en"]) .lang-ja { display: none; }
 </style>

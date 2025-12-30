@@ -5,9 +5,21 @@ interface Project {
   year: string;
 }
 
-const projects: Project[] = [
-  { title: "Project Alpha", category: "Brand Identity", year: "2024" },
-  { title: "Project Beta", category: "Web Design", year: "2024" },
+const projects = [
+  { 
+    title: "Project Alpha", 
+    titleJa: "プロジェクト・アルファ",
+    category: "Brand Identity", 
+    categoryJa: "ブランド・アイデンティティ",
+    year: "2024" 
+  },
+  { 
+    title: "Project Beta", 
+    titleJa: "プロジェクト・ベータ",
+    category: "Web Design", 
+    categoryJa: "ウェブ・デザイン",
+    year: "2024" 
+  },
 ];
 ---
 
@@ -16,11 +28,18 @@ const projects: Project[] = [
     <!-- Section Header -->
     <div class="flex items-end justify-between mb-16">
       <div>
-        <span class="text-xs tracking-widest uppercase text-theme-muted block mb-2">Selected Work</span>
-        <h2 class="font-serif text-4xl md:text-6xl">Projects</h2>
+        <span class="text-xs tracking-widest uppercase text-theme-muted block mb-2">
+          <span class="lang-en">Selected Work</span>
+          <span class="lang-ja">実績一覧</span>
+        </span>
+        <h2 class="font-serif text-4xl md:text-6xl">
+          <span class="lang-en">Projects</span>
+          <span class="lang-ja">プロジェクト</span>
+        </h2>
       </div>
       <a href="/work" class="hidden md:block text-sm tracking-wide border-b border-current pb-1 hover:opacity-60">
-        View all projects
+        <span class="lang-en">View all projects</span>
+        <span class="lang-ja">全てのプロジェクトを見る</span>
       </a>
     </div>
     
@@ -42,9 +61,13 @@ const projects: Project[] = [
           <div class="flex items-start justify-between">
             <div>
               <h3 class="text-xl md:text-2xl font-medium mb-1 group-hover:opacity-60 transition-opacity">
-                {project.title}
+                <span class="lang-en">{project.title}</span>
+                <span class="lang-ja">{project.titleJa}</span>
               </h3>
-              <span class="text-sm text-theme-muted">{project.category}</span>
+              <span class="text-sm text-theme-muted">
+                <span class="lang-en">{project.category}</span>
+                <span class="lang-ja">{project.categoryJa}</span>
+              </span>
             </div>
             <span class="text-sm text-theme-muted">{project.year}</span>
           </div>
@@ -58,4 +81,8 @@ const projects: Project[] = [
   h2 {
     font-family: var(--font-serif);
   }
+
+  /* Language visibility logic */
+  :global(html[lang="ja"]) .lang-en { display: none; }
+  :global(html[lang="en"]) .lang-ja { display: none; }
 </style>

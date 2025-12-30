@@ -18,9 +18,18 @@
 }
 
 @theme {
-  --font-sans: 'Helvetica Now Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-serif: 'PP Locomotive New', Georgia, serif;
+  --font-sans: 'Helvetica Now Display', 'Noto Sans JP', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-serif: 'PP Locomotive New', 'Shippori Mincho', Georgia, serif;
 }
+
+html[lang="ja"] {
+  --font-sans: 'Noto Sans JP', 'Helvetica Now Display', sans-serif;
+  --font-serif: 'Shippori Mincho', 'PP Locomotive New', serif;
+}
+
+/* Language visibility logic */
+html[lang="ja"] .lang-en { display: none !important; }
+html[lang="en"] .lang-ja { display: none !important; }
 
 /* ========================================
    THEME SYSTEM - Toggle via data-theme attribute on <html>

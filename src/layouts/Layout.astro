@@ -18,6 +18,18 @@ const { title, description = "Digital-first Design Agency" } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<!-- Japanese Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+		
+		<script is:inline>
+			// Detect and apply initial language preference
+			(function() {
+				const savedLang = localStorage.getItem('lang') || 'en';
+				document.documentElement.setAttribute('lang', savedLang);
+			})();
+		</script>
 	</head>
 	<body>
 		<slot />
