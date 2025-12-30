@@ -4,8 +4,7 @@ interface Props {
   subtitle?: string;
 }
 
-import SvgLogo from './SvgLogo.astro';
-import WireframeGlobe from './WireframeGlobe';
+import LogoGlobe from './LogoGlobe.astro';
 
 const { title = "Digital-first Design Agency", subtitle = "We craft immersive digital experiences" } = Astro.props;
 ---
@@ -36,15 +35,8 @@ const { title = "Digital-first Design Agency", subtitle = "We craft immersive di
   
   <!-- Content -->
   <div class="relative z-10 text-center px-6 max-w-7xl flex flex-col items-center">
-    <!-- Logo -->
     <!-- Logo & Wireframe Globe -->
-    <div class="relative w-90 md:w-120 lg:w-180 mb-8">
-      <SvgLogo color="white" class="w-full h-auto object-contain relative z-10" aria-label="MA3.0 World" />
-      <!-- The globe is positioned to overlay the "O" in "WORLD" -->
-      <div class="absolute left-[38%] top-[50%] -translate-y-[49%] w-[44%] aspect-square z-20">
-        <WireframeGlobe client:only="react" />
-      </div>
-    </div>
+    <LogoGlobe logoColor="white" />
     <h1 class="sr-only">
       <span class="lang-en">{title}</span>
       <span class="lang-ja">デジタル・ファーストのデザイン・エージェンシー</span>
@@ -94,7 +86,7 @@ const { title = "Digital-first Design Agency", subtitle = "We craft immersive di
     const isLight = document.documentElement.getAttribute('data-theme') === 'light';
     const newSrc = isLight ? '/video/lightloop2.mp4' : '/video/loopingyua.mp4';
     
-    if (source.getAttribute('src') !== newSrc) {
+    if (source && source.getAttribute('src') !== newSrc) {
       source.setAttribute('src', newSrc);
       video.load();
       video.play();

@@ -1,0 +1,26 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="News | MA3.0 World">
+  <Header />
+  <main class="pt-32 pb-20 px-6 md:px-12 min-h-[70vh]">
+    <div class="max-w-7xl mx-auto">
+      <h1 class="text-4xl md:text-6xl font-serif mb-12">
+        <span class="lang-en">News</span>
+        <span class="lang-ja">ニュース</span>
+      </h1>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- News items will go here -->
+        <p class="text-xl opacity-60">
+          <span class="lang-en">No news yet. Check back soon.</span>
+          <span class="lang-ja">まだニュースはありません。また後で確認してください。</span>
+        </p>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>

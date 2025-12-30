@@ -3,20 +3,33 @@ interface Props {
   transparent?: boolean;
 }
 
+import LogoGlobe from './LogoGlobe.astro';
+
 const { transparent = true } = Astro.props;
+const isHome = Astro.url.pathname === '/';
 ---
 
 <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-transparent">
   <nav class="flex items-center justify-between px-6 md:px-12 py-6">
     <!-- Logo / Greeting -->
-    <a href="/" class="text-lg md:text-xl font-serif tracking-wide min-w-[200px]">
-      <span id="header-greeting" class="opacity-0 transition-opacity duration-500">
+    <a href="/" class="min-w-[200px] flex items-center relative h-10 group overflow-hidden">
+      <!-- Greeting (visible only when hero is in view) -->
+      <span id="header-greeting" class="text-lg md:text-xl font-serif tracking-wide opacity-0 transition-all duration-500 absolute left-0 translate-y-0">
         MA3.0<span class="text-xs align-super font-sans ml-1">®</span>
       </span>
+      
+      <!-- LogoGlobe (visible when scrolled or on other routes) -->
+      <div id="header-logo" class="opacity-0 translate-y-8 transition-all duration-500 absolute left-0 pointer-events-none">
+        <LogoGlobe className="relative w-28 md:w-36" />
+      </div>
     </a>
     
     <!-- Navigation Links -->
     <div class="hidden md:flex items-center gap-8 text-sm tracking-wide">
+      <a href="/news" class="hover:opacity-60 transition-opacity">
+        <span class="lang-en">News</span>
+        <span class="lang-ja">ニュース</span>
+      </a>
       <a href="#about" class="hover:opacity-60 transition-opacity">
         <span class="lang-en">About</span>
         <span class="lang-ja">私たちについて</span>
@@ -32,13 +45,13 @@ const { transparent = true } = Astro.props;
       
       <!-- Language Toggle -->
       <div class="flex items-center gap-3 text-xs font-bold tracking-widest border border-current rounded-full px-4 py-1.5 opacity-60 hover:opacity-100 transition-opacity">
-        <button id="lang-en" class="hover:opacity-100 transition-opacity px-1">EN</button>
+        <button id="lang-en" class="hover:opacity-100 transition-opacity px-1 cursor-pointer">EN</button>
         <span class="opacity-30">/</span>
-        <button id="lang-ja" class="hover:opacity-100 transition-opacity px-1">JP</button>
+        <button id="lang-ja" class="hover:opacity-100 transition-opacity px-1 cursor-pointer">JP</button>
       </div>
 
       <!-- Theme Toggle -->
-      <button id="theme-toggle" class="w-8 h-8 flex items-center justify-center rounded-full border border-current opacity-60 hover:opacity-100 transition-opacity" aria-label="Toggle theme">
+      <button id="theme-toggle" class="w-8 h-8 flex items-center justify-center rounded-full border border-current opacity-60 hover:opacity-100 transition-opacity cursor-pointer" aria-label="Toggle theme">
         <svg class="w-4 h-4 dark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
         </svg>
@@ -49,41 +62,62 @@ const { transparent = true } = Astro.props;
     </div>
     
     <!-- Mobile Menu Button -->
-    <button id="mobile-menu-toggle" class="md:hidden flex flex-col gap-1.5 z-50 relative" aria-label="Menu">
-      <span class="w-6 h-px bg-current transition-transform duration-300 origin-center"></span>
-      <span class="w-6 h-px bg-current transition-transform duration-300 origin-center"></span>
+    <button id="mobile-menu-toggle" class="md:hidden flex flex-col items-center gap-1 z-50 relative group" aria-label="Menu">
+      <div class="flower-container transition-all duration-700 ease-expo">
+        <svg class="w-8 h-8 sakura-icon" viewBox="0 0 100 100" fill="currentColor">
+          <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" class="petal"></path>
+          <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" class="petal" transform="rotate(72 50 50)"></path>
+          <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" class="petal" transform="rotate(144 50 50)"></path>
+          <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" class="petal" transform="rotate(216 50 50)"></path>
+          <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" class="petal" transform="rotate(288 50 50)"></path>
+        </svg>
+      </div>
+      <div class="menu-label-container text-[8px] uppercase tracking-[0.3em] font-bold opacity-70 group-hover:opacity-100 transition-opacity text-center">
+        <div class="menu-text">
+          <span class="lang-en">Menu</span>
+          <span class="lang-ja">メニュー</span>
+        </div>
+        <div class="close-text hidden">
+          <span class="lang-en">Close</span>
+          <span class="lang-ja">閉じる</span>
+        </div>
+      </div>
     </button>
   </nav>
 
   <!-- Mobile Menu Overlay -->
-  <div id="mobile-menu" class="fixed inset-0 bg-theme z-40 translate-x-full transition-transform duration-500 ease-expo pointer-events-none">
-    <div class="flex flex-col items-center justify-center h-full gap-12 text-3xl font-serif">
-      <a href="#about" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-100">
+  <div id="mobile-menu" class="fixed inset-0 bg-theme z-40 translate-x-full transition-transform duration-500 ease-expo pointer-events-none p-12 pt-32">
+    <div class="flex flex-col justify-start h-full gap-8 text-4xl font-serif">
+      <a href="/news" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-100 cursor-pointer">
+        <span class="lang-en">News</span>
+        <span class="lang-ja">ニュース</span>
+      </a>
+      <a href="#about" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-[150ms] cursor-pointer">
         <span class="lang-en">About</span>
         <span class="lang-ja">私たちについて</span>
       </a>
-      <a href="#projects" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-200">
+      <a href="#projects" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-[200ms] cursor-pointer">
         <span class="lang-en">Projects</span>
         <span class="lang-ja">プロジェクト</span>
       </a>
-      <a href="#work" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-300">
-        <span class="lang-en">Work</span>
-        <span class="lang-ja">実績</span>
-      </a>
-      <a href="#contact" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-400">
+      <a href="#contact" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-[250ms] cursor-pointer">
         <span class="lang-en">Contact</span>
         <span class="lang-ja">お問い合わせ</span>
       </a>
       
-      <button id="mobile-theme-toggle" class="mt-8 px-6 py-3 rounded-full border border-current text-sm tracking-widest uppercase opacity-0 translate-y-4 transition-all duration-500 delay-500">
-        Switch Theme
-      </button>
+      <div class="mt-auto pb-12 opacity-0 translate-y-4 transition-all duration-500 delay-[350ms] mobile-controls">
+        <!-- Theme Toggle -->
+        <button id="mobile-theme-toggle" class="flex items-center gap-4 text-sm tracking-widest uppercase border border-current rounded-full px-6 py-3 hover:opacity-60 transition-opacity cursor-pointer">
+          <span class="lang-en">Switch Theme</span>
+          <span class="lang-ja">テーマ切替</span>
+        </button>
 
-      <!-- Language Toggle in Mobile Menu -->
-      <div id="mobile-lang-toggle" class="mt-8 flex items-center gap-6 text-lg font-bold tracking-widest opacity-0 translate-y-4 transition-all duration-500 delay-600">
-        <button id="mobile-lang-en" class="hover:opacity-60 transition-opacity">EN</button>
-        <span class="opacity-30 text-2xl">/</span>
-        <button id="mobile-lang-ja" class="hover:opacity-60 transition-opacity">JP</button>
+        <!-- Language Toggle -->
+        <div id="mobile-lang-toggle" class="mt-6 flex items-center gap-6 text-xl font-bold tracking-widest">
+          <button id="mobile-lang-en" class="hover:opacity-60 transition-opacity cursor-pointer">EN</button>
+          <span class="opacity-30 text-2xl">/</span>
+          <button id="mobile-lang-ja" class="hover:opacity-60 transition-opacity cursor-pointer">JP</button>
+        </div>
       </div>
     </div>
   </div>
@@ -195,10 +229,41 @@ const { transparent = true } = Astro.props;
   // Update greeting on language change
   window.addEventListener('lang-changed', updateGreeting);
 
+  // Header Swap Logic (Greeting vs Logo)
+  const headerGreeting = document.getElementById('header-greeting');
+  const headerLogo = document.getElementById('header-logo');
+  const heroSection = document.querySelector('section'); // Target first section (Hero)
+
+  const swapHeaderContent = (showGreeting: boolean) => {
+    if (showGreeting) {
+      headerGreeting?.classList.remove('opacity-0', '-translate-y-8');
+      headerGreeting?.classList.add('opacity-100', 'translate-y-0');
+      headerLogo?.classList.remove('opacity-100', 'translate-y-0');
+      headerLogo?.classList.add('opacity-0', 'translate-y-8');
+    } else {
+      headerGreeting?.classList.remove('opacity-100', 'translate-y-0');
+      headerGreeting?.classList.add('opacity-0', '-translate-y-8');
+      headerLogo?.classList.remove('opacity-0', 'translate-y-8');
+      headerLogo?.classList.add('opacity-100', 'translate-y-0');
+    }
+  };
+
+  if (heroSection && headerGreeting && headerLogo) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        swapHeaderContent(entry.isIntersecting);
+      });
+    }, { threshold: 0.1 });
+
+    observer.observe(heroSection);
+  } else {
+    // If no hero section (other routes), show logo immediately
+    swapHeaderContent(false);
+  }
+
   // Mobile Menu Functionality
   const menuToggle = document.getElementById('mobile-menu-toggle');
   const menu = document.getElementById('mobile-menu');
-  const menuSpans = menuToggle?.querySelectorAll('span');
   const mobileLinks = document.querySelectorAll('.mobile-link');
   let isMenuOpen = false;
 
@@ -209,10 +274,18 @@ const { transparent = true } = Astro.props;
     menu?.classList.toggle('translate-x-full', !isMenuOpen);
     menu?.classList.toggle('pointer-events-none', !isMenuOpen);
     
-    // Animate hamburger to X
-    if (menuSpans) {
-      menuSpans[0].style.transform = isMenuOpen ? 'translateY(3.5px) rotate(45deg)' : '';
-      menuSpans[1].style.transform = isMenuOpen ? 'translateY(-3.5px) rotate(-45deg)' : '';
+    // Animate Sakura
+    const flower = menuToggle?.querySelector('.flower-container');
+    if (flower instanceof HTMLElement) {
+      flower.style.transform = isMenuOpen ? 'rotate(180deg) scale(1.1)' : '';
+    }
+
+    // Toggle Menu/Close text
+    const menuText = menuToggle?.querySelector('.menu-text');
+    const closeText = menuToggle?.querySelector('.close-text');
+    if (menuText && closeText) {
+      menuText.classList.toggle('hidden', isMenuOpen);
+      closeText.classList.toggle('hidden', !isMenuOpen);
     }
 
     // Animate Links
@@ -220,6 +293,13 @@ const { transparent = true } = Astro.props;
       link.classList.toggle('opacity-100', isMenuOpen);
       link.classList.toggle('translate-y-0', isMenuOpen);
     });
+
+    // Animate Controls
+    const mobileControls = document.querySelector('.mobile-controls');
+    if (mobileControls) {
+      mobileControls.classList.toggle('opacity-100', isMenuOpen);
+      mobileControls.classList.toggle('translate-y-0', isMenuOpen);
+    }
 
     document.body.style.overflow = isMenuOpen ? 'hidden' : '';
   };
