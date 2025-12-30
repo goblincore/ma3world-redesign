@@ -13,10 +13,12 @@ const isHome = Astro.url.pathname === '/';
   <nav class="flex items-center justify-between px-6 md:px-12 py-6">
     <!-- Logo / Greeting -->
     <a href="/" class="min-w-[200px] flex items-center relative h-10 group overflow-hidden">
-      <!-- Greeting (visible only when hero is in view) -->
-      <span id="header-greeting" class="text-lg md:text-xl font-serif tracking-wide opacity-0 transition-all duration-500 absolute left-0 translate-y-0">
-        MA3.0<span class="text-xs align-super font-sans ml-1">®</span>
-      </span>
+      <!-- Greeting (visible only when hero is in view on Home) -->
+      {isHome && (
+        <span id="header-greeting" class="text-lg md:text-xl font-serif tracking-wide opacity-0 transition-all duration-500 absolute left-0 translate-y-0">
+          MA3.0<span class="text-xs align-super font-sans ml-1">®</span>
+        </span>
+      )}
       
       <!-- LogoGlobe (visible when scrolled or on other routes) -->
       <div id="header-logo" class="opacity-0 translate-y-8 transition-all duration-500 absolute left-0 pointer-events-none">
@@ -127,11 +129,27 @@ const isHome = Astro.url.pathname === '/';
   // Theme toggle functionality
   const setupThemeToggle = (buttonId: string) => {
     const toggle = document.getElementById(buttonId);
-    const html = document.documentElement;
-    const darkIcon = toggle?.querySelector('.dark-icon');
-    const lightIcon = toggle?.querySelector('.light-icon');
+    if (!toggle) return;
     
-    toggle?.addEventListener('click', () => {
+    const html = document.documentElement;
+    const darkIcon = toggle.querySelector('.dark-icon');
+    const lightIcon = toggle.querySelector('.light-icon');
+
+    const updateIcons = () => {
+      const isLight = html.getAttribute('data-theme') === 'light';
+      if (isLight) {
+        darkIcon?.classList.add('hidden');
+        lightIcon?.classList.remove('hidden');
+      } else {
+        darkIcon?.classList.remove('hidden');
+        lightIcon?.classList.add('hidden');
+      }
+    };
+    
+    // Initial icon state
+    updateIcons();
+    
+    toggle.addEventListener('click', () => {
       const currentTheme = html.getAttribute('data-theme');
       const newTheme = currentTheme === 'light' ? 'dark' : 'light';
       
@@ -142,8 +160,7 @@ const isHome = Astro.url.pathname === '/';
       }
       
       localStorage.setItem('theme', newTheme);
-      darkIcon?.classList.toggle('hidden');
-      lightIcon?.classList.toggle('hidden');
+      updateIcons();
     });
   };
 

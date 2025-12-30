@@ -94,12 +94,44 @@ const GlobeMesh = ({ color = "#ffffff" }: { color?: string }) => {
   );
 };
 
-export const WireframeGlobe = () => {
+export const WireframeGlobe = ({ forceColor }: { forceColor?: string }) => {
+  const [globeColor, setGlobeColor] = React.useState(forceColor || "#ffffff");
+
+  React.useEffect(() => {
+    if (forceColor) {
+      setGlobeColor(forceColor);
+      return;
+    }
+    
+    const html = document.documentElement;
+    
+    const updateColor = () => {
+      const isLight = html.getAttribute('data-theme') === 'light';
+      setGlobeColor(isLight ? "#000000" : "#ffffff");
+    };
+
+    // Initial check
+    updateColor();
+
+    // Observe theme changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+          updateColor();
+        }
+      });
+    });
+
+    observer.observe(html, { attributes: true });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }}>
       <Canvas camera={{ position: [0, 0, 2.5], fov: 45 }} alpha={true}>
         <ambientLight intensity={0.5} />
-        <GlobeMesh color="#ffffff" />
+        <GlobeMesh color={globeColor} />
       </Canvas>
     </div>
   );

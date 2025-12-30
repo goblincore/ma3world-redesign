@@ -1,17 +1,23 @@
 ---
 interface Project {
   title: string;
+  titleJa: string;
+  slug?: string;
   category: string;
+  categoryJa: string;
   year: string;
+  image?: string;
 }
 
 const projects = [
   { 
-    title: "Project Alpha", 
-    titleJa: "プロジェクト・アルファ",
-    category: "Brand Identity", 
-    categoryJa: "ブランド・アイデンティティ",
-    year: "2024" 
+    title: "Imabari Towel Digital Art Gallery", 
+    titleJa: "今治タオル デジタルアートギャラリー",
+    slug: "imbari-towel",
+    category: "Digital Innovation / Art", 
+    categoryJa: "デジタル・イノベーション / アート",
+    year: "2024",
+    image: "/project/imabari-dag/towelbridge.png"
   },
   { 
     title: "Project Beta", 
@@ -46,15 +52,25 @@ const projects = [
     <!-- Project Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
       {projects.map((project, index) => (
-        <a href={`/projects/${project.title.toLowerCase().replace(' ', '-')}`} class="group block">
-          <!-- Image Placeholder -->
+        <a href={`/projects/${project.slug || project.title.toLowerCase().replace(' ', '-')}`} class="group block">
+          <!-- Image Container -->
           <div class="aspect-[4/3] bg-theme-muted rounded-sm overflow-hidden mb-6 relative">
-            <div class="absolute inset-0 bg-theme-alt group-hover:scale-105 transition-transform duration-700"></div>
-            <div class="absolute inset-0 flex items-center justify-center">
-              <span class="text-6xl font-serif text-theme-muted group-hover:opacity-80 transition-opacity">
-                0{index + 1}
-              </span>
-            </div>
+            {project.image ? (
+              <img 
+                src={project.image} 
+                alt={project.title}
+                class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+            ) : (
+              <>
+                <div class="absolute inset-0 bg-theme-alt group-hover:scale-105 transition-transform duration-700"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <span class="text-6xl font-serif text-theme-muted group-hover:opacity-80 transition-opacity">
+                    0{index + 1}
+                  </span>
+                </div>
+              </>
+            )}
           </div>
           
           <!-- Project Info -->

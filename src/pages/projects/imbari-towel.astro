@@ -1,0 +1,169 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const project = {
+  title: "Imabari Towel Digital Art Gallery",
+  titleJa: "今治タオル デジタルアートギャラリー",
+  category: "Digital Innovation / Art",
+  year: "2024",
+  description: "A hybrid cultural innovation project that transforms digital creativity into physical products, exhibitions, and sustainable economic value. This gallery bridges global artists and local industries, developing avatars, products, and collaborative platforms that enable cultural circulation.",
+  descriptionJa: "デジタルの創造性を物理的な製品、展示、そして持続可能な経済価値へと変革するハイブリッドなカルチャー・イノベーション・プロジェクト。このギャラリーは世界のクリエイターと地域の産業を繋ぎ、文化の循環を可能にするアバター、製品、コラボレーションプラットフォームを開発しています。",
+  mainImage: "/src/assets/imabari_hero.png" // We'll move the generated image here or reference it properly
+};
+---
+
+<Layout title={`${project.title} | MA3.0 World`}>
+  <Header transparent={false} />
+  
+  <main class="bg-theme overflow-hidden">
+    <!-- Hero Section with Video Background -->
+    <section class="relative h-[100svh] flex items-end pb-12 md:pb-24 px-6 md:px-12 overflow-hidden bg-black">
+      <!-- Video Background -->
+      <div class="absolute inset-0 z-0">
+        <video 
+          src="/video/imabariditigalartgallery.mp4" 
+          autoplay 
+          loop 
+          muted 
+          playsinline 
+          class="w-full h-full object-cover opacity-60"
+        ></video>
+        <!-- Sophisticated Dark Overlay for Legibility -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+      </div>
+
+      <!-- Content Overlay -->
+      <div class="relative z-10 max-w-7xl w-full mx-auto">
+        <div class="max-w-4xl space-y-6">
+          <span class="text-[10px] md:text-xs tracking-[0.4em] uppercase font-bold text-white/50 block mb-4">
+            {project.category}
+          </span>
+          <h1 class="font-serif text-5xl md:text-8xl lg:text-9xl leading-[0.9] text-white">
+            <span class="lang-en">{project.title}</span>
+            <span class="lang-ja">{project.titleJa}</span>
+          </h1>
+          
+          <div class="flex flex-wrap items-center gap-x-8 gap-y-4 pt-8 border-t border-white/10">
+            <div class="flex items-center gap-3">
+              <span class="text-[10px] uppercase tracking-[0.3em] text-white/40 font-bold">Client</span>
+              <span class="text-sm md:text-base text-white/80">Imabari Towel</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-[10px] uppercase tracking-[0.3em] text-white/40 font-bold">Year</span>
+              <span class="text-sm md:text-base text-white/80">{project.year}</span>
+            </div>
+            <p class="text-[10px] md:text-xs tracking-widest text-white/40 uppercase ml-auto">
+              Presented by MA3.0 World
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Project Concept Section -->
+    <section class="py-32 md:py-48 px-6 md:px-12 flex justify-center border-b border-theme/10">
+      <div class="max-w-4xl w-full space-y-16">
+        <h2 class="font-serif text-3xl md:text-5xl border-l-2 border-theme/30 pl-8">
+          <span class="lang-en">Innovating the sacred land of towel-making.</span>
+          <span class="lang-ja">タオルづくりの聖地に新たな息吹を。</span>
+        </h2>
+        
+        <div class="max-w-none text-xl md:text-2xl leading-relaxed text-theme-muted space-y-8">
+          <p>
+            <span class="lang-en">{project.description}</span>
+            <span class="lang-ja">{project.descriptionJa}</span>
+          </p>
+          <p>
+            <span class="lang-en">For 130 years, Imabari has been celebrated as the sacred land of towel production, synonymous with "Safety, Peace of Mind, and High Quality." This project represents the next phase of the Imabari Towel Project, taking the tradition into the digital realm.</span>
+            <span class="lang-ja">130年に亘り「安心・安全・高品質」なタオルを製造してきた“タオルづくりの聖地”今治。本プロジェクトは、2006年から続く「今治タオルプロジェクト」の次なるフェーズとして、伝統をデジタル空間へと拡張する試みです。</span>
+          </p>
+        </div>
+        
+        <div class="pt-16 border-t border-theme/10 flex flex-col md:flex-row justify-between items-center gap-8">
+          <a href="https://www.imabaritowel.jp/digital-art-gallery/" target="_blank" class="group relative px-12 py-6 border border-theme/20 overflow-hidden">
+            <div class="absolute inset-0 bg-theme translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+            <span class="relative z-10 text-xs font-bold uppercase tracking-widest group-hover:text-theme-alt transition-colors">
+              <span class="lang-en">Visit Virtual Gallery</span>
+              <span class="lang-ja">バーチャルギャラリーを訪ねる</span>
+            </span>
+          </a>
+          
+          <a href="/#projects" class="text-sm uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity flex items-center gap-4">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="rotate-180">
+              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="lang-en">Back to Projects</span>
+            <span class="lang-ja">プロジェクト一覧に戻る</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Parallax Image Grid -->
+    <section class="py-32 px-6 md:px-12 flex justify-center bg-theme-alt">
+      <div class="max-w-7xl w-auto grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
+        <div class="parallax-item translate-y-12 transition-transform duration-1000">
+           <div class="aspect-[3/4] bg-theme/5 rounded-sm overflow-hidden mb-6">
+             <div class="w-full h-full bg-gradient-to-br from-theme/10 to-theme/0 flex items-center justify-center p-12">
+                <span class="text-xs uppercase tracking-widest text-theme-muted">Digital Art 01</span>
+             </div>
+           </div>
+        </div>
+        <div class="parallax-item -translate-y-12 transition-transform duration-1000">
+           <div class="aspect-[3/4] bg-theme/5 rounded-sm overflow-hidden mb-6">
+             <div class="w-full h-full bg-gradient-to-br from-theme/5 to-theme/10 flex items-center justify-center p-12">
+                <span class="text-xs uppercase tracking-widest text-theme-muted">Imabari Life 02</span>
+             </div>
+           </div>
+        </div>
+        <div class="parallax-item translate-y-24 transition-transform duration-1000">
+           <div class="aspect-[3/4] bg-theme/5 rounded-sm overflow-hidden mb-6">
+             <div class="w-full h-full bg-gradient-to-br from-theme/10 to-theme/5 flex items-center justify-center p-12">
+                <span class="text-xs uppercase tracking-widest text-theme-muted">Craftmanship 03</span>
+             </div>
+           </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script is:inline>
+  // Simple parallax implementation for the project page
+  window.addEventListener('scroll', () => {
+    const scroll = window.pageYOffset;
+    
+    // Hero BG parallax
+    const bg = document.getElementById('parallax-bg');
+    if (bg) {
+      bg.style.transform = `translateY(${scroll * 0.4}px) scale(1.1)`;
+    }
+
+    // Grid items parallax
+    const items = document.querySelectorAll('.parallax-item');
+    items.forEach((item, index) => {
+      const speed = (index + 1) * 0.1;
+      const rect = item.getBoundingClientRect();
+      const visible = rect.top < window.innerHeight && rect.bottom > 0;
+      
+      if (visible) {
+        const offset = (window.innerHeight - rect.top) * speed;
+        // Apply different directions for interest
+        const direction = index % 2 === 0 ? 1 : -1;
+        item.style.transform = `translateY(${offset * direction * 0.2}px)`;
+      }
+    });
+  });
+</script>
+
+<style>
+  main {
+    font-family: var(--font-sans);
+  }
+  h1, h2 {
+    font-family: var(--font-serif);
+  }
+</style>

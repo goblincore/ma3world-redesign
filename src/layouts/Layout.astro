@@ -24,14 +24,53 @@ const { title, description = "Digital-first Design Agency" } = Astro.props;
 		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 		
 		<script is:inline>
-			// Detect and apply initial language preference
+			// Detect and apply initial language & theme preferences
 			(function() {
 				const savedLang = localStorage.getItem('lang') || 'en';
 				document.documentElement.setAttribute('lang', savedLang);
+
+				const savedTheme = localStorage.getItem('theme') || 'dark';
+				if (savedTheme === 'light') {
+					document.documentElement.setAttribute('data-theme', 'light');
+				} else {
+					document.documentElement.removeAttribute('data-theme');
+				}
 			})();
 		</script>
 	</head>
 	<body>
 		<slot />
+		<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+		<script is:inline>
+			// Initialize Lenis smooth scrolling
+			const lenis = new Lenis({
+				duration: 1.2,
+				easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+				direction: 'vertical',
+				gestureDirection: 'vertical',
+				smoothHover: true,
+				smoothWheel: true,
+				wheelMultiplier: 1.1,
+			});
+
+			function raf(time) {
+				lenis.raf(time);
+				requestAnimationFrame(raf);
+			}
+
+			requestAnimationFrame(raf);
+
+			// Handle anchor link clicks for smooth scrolling across pages
+			document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+				anchor.addEventListener('click', function (e) {
+					e.preventDefault();
+					const targetId = this.getAttribute('href').substring(1);
+					const targetElement = document.getElementById(targetId);
+					if (targetElement) {
+						lenis.scrollTo(targetElement);
+					}
+				});
+			});
+		</script>
 	</body>
 </html>
