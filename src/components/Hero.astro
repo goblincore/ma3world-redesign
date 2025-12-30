@@ -11,6 +11,7 @@ const { title = "Digital-first Design Agency", subtitle = "We craft immersive di
   <!-- Background Video/Image -->
   <div class="absolute inset-0">
     <video
+      id="hero-video"
       autoplay
       muted
       loop
@@ -18,7 +19,7 @@ const { title = "Digital-first Design Agency", subtitle = "We craft immersive di
       poster="/graphics/yuaheader-placeholder.png"
       class="w-full h-full object-cover"
     >
-      <source src="/video/loopingyua.mp4" type="video/mp4" />
+      <source id="hero-video-source" src="/video/loopingyua.mp4" type="video/mp4" />
       <img 
         src="/graphics/yuaheader-placeholder.png" 
         alt="" 
@@ -36,9 +37,6 @@ const { title = "Digital-first Design Agency", subtitle = "We craft immersive di
       alt="MA3.0 World" 
       class="w-150 md:w-200 lg:w-260 mb-8"
     />
-    <!-- <p class="text-lg md:text-xl text-white/80 tracking-wide max-w-2xl mx-auto">
-      {subtitle}
-    </p> -->
   </div>
   
   <!-- Scroll Indicator -->
@@ -47,3 +45,36 @@ const { title = "Digital-first Design Agency", subtitle = "We craft immersive di
     <div class="w-px h-12 bg-gradient-to-b from-white to-transparent"></div>
   </div>
 </section>
+
+<script>
+  const video = document.getElementById('hero-video') as HTMLVideoElement;
+  const source = document.getElementById('hero-video-source') as HTMLSourceElement;
+  
+  const updateVideoSource = () => {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const newSrc = isLight ? '/video/lightloop1.mp4' : '/video/loopingyua.mp4';
+    
+    if (source.getAttribute('src') !== newSrc) {
+      source.setAttribute('src', newSrc);
+      video.load();
+      video.play();
+    }
+  };
+
+  // Initial check
+  updateVideoSource();
+
+  // Watch for theme changes
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        updateVideoSource();
+      }
+    });
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+  });
+</script>
