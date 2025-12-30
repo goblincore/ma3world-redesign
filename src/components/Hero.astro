@@ -4,10 +4,14 @@ interface Props {
   subtitle?: string;
 }
 
+import WireframeGlobe from './WireframeGlobe';
+
 const { title = "Digital-first Design Agency", subtitle = "We craft immersive digital experiences" } = Astro.props;
 ---
 
 <section class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+
+  
   <!-- Background Video/Image -->
   <div class="absolute inset-0">
     <video
@@ -32,11 +36,18 @@ const { title = "Digital-first Design Agency", subtitle = "We craft immersive di
   <!-- Content -->
   <div class="relative z-10 text-center px-6 max-w-7xl flex flex-col items-center">
     <!-- Logo -->
-    <img 
-      src="/logo/logo-light.png" 
-      alt="MA3.0 World" 
-      class="w-150 md:w-200 lg:w-260 mb-8"
-    />
+    <!-- Logo & Wireframe Globe -->
+    <div class="relative w-100 md:w-200 lg:w-260 mb-8">
+      <img 
+        src="/logo/noglobe-logo.png" 
+        alt="MA3.0 World" 
+        class="w-full h-auto object-contain relative z-10"
+      />
+      <!-- The globe is positioned to overlay the "O" in "WORLD" -->
+      <div class="absolute left-[38%] top-[50%] -translate-y-[52%] w-[38%] aspect-square z-20">
+        <WireframeGlobe client:only="react" />
+      </div>
+    </div>
     <h1 class="sr-only">
       <span class="lang-en">{title}</span>
       <span class="lang-ja">デジタル・ファーストのデザイン・エージェンシー</span>
