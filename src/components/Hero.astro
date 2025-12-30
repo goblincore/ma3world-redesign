@@ -25,7 +25,10 @@ const { title = "Digital-first Design Agency", subtitle = "We craft immersive di
     >
       <source id="hero-video-source" src="/video/loopingyua.mp4" type="video/mp4" />
     </video>
-    <div class="absolute inset-0 bg-black/30"></div>
+    <!-- Overlays -->
+    <div class="absolute inset-0 bg-black/20"></div>
+    <div class="absolute inset-x-0 top-0 h-64 hero-top-gradient z-10 pointer-events-none"></div>
+    
     <!-- Initial Loading Overlay -->
     <div id="video-loader" class="absolute inset-0 bg-theme z-20 transition-opacity duration-700">
       <ButterflyLoader />
@@ -103,7 +106,7 @@ const { title = "Digital-first Design Agency", subtitle = "We craft immersive di
   </div>
   
   <!-- Scroll Indicator -->
-  <div class="absolute bottom-12 right-6 md:right-12 flex flex-col items-center gap-4 z-20">
+  <div class="absolute top-1/2 -translate-y-1/2 right-4 md:top-auto md:translate-y-0 md:bottom-12 md:right-12 flex flex-col items-center gap-4 z-20">
     <span class="text-[10px] tracking-[0.2em] uppercase text-white/60 vertical-text font-bold">
       <span class="lang-en">Scroll</span>
       <span class="lang-ja">スクロール</span>
@@ -163,6 +166,45 @@ const { title = "Digital-first Design Agency", subtitle = "We craft immersive di
     }
     100% {
       transform: translateY(200%);
+    }
+  }
+
+  /* Theme-aware Top Gradient */
+  .hero-top-gradient {
+    transition: background 1s ease;
+  }
+
+  /* Dark theme: subtle dark gradient */
+  :root:not([data-theme="light"]) .hero-top-gradient {
+    background: linear-gradient(to bottom, 
+      rgba(0, 0, 0, 0.45) 0%, 
+      rgba(0, 0, 0, 0.15) 50%, 
+      transparent 100%
+    );
+  }
+
+  /* Light theme: smooth eased vertical wash */
+  :root[data-theme="light"] .hero-top-gradient {
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.6) 0%,
+      rgba(255, 255, 255, 0.4) 20%,
+      rgba(255, 255, 255, 0.2) 45%,
+      rgba(255, 255, 255, 0.05) 70%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
+
+  @media (max-width: 768px) {
+    :root[data-theme="light"] .hero-top-gradient {
+      /* Just a slightly deeper vertical fade for mobile, no corner shapes */
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.75) 0%,
+        rgba(255, 255, 255, 0.4) 35%,
+        rgba(255, 255, 255, 0.1) 70%,
+        rgba(255, 255, 255, 0) 100%
+      );
     }
   }
 </style>

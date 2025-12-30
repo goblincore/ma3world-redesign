@@ -66,9 +66,9 @@ const isHome = Astro.url.pathname === '/';
     </div>
     
     <!-- Mobile Menu Button -->
-    <button id="mobile-menu-toggle" class="md:hidden flex flex-col items-center gap-1 z-50 relative group" aria-label="Menu">
+    <button id="mobile-menu-toggle" class="header-bubble md:hidden flex flex-col items-center justify-center z-50 relative group rounded-full w-14 h-14 -mr-3 transition-all duration-500" aria-label="Menu">
       <div class="flower-container transition-all duration-700 ease-expo">
-        <svg class="w-8 h-8 sakura-icon" viewBox="0 0 100 100" fill="currentColor">
+        <svg class="w-10 h-10 sakura-icon animate-spin-slow" viewBox="0 0 100 100" fill="currentColor">
           <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" class="petal"></path>
           <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" class="petal" transform="rotate(72 50 50)"></path>
           <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" class="petal" transform="rotate(144 50 50)"></path>
@@ -76,7 +76,7 @@ const isHome = Astro.url.pathname === '/';
           <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" class="petal" transform="rotate(288 50 50)"></path>
         </svg>
       </div>
-      <div class="menu-label-container text-[8px] uppercase tracking-[0.3em] font-bold opacity-70 group-hover:opacity-100 transition-opacity text-center">
+      <div class="menu-label-container -translate-y-1 text-[7px] uppercase tracking-[0.2em] font-bold opacity-70 group-hover:opacity-100 transition-opacity text-center leading-none">
         <div class="menu-text">
           <span class="lang-en">Menu</span>
           <span class="lang-ja">メニュー</span>
@@ -362,6 +362,20 @@ const isHome = Astro.url.pathname === '/';
   :root:not([data-theme="light"]) header.scrolled .header-bubble {
     background-color: rgba(0, 0, 0, 0.75);
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Sakura Flower Color in Light Mode */
+  :root[data-theme="light"] .sakura-icon {
+    color: #FFB7C5; /* Bright Light Sakura Pink */
+  }
+
+  .animate-spin-slow {
+    animation: spin 12s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 </style>
 

@@ -34,8 +34,11 @@ const project = {
         ></video>
         <!-- Theme-aware Overlay for Legibility -->
         <div class="hero-overlay absolute inset-0 z-10 transition-opacity duration-700"></div>
+        <div class="absolute inset-x-0 top-0 h-64 hero-top-gradient z-20 pointer-events-none"></div>
         <!-- Initial Loading Overlay -->
-        <div id="video-loader" class="absolute inset-0 bg-theme z-20 transition-opacity duration-1000"></div>
+        <div id="video-loader" class="absolute inset-0 bg-theme z-20 transition-opacity duration-1000">
+          <ButterflyLoader />
+        </div>
       </div>
 
       <!-- Content Overlay -->
@@ -230,5 +233,44 @@ const project = {
   }
   :root[data-theme="light"] .hero-border {
     border-color: rgba(0, 0, 0, 0.1);
+  }
+
+  /* Theme-aware Top Gradient */
+  .hero-top-gradient {
+    transition: background 1s ease;
+  }
+
+  /* Dark theme: subtle dark gradient */
+  :root:not([data-theme="light"]) .hero-top-gradient {
+    background: linear-gradient(to bottom, 
+      rgba(0, 0, 0, 0.45) 0%, 
+      rgba(0, 0, 0, 0.15) 50%, 
+      transparent 100%
+    );
+  }
+
+  /* Light theme: smooth eased vertical wash */
+  :root[data-theme="light"] .hero-top-gradient {
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.6) 0%,
+      rgba(255, 255, 255, 0.4) 20%,
+      rgba(255, 255, 255, 0.2) 45%,
+      rgba(255, 255, 255, 0.05) 70%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
+
+  @media (max-width: 768px) {
+    :root[data-theme="light"] .hero-top-gradient {
+      /* Just a slightly deeper vertical fade for mobile, no corner shapes */
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.75) 0%,
+        rgba(255, 255, 255, 0.4) 35%,
+        rgba(255, 255, 255, 0.1) 70%,
+        rgba(255, 255, 255, 0) 100%
+      );
+    }
   }
 </style>
