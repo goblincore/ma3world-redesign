@@ -8,12 +8,14 @@ const socialLinks = [
   { name: "Dribbble", url: "#" },
 ];
 
+const base = import.meta.env.BASE_URL;
+
 const navLinks = [
-  { name: "News", nameJa: "ニュース", url: "/news" },
-  { name: "Projects", nameJa: "実績", url: "#projects" },
-  { name: "About", nameJa: "私たちについて", url: "#about" },
-  { name: "Clients", nameJa: "クライアント", url: "#clients" },
-  { name: "Contact", nameJa: "お問い合わせ", url: "#contact" },
+  { name: "News", nameJa: "ニュース", url: `${base}news` },
+  { name: "Projects", nameJa: "実績", url: `${base}#projects` },
+  { name: "About", nameJa: "私たちについて", url: `${base}#about` },
+  { name: "Clients", nameJa: "クライアント", url: `${base}#clients` },
+  { name: "Contact", nameJa: "お問い合わせ", url: `${base}#contact` },
 ];
 ---
 
@@ -103,7 +105,7 @@ const navLinks = [
     <div class="pt-8 border-t border-theme">
       <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
         <!-- Logo -->
-        <a href="/" class="font-serif text-2xl">
+        <a href={base} class="font-serif text-2xl">
           MA3.0<span class="text-xs align-super font-sans ml-1">®</span>
         </a>
         

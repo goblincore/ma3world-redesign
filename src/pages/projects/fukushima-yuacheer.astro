@@ -12,6 +12,7 @@ const project = {
   description: "A social innovation project utilizing 'Rice Leather'—an eco-friendly material made from inedible rice—to support the reconstruction of Fukushima. This initiative combines sustainable material development with high-end product design to create social and economic value.",
   descriptionJa: "非食用米を原料とした環境配慮型素材「ライスレザーを活用し、福島の復興を支援するソーシャル・イノベーション・プロジェクト。持続可能な素材開発と高品質なプロダクトデザインを組み合わせ、社会的・経済的価値を創出します。",
 };
+const base = import.meta.env.BASE_URL;
 ---
 
 <Layout title={`${project.title} | MA3.0 World`}>
@@ -24,7 +25,7 @@ const project = {
       <div class="absolute inset-0 z-0">
         <img 
           id="project-image"
-          src="/project/fukushima/yuarice.jpg" 
+          src={`${base}project/fukushima/yuarice.jpg`} 
           alt="YUA Rice Leather"
           class="w-full h-full object-cover opacity-0 transition-opacity duration-1000"
         />
@@ -122,7 +123,7 @@ const project = {
             <div class="md:col-span-2">
               <div class="aspect-[3/4] overflow-hidden rounded-sm bg-theme-alt">
                 <img 
-                  src="/project/fukushima/yuagirl.jpg" 
+                  src={`${base}project/fukushima/yuagirl.jpg`} 
                   alt="Yua Sugawara" 
                   class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
                 />
@@ -144,7 +145,7 @@ const project = {
             </span>
           </button>
           
-          <a href="/#projects" class="text-sm uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity flex items-center gap-4">
+          <a href={`${base}#projects`} class="text-sm uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity flex items-center gap-4">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="rotate-180">
               <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>

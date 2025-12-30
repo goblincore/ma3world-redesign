@@ -45,6 +45,7 @@ const projects = [
     description: "A platform connecting Japan and NYC to empower female creators."
   }
 ];
+const base = import.meta.env.BASE_URL;
 ---
 
 <Layout title="Projects | MA3.0 World">
@@ -73,10 +74,10 @@ const projects = [
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-24">
         {projects.map((project, index) => (
-          <a href={`/projects/${project.slug}`} class="group relative block">
+          <a href={`${base}projects/${project.slug}`} class="group relative block">
             <div class="aspect-[16/10] bg-theme-alt overflow-hidden rounded-sm mb-8 relative">
               <img 
-                src={project.image} 
+                src={`${base}${project.image.startsWith('/') ? project.image.slice(1) : project.image}`} 
                 alt={project.title} 
                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
               />

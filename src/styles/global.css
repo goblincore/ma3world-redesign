@@ -3,7 +3,7 @@
 /* Local Font Definitions */
 @font-face {
   font-family: 'Helvetica Now Display';
-  src: url('/fonts/HelveticaNowDisplay-Regular.woff2') format('woff2');
+  src: url('../fonts/HelveticaNowDisplay-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -11,7 +11,7 @@
 
 @font-face {
   font-family: 'PP Locomotive New';
-  src: url('/fonts/PPLocomotiveNew-Light.woff2') format('woff2');
+  src: url('../fonts/PPLocomotiveNew-Light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
   font-display: swap;

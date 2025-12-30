@@ -10,6 +10,9 @@ export default defineConfig({
   site: 'https://goblincore.github.io',
   // BASE: The name of your repository /ma3world-redesign/
   base: '/ma3world-redesign/',
+  build: {
+    assets: 'assets'
+  },
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()]

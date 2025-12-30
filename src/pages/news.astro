@@ -27,6 +27,7 @@ const newsItems = [
     href: "/projects/fukushima-yuacheer"
   }
 ];
+const base = import.meta.env.BASE_URL;
 ---
 
 <Layout title="News | MA3.0 World">
@@ -47,7 +48,11 @@ const newsItems = [
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
         {newsItems.map(item => (
-          <NewsCard {...item} />
+          <NewsCard 
+            {...item} 
+            href={item.href.startsWith('/') ? `${base}${item.href.slice(1)}` : item.href}
+            image={item.image.startsWith('/') ? `${base}${item.image.slice(1)}` : item.image}
+          />
         ))}
       </div>
     </div>

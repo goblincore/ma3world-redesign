@@ -8,6 +8,7 @@ import LogoGlobe from './LogoGlobe.astro';
 import ButterflyLoader from './ButterflyLoader.astro';
 
 const { title = "Digital-first Design Agency", subtitle = "We craft immersive digital experiences" } = Astro.props;
+const base = import.meta.env.BASE_URL;
 ---
 
 <section id="hero" class="relative h-screen w-full flex items-center justify-center overflow-hidden">
@@ -38,7 +39,7 @@ const { title = "Digital-first Design Agency", subtitle = "We craft immersive di
   <!-- Content -->
   <div class="absolute bottom-12 left-6 md:bottom-16 md:left-12 z-10 w-full max-w-[85vw] md:max-w-[40vw] flex flex-col items-start">
     <!-- News Link with Cute Owl -->
-    <a href="/news" class="group flex items-center gap-2 mb-3 hover:opacity-100 transition-all">
+    <a href={`${base}news`} class="group flex items-center gap-2 mb-3 hover:opacity-100 transition-all">
       <div class="news-icon-container relative w-7 h-7 md:w-9 md:h-9">
         <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-sm transition-transform group-hover:scale-110">
           <g fill="none" stroke="white" stroke-width="2.5">
@@ -209,9 +210,9 @@ const { title = "Digital-first Design Agency", subtitle = "We craft immersive di
   }
 </style>
 
-<script>
-  const video = document.getElementById('hero-video') as HTMLVideoElement;
-  const source = document.getElementById('hero-video-source') as HTMLSourceElement;
+<script define:vars={{ base }}>
+  const video = document.getElementById('hero-video');
+  const source = document.getElementById('hero-video-source');
   const loader = document.getElementById('video-loader');
   
   const handleVideoPlay = () => {
@@ -231,7 +232,7 @@ const { title = "Digital-first Design Agency", subtitle = "We craft immersive di
 
   const updateVideoSource = () => {
     const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-    const newSrc = isLight ? '/video/lightloop2.mp4' : '/video/loopingyua.mp4';
+    const newSrc = isLight ? `${base}video/lightloop2.mp4` : `${base}video/loopingyua.mp4`;
     
     if (source && source.getAttribute('src') !== newSrc) {
       if (loader) {

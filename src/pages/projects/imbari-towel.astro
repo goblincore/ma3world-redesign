@@ -13,6 +13,7 @@ const project = {
   descriptionJa: "デジタルの創造性を物理的な製品、展示、そして持続可能な経済価値へと変革するハイブリッドなカルチャー・イノベーション・プロジェクト。このギャラリーは世界のクリエイターと地域の産業を繋ぎ、文化の循環を可能にするアバター、製品、コラボレーションプラットフォームを開発しています。",
   mainImage: "/src/assets/imabari_hero.png" // We'll move the generated image here or reference it properly
 };
+const base = import.meta.env.BASE_URL;
 ---
 
 <Layout title={`${project.title} | MA3.0 World`}>
@@ -25,7 +26,7 @@ const project = {
       <div class="absolute inset-0 z-0">
         <video 
           id="project-video"
-          src="/video/imabariditigalartgallery.mp4" 
+          src={`${base}video/imabariditigalartgallery.mp4`} 
           autoplay 
           loop 
           muted 
@@ -89,7 +90,7 @@ const project = {
           <!-- Featured Image -->
           <div class="pt-8 pb-4">
             <div class="aspect-[16/9] bg-theme-alt rounded-sm overflow-hidden">
-              <img src="/project/imabari-dag/oncyber2.jpg" alt="Imabari Virtual Gallery" class="w-full h-full object-cover" />
+              <img src={`${base}project/imabari-dag/oncyber2.jpg`} alt="Imabari Virtual Gallery" class="w-full h-full object-cover" />
             </div>
             <p class="text-[10px] uppercase tracking-widest mt-4 opacity-40">
               <span class="lang-en">Imabari Towel Digital Art Gallery - Virtual Exhibition</span>
@@ -107,7 +108,7 @@ const project = {
             </span>
           </a>
           
-          <a href="/#projects" class="text-sm uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity flex items-center gap-4">
+          <a href={`${base}#projects`} class="text-sm uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity flex items-center gap-4">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="rotate-180">
               <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
