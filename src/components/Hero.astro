@@ -12,7 +12,7 @@ const base = import.meta.env.BASE_URL;
 const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : base;
 ---
 
-<section id="hero" class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+<section id="hero" class="relative h-[100svh] w-full flex items-center justify-center overflow-hidden">
 
   
   <!-- Background Video/Image -->
@@ -38,7 +38,7 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
   </div>
   
   <!-- Content -->
-  <div class="absolute bottom-12 left-6 md:bottom-16 md:left-12 z-10 w-full max-w-[85vw] md:max-w-[40vw] flex flex-col items-start">
+  <div class="absolute bottom-28 left-6 md:bottom-24 md:left-12 z-10 w-full max-w-[85vw] md:max-w-[40vw] flex flex-col items-start">
     <!-- News Link with Cute Owl -->
     <a href={`${base}news`} class="group flex items-center gap-2 mb-3 hover:opacity-100 transition-all">
       <div class="news-icon-container relative w-7 h-7 md:w-9 md:h-9">
