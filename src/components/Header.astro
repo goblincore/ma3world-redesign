@@ -9,25 +9,25 @@ const { transparent = true } = Astro.props;
 const isHome = Astro.url.pathname === '/';
 ---
 
-<header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-transparent">
-  <nav class="flex items-center justify-between px-6 md:px-12 py-6">
-    <!-- Logo / Greeting -->
-    <a href="/" class="min-w-[200px] flex items-center relative h-10 group overflow-hidden">
+<header id="main-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-transparent">
+  <nav class="flex items-center justify-between px-6 md:px-12 py-4">
+    <!-- Logo / Greeting with bubble -->
+    <a href="/" class="header-bubble min-w-[200px] flex items-center relative h-12 group overflow-hidden rounded-full px-4 transition-all duration-500">
       <!-- Greeting (visible only when hero is in view on Home) -->
       {isHome && (
-        <span id="header-greeting" class="text-lg md:text-xl font-serif tracking-wide opacity-0 transition-all duration-500 absolute left-0 translate-y-0">
+        <span id="header-greeting" class="text-lg md:text-xl font-serif tracking-wide opacity-0 transition-all duration-500 absolute left-4 translate-y-0">
           MA3.0<span class="text-xs align-super font-sans ml-1">®</span>
         </span>
       )}
       
       <!-- LogoGlobe (visible when scrolled or on other routes) -->
-      <div id="header-logo" class="opacity-0 translate-y-8 transition-all duration-500 absolute left-0 pointer-events-none">
+      <div id="header-logo" class="opacity-0 translate-y-8 transition-all duration-500 absolute left-4 pointer-events-none">
         <LogoGlobe className="relative w-28 md:w-36" />
       </div>
     </a>
     
-    <!-- Navigation Links -->
-    <div class="hidden md:flex items-center gap-8 text-sm tracking-wide">
+    <!-- Navigation Links with bubble -->
+    <div class="header-bubble hidden md:flex items-center gap-6 text-sm tracking-wide rounded-full px-6 py-2.5 transition-all duration-500">
       <a href="/news" class="hover:opacity-60 transition-opacity">
         <span class="lang-en">News</span>
         <span class="lang-ja">ニュース</span>
@@ -45,19 +45,21 @@ const isHome = Astro.url.pathname === '/';
         <span class="lang-ja">お問い合わせ</span>
       </a>
       
+      <span class="w-px h-4 bg-current opacity-20"></span>
+      
       <!-- Language Toggle -->
-      <div class="flex items-center gap-3 text-xs font-bold tracking-widest border border-current rounded-full px-4 py-1.5 opacity-60 hover:opacity-100 transition-opacity">
-        <button id="lang-en" class="hover:opacity-100 transition-opacity px-1 cursor-pointer">EN</button>
+      <div class="flex items-center gap-2 text-xs font-bold tracking-widest opacity-60 hover:opacity-100 transition-opacity">
+        <button id="lang-en" class="hover:opacity-100 transition-opacity cursor-pointer">EN</button>
         <span class="opacity-30">/</span>
-        <button id="lang-ja" class="hover:opacity-100 transition-opacity px-1 cursor-pointer">JP</button>
+        <button id="lang-ja" class="hover:opacity-100 transition-opacity cursor-pointer">JP</button>
       </div>
 
       <!-- Theme Toggle -->
-      <button id="theme-toggle" class="w-8 h-8 flex items-center justify-center rounded-full border border-current opacity-60 hover:opacity-100 transition-opacity cursor-pointer" aria-label="Toggle theme">
-        <svg class="w-4 h-4 dark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <button id="theme-toggle" class="w-7 h-7 flex items-center justify-center rounded-full border border-current opacity-60 hover:opacity-100 transition-opacity cursor-pointer" aria-label="Toggle theme">
+        <svg class="w-3.5 h-3.5 dark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
         </svg>
-        <svg class="w-4 h-4 light-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-3.5 h-3.5 light-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
         </svg>
       </button>
@@ -337,4 +339,73 @@ const isHome = Astro.url.pathname === '/';
   .ease-expo {
     transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
   }
+  
+  /* Bubble backgrounds - hidden by default */
+  .header-bubble {
+    background-color: transparent;
+    backdrop-filter: none;
+  }
+  
+  /* Show bubble backgrounds when scrolled */
+  header.scrolled .header-bubble {
+    background-color: var(--color-bg);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Light mode adjustments */
+  :root[data-theme="light"] header.scrolled .header-bubble {
+    background-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* Dark mode adjustments */
+  :root:not([data-theme="light"]) header.scrolled .header-bubble {
+    background-color: rgba(0, 0, 0, 0.75);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  }
 </style>
+
+<script is:inline>
+  // Add scrolled class to header when past hero
+  document.addEventListener('DOMContentLoaded', () => {
+    const mainHeader = document.getElementById('main-header');
+    const heroSection = document.getElementById('hero');
+    
+    const checkScroll = () => {
+      if (!mainHeader) return;
+      
+      // Get scroll position from multiple sources
+      const fullpageWrapper = document.getElementById('fullpage-wrapper');
+      const wrapperScroll = fullpageWrapper ? fullpageWrapper.scrollTop : 0;
+      const windowScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+      
+      // Use whichever has a value (mobile uses window, desktop uses wrapper)
+      const scrollTop = Math.max(wrapperScroll, windowScroll);
+      
+      const threshold = heroSection ? heroSection.offsetHeight - 100 : 100;
+      
+      if (scrollTop > threshold) {
+        mainHeader.classList.add('scrolled');
+      } else {
+        mainHeader.classList.remove('scrolled');
+      }
+    };
+    
+    // Listen to window scroll
+    window.addEventListener('scroll', checkScroll, { passive: true });
+    document.body.addEventListener('scroll', checkScroll, { passive: true });
+    
+    // Listen to fullpage wrapper scroll if it exists
+    const fullpageWrapper = document.getElementById('fullpage-wrapper');
+    if (fullpageWrapper) {
+      fullpageWrapper.addEventListener('scroll', checkScroll, { passive: true });
+    }
+    
+    // Also check periodically for section changes (works with fullpage snapping)
+    setInterval(checkScroll, 200);
+    
+    // Initial check
+    checkScroll();
+  });
+</script>
