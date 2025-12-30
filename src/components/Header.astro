@@ -125,7 +125,7 @@ const isHome = Astro.url.pathname === '/';
 
 <script>
   // Theme toggle functionality
-  const setupThemeToggle = (buttonId) => {
+  const setupThemeToggle = (buttonId: string) => {
     const toggle = document.getElementById(buttonId);
     const html = document.documentElement;
     const darkIcon = toggle?.querySelector('.dark-icon');
