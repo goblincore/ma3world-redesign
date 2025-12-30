@@ -8,9 +8,11 @@ const { transparent = true } = Astro.props;
 
 <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-transparent">
   <nav class="flex items-center justify-between px-6 md:px-12 py-6">
-    <!-- Logo -->
-    <a href="/" class="text-xl font-serif tracking-wide">
-      MA3.0<span class="text-xs align-super font-sans ml-1">®</span>
+    <!-- Logo / Greeting -->
+    <a href="/" class="text-lg md:text-xl font-serif tracking-wide min-w-[200px]">
+      <span id="header-greeting" class="opacity-0 transition-opacity duration-500">
+        MA3.0<span class="text-xs align-super font-sans ml-1">®</span>
+      </span>
     </a>
     
     <!-- Navigation Links -->
@@ -152,6 +154,46 @@ const { transparent = true } = Astro.props;
 
   setupLangToggle('lang-en', 'lang-ja');
   setupLangToggle('mobile-lang-en', 'mobile-lang-ja');
+
+  // Greeting logic
+  const updateGreeting = () => {
+    const greetingEl = document.getElementById('header-greeting');
+    if (!greetingEl) return;
+
+    const now = new Date();
+    const hour = now.getHours();
+    const lang = document.documentElement.getAttribute('lang') || 'en';
+
+    let greeting = '';
+    let emoji = '';
+
+    if (hour >= 5 && hour < 12) {
+      greeting = lang === 'ja' ? 'おはよう' : 'Good Morning';
+      emoji = '☀️';
+    } else if (hour >= 12 && hour < 18) {
+      greeting = lang === 'ja' ? 'こんにちは' : 'Good Afternoon';
+      emoji = '🌤️';
+    } else {
+      greeting = lang === 'ja' ? 'こんばんは' : 'Good Evening';
+      emoji = '🌙';
+    }
+
+    // Fade out, change text, fade in
+    greetingEl.classList.remove('opacity-100');
+    greetingEl.classList.add('opacity-0');
+    
+    setTimeout(() => {
+      greetingEl.innerHTML = `${greeting} <span class="ml-1">${emoji}</span>`;
+      greetingEl.classList.remove('opacity-0');
+      greetingEl.classList.add('opacity-100');
+    }, 300);
+  };
+
+  // Initial greeting
+  updateGreeting();
+
+  // Update greeting on language change
+  window.addEventListener('lang-changed', updateGreeting);
 
   // Mobile Menu Functionality
   const menuToggle = document.getElementById('mobile-menu-toggle');
