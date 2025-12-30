@@ -10,9 +10,9 @@ const {
 } = Astro.props;
 ---
 
-<section id="about" class="bg-theme-alt">
+<section id="about" class="bg-theme-alt py-40 md:py-56 px-6 md:px-12 flex justify-center">
   <!-- Two Column Layout with its own max-width -->
-  <div class="grid md:grid-cols-2 gap-8 md:gap-16 max-w-7xl w-full container-inner">
+  <div class="grid md:grid-cols-2 gap-8 md:gap-16 max-w-7xl w-full">
     <!-- Left: Heading -->
     <div>
           <span class="text-xs tracking-widest uppercase text-theme-muted block mb-2">Our Mission</span>
@@ -31,27 +31,6 @@ const {
 </section>
 
 <style>
-  #about {
-    padding-top: 160px;
-    padding-bottom: 80px;
-    padding-left: 40px;
-    padding-right: 40px;
-  }
-  
-  @media (max-width: 768px) {
-    #about {
-      padding-top: 80px;
-      padding-bottom: 40px;
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-  }
-
-  .container-inner {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
   h2 {
     font-family: var(--font-serif);
   }
