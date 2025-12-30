@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import ButterflyLoader from '../../components/ButterflyLoader.astro';
 
 const project = {
   title: "Imabari Towel Digital Art Gallery",
@@ -19,19 +20,22 @@ const project = {
   
   <main class="bg-theme overflow-hidden">
     <!-- Hero Section with Video Background -->
-    <section class="project-hero relative h-[100svh] flex items-end pb-12 md:pb-24 px-6 md:px-12 overflow-hidden">
+    <section class="project-hero relative h-[100svh] flex items-end pb-12 md:pb-24 px-6 md:px-12 overflow-hidden bg-theme">
       <!-- Video Background -->
       <div class="absolute inset-0 z-0">
         <video 
+          id="project-video"
           src="/video/imabariditigalartgallery.mp4" 
           autoplay 
           loop 
           muted 
           playsinline 
-          class="w-full h-full object-cover opacity-60"
+          class="w-full h-full object-cover opacity-0 transition-opacity duration-1000"
         ></video>
         <!-- Theme-aware Overlay for Legibility -->
-        <div class="hero-overlay absolute inset-0"></div>
+        <div class="hero-overlay absolute inset-0 z-10 transition-opacity duration-700"></div>
+        <!-- Initial Loading Overlay -->
+        <div id="video-loader" class="absolute inset-0 bg-theme z-20 transition-opacity duration-1000"></div>
       </div>
 
       <!-- Content Overlay -->
@@ -157,6 +161,27 @@ const project = {
       }
     });
   });
+
+  // Video fade-in logic
+  const video = document.getElementById('project-video');
+  const loader = document.getElementById('video-loader');
+  
+  if (video && loader) {
+    video.addEventListener('playing', () => {
+      video.classList.remove('opacity-0');
+      video.classList.add('opacity-60');
+      loader.classList.add('opacity-0');
+      setTimeout(() => loader.style.display = 'none', 1000);
+    }, { once: true });
+
+    // Fallback if event doesn't fire
+    if (video.readyState >= 3) {
+      video.classList.remove('opacity-0');
+      video.classList.add('opacity-60');
+      loader.classList.add('opacity-0');
+      setTimeout(() => loader.style.display = 'none', 1000);
+    }
+  }
 </script>
 
 <style>
