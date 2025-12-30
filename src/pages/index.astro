@@ -4,13 +4,14 @@ import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
 import ProjectsGrid from '../components/ProjectsGrid.astro';
 import About from '../components/About.astro';
-import Clients from '../components/Clients.astro';
 import Footer from '../components/Footer.astro';
+import PageDots from '../components/PageDots.astro';
+import FullpageWrapper from '../components/FullpageWrapper.astro';
 ---
 
 <Layout title="MA3.0 World | Digital-first Design Agency">
   <Header />
-  <main>
+  <FullpageWrapper>
     <Hero 
       title="Digital-first Design Agency"
       subtitle="We craft immersive digital experiences that push boundaries"
@@ -20,7 +21,7 @@ import Footer from '../components/Footer.astro';
       description="MA3world Inc. is a hybrid cultural innovation company that transforms digital creativity into physical products, exhibitions, and sustainable economic value. Through projects such as the Imabari Towel Digital Art Gallery, Rice Leather Project, and Bishoujo-Zukan × NYC, we bridge global creators and local industries, developing avatars, products, and collaborative platforms that enable cultural circulation. We especially focus on empowering women creators and emerging talent worldwide, driving projects that connect creativity with culture, community, and industry."
     />
     <ProjectsGrid />
-    <!-- <Clients /> -->
-  </main>
-  <Footer />
+    <Footer />
+  </FullpageWrapper>
 </Layout>
+

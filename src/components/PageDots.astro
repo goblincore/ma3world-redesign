@@ -1,0 +1,54 @@
+---
+---
+<div class="fixed right-6 md:right-12 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-4">
+  {[0, 1, 2, 3].map((index) => (
+    <button
+      data-slide={index}
+      class="dot w-2.5 h-2.5 rounded-full bg-current opacity-30 transition-all duration-300 hover:opacity-100 hover:scale-125 cursor-pointer"
+      aria-label={`Go to section ${index + 1}`}
+    />
+  ))}
+</div>
+
+<style>
+  .dot.active {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+</style>
+
+<script>
+  // Wait for DOM and global functions to be ready
+  window.addEventListener('DOMContentLoaded', () => {
+    const dots = document.querySelectorAll('.dot');
+    
+    // Set up click handlers
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const index = parseInt(dot.getAttribute('data-slide') || '0');
+        if (window.goToSlide) {
+          window.goToSlide(index);
+        }
+      });
+    });
+
+    // Update dots based on active section
+    const updateDots = (index) => {
+      dots.forEach((dot, i) => {
+        if (i === index) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    };
+
+    // Listen for section changes
+    window.addEventListener('section-changed', (e) => {
+      updateDots(e.detail.index);
+    });
+
+    // Initial state
+    updateDots(0);
+  });
+</script>
