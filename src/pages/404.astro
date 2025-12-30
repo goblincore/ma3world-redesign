@@ -1,0 +1,121 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const petals = [...Array(30)];
+---
+
+<Layout title="404: Page Not Found | MA3.0 World">
+  <Header transparent={false} />
+  
+  <main class="relative min-h-screen bg-theme flex items-center justify-center overflow-hidden">
+    <!-- Sakura Storm Background -->
+    <div class="absolute inset-0 pointer-events-none z-0">
+      {petals.map((_, i) => (
+        <div 
+          class="petal-wrapper absolute"
+          style={{
+            left: Math.random() * 100 + '%',
+            top: '-5%',
+            animationDelay: Math.random() * 10 + 's',
+            animationDuration: (Math.random() * 10 + 10) + 's'
+          }}
+        >
+          <svg 
+            class="petal text-sakura opacity-40" 
+            viewBox="0 0 100 100" 
+            width={Math.random() * 25 + 20} 
+            height={Math.random() * 25 + 20}
+            style={{
+              animationDuration: (Math.random() * 3 + 4) + 's'
+            }}
+          >
+            <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" fill="currentColor" />
+          </svg>
+        </div>
+      ))}
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 text-center px-6">
+      <div class="mb-8">
+        <span class="text-[10px] uppercase tracking-[0.5em] font-bold opacity-30 block mb-4">Error 404</span>
+        <h1 class="text-8xl md:text-[12rem] font-serif leading-none tracking-tighter opacity-10">404</h1>
+      </div>
+      
+      <div class="max-w-md mx-auto space-y-8 -mt-12 md:-mt-20">
+        <h2 class="text-2xl md:text-4xl font-serif">
+          <span class="lang-en text-theme">Lost in the Digital Breeze</span>
+          <span class="lang-ja text-theme font-sans">デジタルな風に消えて</span>
+        </h2>
+        <p class="text-theme-muted opacity-60 leading-relaxed md:text-lg px-8">
+          <span class="lang-en">The path you seek has drifted away like a blossom in the wind. Let's find our way back to the innovation.</span>
+          <span class="lang-ja">お探しのページは、風に舞う花びらのように消えてしまったようです。新たなイノベーションの軌跡へ戻りましょう。</span>
+        </p>
+        
+        <div class="pt-8">
+          <a href="/" class="group relative inline-flex items-center justify-center min-w-[240px] px-10 py-5 border border-theme/20 overflow-hidden rounded-full transition-all duration-500 hover:border-theme/40">
+            <!-- Background Fill Reveal -->
+            <div class="absolute inset-0 bg-theme translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-expo"></div>
+            
+            <!-- Center Text Container -->
+            <div class="relative z-10 flex flex-col items-center justify-center text-center">
+              <span class="text-xs font-bold uppercase tracking-[0.4em] group-hover:text-theme-alt transition-colors duration-500">
+                <span class="lang-en block">Return Home</span>
+                <span class="lang-ja block text-[10px] mt-1 opacity-80">ホームに戻る</span>
+              </span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .text-sakura {
+    color: #FFB7C5; /* Default Sakura Pink */
+  }
+
+  :root[data-theme="dark"] .text-sakura {
+    color: rgba(255, 183, 197, 0.6);
+  }
+
+  .petal-wrapper {
+    animation: fall linear infinite, sway ease-in-out infinite alternate;
+  }
+
+  .petal {
+    animation: rotate linear infinite, flutter ease-in-out infinite alternate;
+    transform-origin: center;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-10vh); }
+    100% { transform: translateY(110vh); }
+  }
+
+  @keyframes sway {
+    0% { margin-left: -50px; }
+    100% { margin-left: 50px; }
+  }
+
+  @keyframes flutter {
+    0% { transform: rotate3d(1, 1, 0, 0deg) scale(1); }
+    50% { transform: rotate3d(1, 1, 1, 180deg) scale(1.2); }
+    100% { transform: rotate3d(0, 1, 1, 360deg) scale(1); }
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  h1 {
+    user-select: none;
+  }
+</style>
+```

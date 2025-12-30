@@ -2,23 +2,53 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import NewsCard from '../components/NewsCard.astro';
+
+const newsItems = [
+  {
+    title: "「美少女図鑑AWARD 2025」広告ビジュアル公開（Photo by Mina）",
+    date: "2024/07/28",
+    image: "https://storage.googleapis.com/studio-cms-assets/projects/G3qbvrEbqJ/s-2400x1422_v-frms_webp_c8de211e-2cec-44bd-bec1-f3c3ff467fe3_regular.webp",
+    description: "昨年の応募数は約8,200名。当社Minaが撮影を担当する広告ビジュアルが公開されました。本年は「爛漫 らんまん」をテーマに制作いたしました。",
+    href: "https://ma3world.com/posts/uL46VpsB"
+  },
+  {
+    title: "Imabari Towel Digital Art Gallery: Cultural Innovation Phase II",
+    date: "2024/06/15",
+    image: "/project/imabari-dag/oncyber.jpg",
+    description: "Building on the success of the initial launch, we are excited to announce the expansion of our digital art gallery, bridging local heritage with global digital art.",
+    href: "/projects/imbari-towel"
+  },
+  {
+    title: "MA3.0 YUA Rice Leather: Fukushima Reconstruction Support",
+    date: "2024/05/10",
+    image: "/project/fukushima/yuarice.jpg",
+    description: "Our latest initiative focuses on social innovation through the 'Rice Leather' project, supporting the reconstruction of Fukushima through sustainable design.",
+    href: "/projects/fukushima-yuacheer"
+  }
+];
 ---
 
 <Layout title="News | MA3.0 World">
   <Header />
-  <main class="pt-32 pb-20 px-6 md:px-12 min-h-[70vh]">
+  <main class="bg-theme pt-32 pb-32 px-6 md:px-12 min-h-screen">
     <div class="max-w-7xl mx-auto">
-      <h1 class="text-4xl md:text-6xl font-serif mb-12">
-        <span class="lang-en">News</span>
-        <span class="lang-ja">ニュース</span>
-      </h1>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- News items will go here -->
-        <p class="text-xl opacity-60">
-          <span class="lang-en">No news yet. Check back soon.</span>
-          <span class="lang-ja">まだニュースはありません。また後で確認してください。</span>
+      <header class="mb-20 max-w-4xl">
+        <span class="text-[10px] uppercase tracking-[0.4em] font-bold opacity-50 block mb-4">Latest Updates</span>
+        <h1 class="text-5xl md:text-7xl font-serif mb-6">
+          <span class="lang-en">News</span>
+          <span class="lang-ja">ニュース</span>
+        </h1>
+        <p class="text-lg opacity-60 leading-relaxed md:max-w-2xl">
+          <span class="lang-en">Follow the evolution of MA3.0 World—from cultural innovations and digital art projects to our latest brand collaborations.</span>
+          <span class="lang-ja">MA3.0 Worldの進化—文化的イノベーション、デジタルアートプロジェクト、最新のブランドコラボレーションをご紹介します。</span>
         </p>
+      </header>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+        {newsItems.map(item => (
+          <NewsCard {...item} />
+        ))}
       </div>
     </div>
   </main>

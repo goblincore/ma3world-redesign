@@ -1,0 +1,43 @@
+---
+interface Props {
+  title: string;
+  date: string;
+  image: string;
+  description: string;
+  href: string;
+  category?: string;
+}
+
+const { title, date, image, description, href, category = "NEWS" } = Astro.props;
+---
+
+<a href={href} class="group block space-y-4">
+  <div class="relative aspect-[16/10] overflow-hidden bg-theme-alt rounded-sm">
+    <img 
+      src={image} 
+      alt={title} 
+      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+    />
+  </div>
+  
+  <div class="space-y-3">
+    <div class="flex items-center gap-4 text-[10px] uppercase tracking-[0.2em] font-bold opacity-50">
+      <span>{date}</span>
+      <span class="w-1 h-1 bg-current rounded-full"></span>
+      <span>MA3.0 Press</span>
+    </div>
+    
+    <h2 class="text-xl md:text-2xl font-serif leading-tight group-hover:text-theme-muted transition-colors" set:html={title} />
+    
+    <p class="text-sm leading-relaxed opacity-60 line-clamp-2">
+      {description}
+    </p>
+    
+    <div class="pt-2 flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-bold group-hover:gap-4 transition-all">
+      <span>Read Article</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </div>
+  </div>
+</a>

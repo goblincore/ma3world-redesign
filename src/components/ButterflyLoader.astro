@@ -36,8 +36,8 @@
     ))}
   </div>
 
-  <div class="loading-text absolute bottom-24 text-white/40 text-[10px] uppercase tracking-[0.4em] font-bold animate-pulse">
-    Loading Experience
+  <div class="loading-text absolute bottom-24 text-white/40 text-[10px] uppercase tracking-[0.6em] font-bold">
+    loading
   </div>
 </div>
 
@@ -90,4 +90,13 @@
   .butterfly-1 { top: 40%; left: 20%; animation-duration: 9s; }
   .butterfly-2 { top: 60%; left: 10%; animation-duration: 11s; animation-delay: 2s; }
   .butterfly-3 { top: 30%; left: 30%; animation-duration: 7s; animation-delay: 4s; }
+
+  .loading-text {
+    animation: text-float 3s ease-in-out infinite;
+  }
+
+  @keyframes text-float {
+    0%, 100% { transform: translateY(0); opacity: 0.3; }
+    50% { transform: translateY(-5px); opacity: 0.6; }
+  }
 </style>

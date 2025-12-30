@@ -1,0 +1,287 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ButterflyLoader from '../../components/ButterflyLoader.astro';
+
+const project = {
+  title: "MA3.0 YUA Rice Leather",
+  titleJa: "MA3.0 YUA ライスレザー福島復興支援応援プロジェクト",
+  category: "Social Innovation / Design",
+  year: "2024",
+  description: "A social innovation project utilizing 'Rice Leather'—an eco-friendly material made from inedible rice—to support the reconstruction of Fukushima. This initiative combines sustainable material development with high-end product design to create social and economic value.",
+  descriptionJa: "非食用米を原料とした環境配慮型素材「ライスレザーを活用し、福島の復興を支援するソーシャル・イノベーション・プロジェクト。持続可能な素材開発と高品質なプロダクトデザインを組み合わせ、社会的・経済的価値を創出します。",
+};
+---
+
+<Layout title={`${project.title} | MA3.0 World`}>
+  <Header transparent={false} />
+  
+  <main class="bg-theme overflow-hidden">
+    <!-- Hero Section with Video Background -->
+    <section class="project-hero relative h-[100svh] flex items-end pb-12 md:pb-24 px-6 md:px-12 overflow-hidden bg-theme">
+      <!-- Background Image -->
+      <div class="absolute inset-0 z-0">
+        <img 
+          id="project-image"
+          src="/project/fukushima/yuarice.jpg" 
+          alt="YUA Rice Leather"
+          class="w-full h-full object-cover opacity-0 transition-opacity duration-1000"
+        />
+        <!-- Theme-aware Overlay for Legibility -->
+        <div class="hero-overlay absolute inset-0 z-10 transition-opacity duration-700"></div>
+        <div class="absolute inset-x-0 top-0 h-64 hero-top-gradient z-20 pointer-events-none"></div>
+        <!-- Initial Loading Overlay -->
+        <div id="image-loader" class="absolute inset-0 bg-theme z-20 transition-opacity duration-1000">
+          <ButterflyLoader />
+        </div>
+      </div>
+
+      <!-- Content Overlay -->
+      <div class="relative z-10 max-w-7xl w-full mx-auto">
+        <div class="max-w-4xl space-y-6">
+          <span class="hero-text-muted text-[10px] md:text-xs tracking-[0.4em] uppercase font-bold block mb-4">
+            {project.category}
+          </span>
+          <h1 class="hero-text font-serif text-5xl md:text-8xl lg:text-9xl leading-[0.9]">
+            <span class="lang-en" set:html={project.title}></span>
+            <span class="lang-ja" set:html={project.titleJa}></span>
+          </h1>
+          
+          <div class="flex flex-wrap items-center gap-x-8 gap-y-4 pt-8 border-t hero-border">
+            <div class="flex items-center gap-3">
+              <span class="hero-text-muted text-[10px] uppercase tracking-[0.3em] font-bold">Client</span>
+              <span class="hero-text-soft text-sm md:text-base">Fukushima Reconstruction</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="hero-text-muted text-[10px] uppercase tracking-[0.3em] font-bold">Year</span>
+              <span class="hero-text-soft text-sm md:text-base">{project.year}</span>
+            </div>
+            <p class="hero-text-muted text-[10px] md:text-xs tracking-widest uppercase ml-auto">
+              Presented by MA3.0 World
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Project Concept Section -->
+    <section class="py-32 md:py-48 px-6 md:px-12 flex justify-center border-b border-theme/10">
+      <div class="max-w-4xl w-full space-y-16">
+        <h2 class="font-serif text-3xl md:text-5xl border-l-2 border-theme/30 pl-8">
+          <span class="lang-en">Sowing the seeds of the future through Rice Leather.</span>
+          <span class="lang-ja">ライスレザーがつなぐ、福島の未来。</span>
+        </h2>
+        
+        <div class="max-w-none text-xl md:text-2xl leading-relaxed text-theme-muted space-y-8">
+          <p>
+            <span class="lang-en" set:html={project.description}></span>
+            <span class="lang-ja" set:html={project.descriptionJa}></span>
+          </p>
+          <p>
+            <span class="lang-en">This project represents a unique collaboration between traditional agriculture and modern design. By repurposing rice that would otherwise go to waste, we create a premium leather alternative that embodies the resilient spirit of Fukushima. Each product tells a story of recovery and sustainable innovation.</span>
+            <span class="lang-ja">本プロジェクトは、伝統的な農業と現代のデザインによるユニークなコラボレーションです。廃棄されるはずの米を再利用することで、福島の不屈の精神を象徴するプレミアムなヴィーガンレザーを創出します。一つ一つのプロダクトが、復興と持続可能なイノベーションの物語を伝えます。</span>
+          </p>
+          <p>
+            <span class="lang-en">Rice Leather™ is a revolutionary material that reduces plastic waste and supports local farmers. It offers the luxurious feel of traditional leather with a significantly lower environmental footprint, making it an ideal choice for brands committed to sustainability and social impact.</span>
+            <span class="lang-ja">ライスレザー™は、プラスチック廃棄物を削減し、地域の農家を支援する画期的な素材です。伝統的なレザーの高級感を持ちながら、環境負荷を大幅に抑えることができ、持続可能性と社会的影響にコミットするブランドにとって理想的な選択肢となります。</span>
+          </p>
+        </div>
+        
+        <!-- Objective Section -->
+        <div class="pt-16 border-t border-theme/10 space-y-8">
+          <h3 class="font-serif text-2xl md:text-4xl">
+            <span class="lang-en">Objective</span>
+            <span class="lang-ja">目的</span>
+          </h3>
+          <p class="text-lg md:text-xl leading-relaxed text-theme-muted">
+            <span class="lang-en">We are looking for cutting-edge apparel brands that are interested in creating a sample garment to showcase the versatility of vegan "Rice Leather™" made in Fukushima, and to demonstrate the strength of Fukushima's recovery to the world.</span>
+            <span class="lang-ja">福島で作られたヴィーガン「ライスレザー™」の多様性を示すサンプル衣服を制作し、福島の復興の強さを世界に示すことに興味を持つ最先端のアパレルブランドを探しています。</span>
+          </p>
+        </div>
+
+        <!-- Background Section -->
+        <div class="pt-16 border-t border-theme/10 space-y-8">
+          <h3 class="font-serif text-2xl md:text-4xl">
+            <span class="lang-en">Background: Yua's Vision</span>
+            <span class="lang-ja">背景：ユアのビジョン</span>
+          </h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-start">
+            <div class="md:col-span-3 text-lg md:text-xl leading-relaxed text-theme-muted space-y-6">
+              <p>
+                <span class="lang-en">Yua Sugawara's award-winning Fukushima Reconstruction Support Cheer Project aims to revitalize Fukushima's economy and build towards a sustainable future by popularizing Rice Leather™, a locally-made vegan leather produced from non-edible rice in Fukushima.</span>
+                <span class="lang-ja">菅原夕亜の受賞歴のある福島復興支援応援プロジェクトは、福島で非食用米から生産される地元製のヴィーガンレザー、ライスレザー™を普及させることで、福島の経済を活性化し、持続可能な未来を築くことを目指しています。</span>
+              </p>
+              <p>
+                <span class="lang-en">As a 15-year-old girl living in Fukushima, Yua hopes to deliver a message to the world of Fukushima's bright future while counteracting reputational damage from the Fukushima nuclear disaster. Now, we're working with Yua to spread her message and fulfill her dream of walking the runway at places like the Ukedo Elementary School in Namie Town—a symbol of disaster recovery—while wearing clothing made from Rice Leather™.</span>
+                <span class="lang-ja">福島に住む15歳の少女として、ユアは福島原発事故による風評被害に対抗しながら、福島の明るい未来のメッセージを世界に届けたいと願っています。現在、私たちはユアと協力して彼女のメッセージを広め、災害復興のシンボルである浪江町の請戸小学校などでライスレザー™で作られた服を着てランウェイを歩くという彼女の夢を実現しています。</span>
+              </p>
+            </div>
+            
+            <div class="md:col-span-2">
+              <div class="aspect-[3/4] overflow-hidden rounded-sm bg-theme-alt">
+                <img 
+                  src="/project/fukushima/yuagirl.jpg" 
+                  alt="Yua Sugawara" 
+                  class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                />
+              </div>
+              <p class="text-[10px] uppercase tracking-widest mt-4 opacity-40">
+                <span class="lang-en">Yua Sugawara</span>
+                <span class="lang-ja">菅原夕亜</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="pt-16 border-t border-theme/10 flex flex-col md:flex-row justify-between items-center gap-8">
+          <button class="group relative px-12 py-6 border border-theme/20 overflow-hidden cursor-not-allowed opacity-50">
+            <div class="absolute inset-0 bg-theme translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+            <span class="relative z-10 text-xs font-bold uppercase tracking-widest transition-colors">
+              <span class="lang-en">Coming Soon</span>
+              <span class="lang-ja">近日公開</span>
+            </span>
+          </button>
+          
+          <a href="/#projects" class="text-sm uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity flex items-center gap-4">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="rotate-180">
+              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="lang-en">Back to Projects</span>
+            <span class="lang-ja">プロジェクト一覧に戻る</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script is:inline>
+  // Simple parallax implementation for the project page
+  window.addEventListener('scroll', () => {
+    const scroll = window.pageYOffset;
+    
+    // Grid items parallax
+    const items = document.querySelectorAll('.parallax-item');
+    items.forEach((item, index) => {
+      const speed = (index + 1) * 0.1;
+      const rect = item.getBoundingClientRect();
+      const visible = rect.top < window.innerHeight && rect.bottom > 0;
+      
+      if (visible) {
+        const offset = (window.innerHeight - rect.top) * speed;
+        const direction = index % 2 === 0 ? 1 : -1;
+        item.style.transform = `translateY(${offset * direction * 0.2}px)`;
+      }
+    });
+  });
+
+  // Image fade-in logic
+  const image = document.getElementById('project-image');
+  const loader = document.getElementById('image-loader');
+  
+  if (image && loader) {
+    const revealImage = () => {
+      image.classList.remove('opacity-0');
+      image.classList.add('opacity-60');
+      loader.classList.add('opacity-0');
+      setTimeout(() => loader.style.display = 'none', 1000);
+    };
+
+    if (image.complete) {
+      revealImage();
+    } else {
+      image.addEventListener('load', revealImage);
+    }
+  }
+</script>
+
+<style>
+  main {
+    font-family: var(--font-sans);
+  }
+  h1, h2, h3 {
+    font-family: var(--font-serif);
+  }
+  
+  /* Dark mode (default) - black overlay, white text */
+  .project-hero {
+    background-color: black;
+  }
+  .hero-overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.2), transparent);
+  }
+  .hero-text {
+    color: white;
+  }
+  .hero-text-soft {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  .hero-text-muted {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .hero-border {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Light mode - white overlay, dark text */
+  :root[data-theme="light"] .project-hero {
+    background-color: white;
+  }
+  :root[data-theme="light"] .hero-overlay {
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3), transparent);
+  }
+  :root[data-theme="light"] .hero-text {
+    color: black;
+  }
+  :root[data-theme="light"] .hero-text-soft {
+    color: rgba(0, 0, 0, 0.8);
+  }
+  :root[data-theme="light"] .hero-text-muted {
+    color: rgba(0, 0, 0, 0.5);
+  }
+  :root[data-theme="light"] .hero-border {
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+
+  /* Theme-aware Top Gradient */
+  .hero-top-gradient {
+    transition: background 1s ease;
+  }
+
+  /* Dark theme: subtle dark gradient */
+  :root:not([data-theme="light"]) .hero-top-gradient {
+    background: linear-gradient(to bottom, 
+      rgba(0, 0, 0, 0.45) 0%, 
+      rgba(0, 0, 0, 0.15) 50%, 
+      transparent 100%
+    );
+  }
+
+  /* Light theme: smooth eased vertical wash */
+  :root[data-theme="light"] .hero-top-gradient {
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.6) 0%,
+      rgba(255, 255, 255, 0.4) 20%,
+      rgba(255, 255, 255, 0.2) 45%,
+      rgba(255, 255, 255, 0.05) 70%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
+
+  @media (max-width: 768px) {
+    :root[data-theme="light"] .hero-top-gradient {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.75) 0%,
+        rgba(255, 255, 255, 0.4) 35%,
+        rgba(255, 255, 255, 0.1) 70%,
+        rgba(255, 255, 255, 0) 100%
+      );
+    }
+  }
+</style>

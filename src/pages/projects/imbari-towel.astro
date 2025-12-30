@@ -85,6 +85,17 @@ const project = {
             <span class="lang-en">For 130 years, Imabari has been celebrated as the sacred land of towel production, synonymous with "Safety, Peace of Mind, and High Quality." This project represents the next phase of the Imabari Towel Project, taking the tradition into the digital realm.</span>
             <span class="lang-ja">130年に亘り「安心・安全・高品質」なタオルを製造してきた“タオルづくりの聖地”今治。本プロジェクトは、2006年から続く「今治タオルプロジェクト」の次なるフェーズとして、伝統をデジタル空間へと拡張する試みです。</span>
           </p>
+
+          <!-- Featured Image -->
+          <div class="pt-8 pb-4">
+            <div class="aspect-[16/9] bg-theme-alt rounded-sm overflow-hidden">
+              <img src="/project/imabari-dag/oncyber2.jpg" alt="Imabari Virtual Gallery" class="w-full h-full object-cover" />
+            </div>
+            <p class="text-[10px] uppercase tracking-widest mt-4 opacity-40">
+              <span class="lang-en">Imabari Towel Digital Art Gallery - Virtual Exhibition</span>
+              <span class="lang-ja">今治タオル デジタルアートギャラリー - バーチャル展示</span>
+            </p>
+          </div>
         </div>
         
         <div class="pt-16 border-t border-theme/10 flex flex-col md:flex-row justify-between items-center gap-8">
@@ -107,31 +118,6 @@ const project = {
       </div>
     </section>
 
-    <!-- Parallax Image Grid -->
-    <section class="py-32 px-6 md:px-12 flex justify-center bg-theme-alt">
-      <div class="max-w-7xl w-auto grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
-        <div class="parallax-item translate-y-12 transition-transform duration-1000">
-           <div class="aspect-[3/4] bg-theme/5 rounded-sm overflow-hidden mb-6">
-             <div class="w-full h-full bg-gradient-to-br from-theme/10 to-theme/0 flex items-center justify-center p-12">
-                <span class="text-xs uppercase tracking-widest text-theme-muted">Digital Art 01</span>
-             </div>
-           </div>
-        </div>
-        <div class="parallax-item -translate-y-12 transition-transform duration-1000">
-           <div class="aspect-[3/4] bg-theme/5 rounded-sm overflow-hidden mb-6">
-             <div class="w-full h-full bg-gradient-to-br from-theme/5 to-theme/10 flex items-center justify-center p-12">
-                <span class="text-xs uppercase tracking-widest text-theme-muted">Imabari Life 02</span>
-             </div>
-           </div>
-        </div>
-        <div class="parallax-item translate-y-24 transition-transform duration-1000">
-           <div class="aspect-[3/4] bg-theme/5 rounded-sm overflow-hidden mb-6">
-             <div class="w-full h-full bg-gradient-to-br from-theme/10 to-theme/5 flex items-center justify-center p-12">
-                <span class="text-xs uppercase tracking-widest text-theme-muted">Craftmanship 03</span>
-             </div>
-           </div>
-        </div>
-      </div>
     </section>
   </main>
 
@@ -149,20 +135,8 @@ const project = {
       bg.style.transform = `translateY(${scroll * 0.4}px) scale(1.1)`;
     }
 
-    // Grid items parallax
-    const items = document.querySelectorAll('.parallax-item');
-    items.forEach((item, index) => {
-      const speed = (index + 1) * 0.1;
-      const rect = item.getBoundingClientRect();
-      const visible = rect.top < window.innerHeight && rect.bottom > 0;
-      
-      if (visible) {
-        const offset = (window.innerHeight - rect.top) * speed;
-        // Apply different directions for interest
-        const direction = index % 2 === 0 ? 1 : -1;
-        item.style.transform = `translateY(${offset * direction * 0.2}px)`;
-      }
-    });
+  // No parallax items to handle currently
+
   });
 
   // Video fade-in logic
