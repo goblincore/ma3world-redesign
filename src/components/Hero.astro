@@ -1,0 +1,49 @@
+---
+interface Props {
+  title?: string;
+  subtitle?: string;
+}
+
+const { title = "Digital-first Design Agency", subtitle = "We craft immersive digital experiences" } = Astro.props;
+---
+
+<section class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+  <!-- Background Video/Image -->
+  <div class="absolute inset-0">
+    <video
+      autoplay
+      muted
+      loop
+      playsinline
+      poster="/graphics/yuaheader-placeholder.png"
+      class="w-full h-full object-cover"
+    >
+      <source src="/video/loopingyua.mp4" type="video/mp4" />
+      <img 
+        src="/graphics/yuaheader-placeholder.png" 
+        alt="" 
+        class="w-full h-full object-cover"
+      />
+    </video>
+    <div class="absolute inset-0 bg-black/40"></div>
+  </div>
+  
+  <!-- Content -->
+  <div class="relative z-10 text-center px-6 max-w-5xl flex flex-col items-center">
+    <!-- Logo -->
+    <img 
+      src="/logo/logo-light.png" 
+      alt="MA3.0 World" 
+      class="w-150 md:w-200 lg:w-260 mb-8"
+    />
+    <!-- <p class="text-lg md:text-xl text-white/80 tracking-wide max-w-2xl mx-auto">
+      {subtitle}
+    </p> -->
+  </div>
+  
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+    <span class="text-xs tracking-widest uppercase text-white/60">Scroll</span>
+    <div class="w-px h-12 bg-gradient-to-b from-white to-transparent"></div>
+  </div>
+</section>

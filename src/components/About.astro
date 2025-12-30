@@ -1,0 +1,48 @@
+---
+interface Props {
+  heading?: string;
+  description?: string;
+}
+
+const { 
+  heading = "Hybrid cultural innovation ", 
+  description = "MA3world Inc. is a hybrid cultural innovation company that transforms digital creativity into physical products, exhibitions, and sustainable economic value. Through projects such as the Imabari Towel Digital Art Gallery, Rice Leather Project, and Bishoujo-Zukan × NYC, we bridge global creators and local industries, developing avatars, products, and collaborative platforms that enable cultural circulation. We especially focus on empowering women creators and emerging talent worldwide, driving projects that connect creativity with culture, community, and industry."
+} = Astro.props;
+---
+
+<section id="about" class="bg-theme-alt flex justify-center">
+  <!-- Two Column Layout with its own max-width -->
+  <div class="grid md:grid-cols-2 gap-8 md:gap-16 max-w-7xl w-full">
+    <!-- Left: Heading -->
+    <div>
+      <h2 class="font-serif text-3xl md:text-4xl lg:text-6xl leading-tight">
+        {heading}
+      </h2>
+    </div>
+    
+    <!-- Right: Body Text -->
+    <div>
+      <p class="text-xl md:text-3xl leading-relaxed">
+        {description}
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  #about {
+    padding-top: 160px;
+    padding-bottom: 80px;
+  }
+  
+  @media (max-width: 768px) {
+    #about {
+      padding-top: 80px;
+      padding-bottom: 40px;
+    }
+  }
+
+  h2 {
+    font-family: var(--font-serif);
+  }
+</style>

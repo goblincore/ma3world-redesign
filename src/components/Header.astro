@@ -1,0 +1,84 @@
+---
+interface Props {
+  transparent?: boolean;
+}
+
+const { transparent = true } = Astro.props;
+---
+
+<header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-transparent">
+  <nav class="flex items-center justify-between px-6 md:px-12 py-6">
+    <!-- Logo -->
+    <a href="/" class="text-xl font-serif tracking-wide">
+      MA3.0<span class="text-xs align-super font-sans ml-1">®</span>
+    </a>
+    
+    <!-- Navigation Links -->
+    <div class="hidden md:flex items-center gap-8 text-sm tracking-wide">
+      <a href="#about" class="hover:opacity-60 transition-opacity">About</a>
+      <a href="#work" class="hover:opacity-60 transition-opacity">Work</a>
+      <a href="#clients" class="hover:opacity-60 transition-opacity">Clients</a>
+      <a href="#contact" class="hover:opacity-60 transition-opacity">Contact</a>
+      
+      <!-- Theme Toggle -->
+      <button id="theme-toggle" class="w-8 h-8 flex items-center justify-center rounded-full border border-current opacity-60 hover:opacity-100 transition-opacity" aria-label="Toggle theme">
+        <svg class="w-4 h-4 dark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        </svg>
+        <svg class="w-4 h-4 light-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Mobile Menu Button -->
+    <button class="md:hidden flex flex-col gap-1.5" aria-label="Menu">
+      <span class="w-6 h-px bg-current"></span>
+      <span class="w-6 h-px bg-current"></span>
+    </button>
+  </nav>
+</header>
+
+<script>
+  // Theme toggle functionality
+  const toggle = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+  const darkIcon = toggle?.querySelector('.dark-icon');
+  const lightIcon = toggle?.querySelector('.light-icon');
+  
+  // Check for saved theme preference or default to dark
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  if (savedTheme === 'light') {
+    html.setAttribute('data-theme', 'light');
+    darkIcon?.classList.add('hidden');
+    lightIcon?.classList.remove('hidden');
+  }
+  
+  toggle?.addEventListener('click', () => {
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    
+    html.setAttribute('data-theme', newTheme === 'light' ? 'light' : '');
+    if (newTheme === 'light') {
+      html.setAttribute('data-theme', 'light');
+    } else {
+      html.removeAttribute('data-theme');
+    }
+    
+    localStorage.setItem('theme', newTheme);
+    
+    // Toggle icons
+    darkIcon?.classList.toggle('hidden');
+    lightIcon?.classList.toggle('hidden');
+  });
+</script>
+
+<style>
+  header {
+    font-family: var(--font-sans);
+  }
+  
+  header > nav > a:first-child {
+    font-family: var(--font-serif);
+  }
+</style>

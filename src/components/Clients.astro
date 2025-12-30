@@ -1,0 +1,41 @@
+---
+const clients = [
+  "Client One",
+  "Client Two", 
+  "Client Three",
+  "Client Four",
+  "Client Five",
+  "Client Six",
+  "Client Seven",
+  "Client Eight",
+  "Client Nine",
+  "Client Ten",
+  "Client Eleven",
+  "Client Twelve",
+];
+---
+
+<section id="clients" class="py-24 md:py-32 px-6 md:px-12 bg-theme-alt">
+  <div class="max-w-6xl mx-auto">
+    <!-- Section Header -->
+    <div class="mb-16">
+      <span class="text-xs tracking-widest uppercase text-theme-muted block mb-2">Trusted By</span>
+      <h2 class="font-serif text-4xl md:text-6xl">Our Clients</h2>
+    </div>
+    
+    <!-- Client Logo Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 md:gap-12">
+      {clients.map((client) => (
+        <div class="flex items-center justify-center py-8 px-4 border border-theme rounded-sm hover:border-current transition-colors cursor-default">
+          <span class="text-sm font-medium tracking-wide text-theme-muted text-center">{client}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  h2 {
+    font-family: var(--font-serif);
+  }
+</style>
