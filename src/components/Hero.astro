@@ -44,16 +44,38 @@ const { title = "Digital-first Design Agency", subtitle = "We craft immersive di
   </div>
   
   <!-- Scroll Indicator -->
-  <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-    <span class="text-xs tracking-widest uppercase text-white/60">
+  <div class="absolute bottom-12 right-6 md:right-12 flex flex-col items-center gap-4 z-20">
+    <span class="text-[10px] tracking-[0.2em] uppercase text-white/60 vertical-text font-bold">
       <span class="lang-en">Scroll</span>
       <span class="lang-ja">スクロール</span>
     </span>
-    <div class="w-px h-12 bg-gradient-to-b from-white to-transparent"></div>
+    <div class="w-px h-24 bg-gradient-to-b from-white/60 to-transparent relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-1/2 bg-white scroll-line-anim"></div>
+    </div>
   </div>
 </section>
 
 <style>
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  .scroll-line-anim {
+    animation: scroll-line 2s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+  }
+
+  @keyframes scroll-line {
+    0% {
+      transform: translateY(-100%);
+    }
+    50% {
+      transform: translateY(200%);
+    }
+    100% {
+      transform: translateY(200%);
+    }
+  }
 </style>
 
 <script>
