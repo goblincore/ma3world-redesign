@@ -18,7 +18,7 @@ const GlobeMesh = ({ color = "#ffffff" }: { color?: string }) => {
 
   useFrame((state, delta) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.1;
+      groupRef.current.rotation.y += delta * 0.25;
     }
   });
 
