@@ -32,45 +32,86 @@ const { transparent = true } = Astro.props;
     </div>
     
     <!-- Mobile Menu Button -->
-    <button class="md:hidden flex flex-col gap-1.5" aria-label="Menu">
-      <span class="w-6 h-px bg-current"></span>
-      <span class="w-6 h-px bg-current"></span>
+    <button id="mobile-menu-toggle" class="md:hidden flex flex-col gap-1.5 z-50 relative" aria-label="Menu">
+      <span class="w-6 h-px bg-current transition-transform duration-300 origin-center"></span>
+      <span class="w-6 h-px bg-current transition-transform duration-300 origin-center"></span>
     </button>
   </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div id="mobile-menu" class="fixed inset-0 bg-theme z-40 translate-x-full transition-transform duration-500 ease-expo pointer-events-none">
+    <div class="flex flex-col items-center justify-center h-full gap-12 text-3xl font-serif">
+      <a href="#about" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-100">About</a>
+      <a href="#news" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-200">News</a>
+      <a href="#work" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-300">Work</a>
+      <a href="#contact" class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-400">Contact</a>
+      
+      <!-- Theme Toggle in Mobile Menu -->
+      <button id="mobile-theme-toggle" class="mt-8 px-6 py-3 rounded-full border border-current text-sm tracking-widest uppercase opacity-0 translate-y-4 transition-all duration-500 delay-500">
+        Switch Theme
+      </button>
+    </div>
+  </div>
 </header>
 
 <script>
   // Theme toggle functionality
-  const toggle = document.getElementById('theme-toggle');
-  const html = document.documentElement;
-  const darkIcon = toggle?.querySelector('.dark-icon');
-  const lightIcon = toggle?.querySelector('.light-icon');
-  
-  // Check for saved theme preference or default to dark
-  const savedTheme = localStorage.getItem('theme') || 'dark';
-  if (savedTheme === 'light') {
-    html.setAttribute('data-theme', 'light');
-    darkIcon?.classList.add('hidden');
-    lightIcon?.classList.remove('hidden');
-  }
-  
-  toggle?.addEventListener('click', () => {
-    const currentTheme = html.getAttribute('data-theme');
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  const setupThemeToggle = (buttonId) => {
+    const toggle = document.getElementById(buttonId);
+    const html = document.documentElement;
+    const darkIcon = toggle?.querySelector('.dark-icon');
+    const lightIcon = toggle?.querySelector('.light-icon');
     
-    html.setAttribute('data-theme', newTheme === 'light' ? 'light' : '');
-    if (newTheme === 'light') {
-      html.setAttribute('data-theme', 'light');
-    } else {
-      html.removeAttribute('data-theme');
+    toggle?.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      if (newTheme === 'light') {
+        html.setAttribute('data-theme', 'light');
+      } else {
+        html.removeAttribute('data-theme');
+      }
+      
+      localStorage.setItem('theme', newTheme);
+      darkIcon?.classList.toggle('hidden');
+      lightIcon?.classList.toggle('hidden');
+    });
+  };
+
+  setupThemeToggle('theme-toggle');
+  setupThemeToggle('mobile-theme-toggle');
+
+  // Mobile Menu Functionality
+  const menuToggle = document.getElementById('mobile-menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const menuSpans = menuToggle?.querySelectorAll('span');
+  const mobileLinks = document.querySelectorAll('.mobile-link');
+  let isMenuOpen = false;
+
+  const toggleMenu = () => {
+    isMenuOpen = !isMenuOpen;
+    
+    // Toggle menu visibility
+    menu?.classList.toggle('translate-x-full', !isMenuOpen);
+    menu?.classList.toggle('pointer-events-none', !isMenuOpen);
+    
+    // Animate hamburger to X
+    if (menuSpans) {
+      menuSpans[0].style.transform = isMenuOpen ? 'translateY(3.5px) rotate(45deg)' : '';
+      menuSpans[1].style.transform = isMenuOpen ? 'translateY(-3.5px) rotate(-45deg)' : '';
     }
-    
-    localStorage.setItem('theme', newTheme);
-    
-    // Toggle icons
-    darkIcon?.classList.toggle('hidden');
-    lightIcon?.classList.toggle('hidden');
-  });
+
+    // Animate Links
+    mobileLinks.forEach(link => {
+      link.classList.toggle('opacity-100', isMenuOpen);
+      link.classList.toggle('translate-y-0', isMenuOpen);
+    });
+
+    document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+  };
+
+  menuToggle?.addEventListener('click', toggleMenu);
+  mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
 </script>
 
 <style>
@@ -80,5 +121,9 @@ const { transparent = true } = Astro.props;
   
   header > nav > a:first-child {
     font-family: var(--font-serif);
+  }
+
+  .ease-expo {
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
   }
 </style>
