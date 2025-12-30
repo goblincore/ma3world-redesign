@@ -10,7 +10,7 @@ const socialLinks = [
 
 const navLinks = [
   { name: "News", nameJa: "ニュース", url: "/news" },
-  { name: "Work", nameJa: "実績", url: "#work" },
+  { name: "Projects", nameJa: "実績", url: "#projects" },
   { name: "About", nameJa: "私たちについて", url: "#about" },
   { name: "Clients", nameJa: "クライアント", url: "#clients" },
   { name: "Contact", nameJa: "お問い合わせ", url: "#contact" },
@@ -100,17 +100,36 @@ const navLinks = [
     </div>
     
     <!-- Bottom Section -->
-    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pt-8 border-t border-theme">
-      <!-- Logo -->
-      <a href="/" class="font-serif text-2xl">
-        MA3.0<span class="text-xs align-super font-sans ml-1">®</span>
-      </a>
-      
-      <!-- Copyright -->
-      <p class="text-sm text-theme-muted">
-        <span class="lang-en">© {currentYear} MA3.0 World. All rights reserved.</span>
-        <span class="lang-ja">© {currentYear} MA3.0 World. 無断複写・転載を禁じます。</span>
-      </p>
+    <div class="pt-8 border-t border-theme">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
+        <!-- Logo -->
+        <a href="/" class="font-serif text-2xl">
+          MA3.0<span class="text-xs align-super font-sans ml-1">®</span>
+        </a>
+        
+        <!-- Copyright -->
+        <p class="text-sm text-theme-muted">
+          <span class="lang-en">© {currentYear} MA3.0 World. All rights reserved.</span>
+          <span class="lang-ja">© {currentYear} MA3.0 World. 無断複写・転載を禁じます。</span>
+        </p>
+      </div>
+
+      <!-- Fine Print -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-[9px] uppercase tracking-[0.2em] text-theme-muted/10">
+        <div class="flex gap-6">
+          <a href="/terms" class="hover:text-white transition-colors">
+            <span class="lang-en">Terms</span>
+            <span class="lang-ja">利用規約</span>
+          </a>
+          <a href="/privacy" class="hover:text-white transition-colors">
+            <span class="lang-en">Privacy Policy</span>
+            <span class="lang-ja">プライバシーポリシー</span>
+          </a>
+        </div>
+        <a href="mailto:withallmyhrt@gmail.com" class="hover:text-white transition-colors">
+          Site design and implementation by jonnydont.surf
+        </a>
+      </div>
     </div>
   </div>
 </footer>
