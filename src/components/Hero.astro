@@ -240,6 +240,34 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
     if (video.readyState >= 3) handleVideoPlay();
   }
 
+  const handleFallbackLoad = () => {
+    if (loader) {
+      loader.classList.add('opacity-0');
+      setTimeout(() => loader.style.display = 'none', 700);
+    }
+  };
+
+  if (fallback) {
+    if (fallback.complete) {
+      handleFallbackLoad();
+    } else {
+      fallback.addEventListener('load', handleFallbackLoad, { once: true });
+    }
+  }
+
+  const attemptPlay = () => {
+    video.play().catch(error => {
+      console.log("Autoplay blocked, waiting for interaction...");
+      const enableVideo = () => {
+        video.play();
+        document.removeEventListener('touchstart', enableVideo);
+        document.removeEventListener('click', enableVideo);
+      };
+      document.addEventListener('touchstart', enableVideo, { once: true });
+      document.addEventListener('click', enableVideo, { once: true });
+    });
+  };
+
   const updateVideoSource = () => {
     const isLight = document.documentElement.getAttribute('data-theme') === 'light';
     const newSrc = isLight ? `${assetBase}video/lightloop2.mp4` : `${assetBase}video/loopingyua.mp4`;
@@ -258,7 +286,7 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
       video.classList.add('opacity-0');
       source.setAttribute('src', newSrc);
       video.load();
-      video.play();
+      attemptPlay();
       video.addEventListener('playing', handleVideoPlay, { once: true });
     }
   };
