@@ -1,9 +1,7 @@
 ---
-import LogoGlobe from './LogoGlobe.astro';
-
 const petals = [...Array(30)];
 ---
-<div class="butterfly-loader absolute inset-0 overflow-hidden flex flex-col items-center justify-center bg-theme transition-colors duration-1000">
+<div class="butterfly-loader absolute inset-0 overflow-hidden flex items-center justify-center bg-theme transition-colors duration-1000">
   
   <!-- DARK MODE: Starry Sky & Butterflies -->
   <div class="dark-mode-elements absolute inset-0 pointer-events-none transition-opacity duration-1000">
@@ -68,15 +66,8 @@ const petals = [...Array(30)];
     ))}
   </div>
 
-  <!-- CENTER CONTENT: Logo & Text -->
-  <div class="relative z-10 flex flex-col items-center justify-center gap-6 mix-blend-screen light:mix-blend-multiply">
-    <div class="w-32 h-32 md:w-40 md:h-40 opacity-60 animate-pulse-slow">
-      <LogoGlobe logoColor="white" forceColor="white" className="w-full h-full" />
-    </div>
-    
-    <div class="loading-text text-white/40 text-[10px] uppercase tracking-[0.6em] font-bold">
-      loading
-    </div>
+  <div class="loading-text absolute bottom-24 text-white/40 text-[10px] uppercase tracking-[0.6em] font-bold">
+    loading
   </div>
 </div>
 
@@ -90,7 +81,7 @@ const petals = [...Array(30)];
     opacity: 1;
   }
 
-  /* Force logo color in light mode if needed, though mix-blend might handle it interesting */
+  /* Force loading text color in light mode */
   :root[data-theme="light"] .loading-text {
     color: rgba(0,0,0,0.3);
   }
@@ -182,15 +173,6 @@ const petals = [...Array(30)];
 
   .loading-text {
     animation: text-float 3s ease-in-out infinite;
-  }
-
-  .animate-pulse-slow {
-    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 0.3; }
   }
 
   @keyframes text-float {
