@@ -63,13 +63,13 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
               <img 
                 src={`${assetBase}${project.image.startsWith('/') ? project.image.slice(1) : project.image}`} 
                 alt={project.title}
-                class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 project-image"
               />
             ) : (
               <>
-                <div class="absolute inset-0 bg-theme-alt group-hover:scale-105 transition-transform duration-700"></div>
+                <div class="absolute inset-0 bg-theme-alt transition-transform duration-700 project-placeholder-bg"></div>
                 <div class="absolute inset-0 flex items-center justify-center">
-                  <span class="text-6xl font-serif text-theme-muted group-hover:opacity-80 transition-opacity">
+                  <span class="text-6xl font-serif text-theme-muted transition-opacity project-placeholder-text">
                     0{index + 1}
                   </span>
                 </div>
@@ -80,7 +80,7 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
           <!-- Project Info -->
           <div class="flex items-start justify-between">
             <div>
-              <h3 class="text-xl md:text-2xl font-medium mb-1 group-hover:opacity-60 transition-opacity">
+              <h3 class="text-xl md:text-2xl font-medium mb-1 transition-opacity project-title">
                 <span class="lang-en" set:html={project.title}></span>
                 <span class="lang-ja" set:html={project.titleJa}></span>
               </h3>
@@ -106,5 +106,21 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
 <style>
   h2 {
     font-family: var(--font-serif);
+  }
+
+  /* Hover effects only for devices that support hover (prevents double-tap on iOS) */
+  @media (hover: hover) {
+    .group:hover .project-image,
+    .group:hover .project-placeholder-bg {
+      transform: scale(1.05);
+    }
+    
+    .group:hover .project-placeholder-text {
+      opacity: 0.8;
+    }
+
+    .group:hover .project-title {
+      opacity: 0.6;
+    }
   }
 </style>
