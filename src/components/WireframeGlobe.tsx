@@ -73,15 +73,9 @@ const GlobeMesh = ({ color = "#ffffff" }: { color?: string }) => {
   return (
     <group ref={groupRef} rotation={[0.6, 0, 0]}>
       {/* Occlusion Sphere to hide back lines */}
-      <mesh scale={[1, yScale, 1]} renderOrder={-1}>
+      <mesh scale={[1, yScale, 1]}>
         <sphereGeometry args={[0.495, 32, 32]} />
-        <meshBasicMaterial 
-          transparent 
-          opacity={0} 
-          depthWrite={true}
-          depthTest={true}
-          side={THREE.FrontSide}
-        />
+        <meshBasicMaterial colorWrite={false} />
       </mesh>
 
       {/* Equator */}

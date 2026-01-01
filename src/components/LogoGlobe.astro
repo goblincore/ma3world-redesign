@@ -20,7 +20,7 @@ const {
   <SvgLogo color={logoColor} class="w-full h-auto object-contain relative z-10" aria-label="MA3.0 World" />
   <!-- The globe is positioned to overlay the "O" in "WORLD" -->
   <div class="absolute left-[38%] top-[50%] -translate-y-[49%] w-[44%] aspect-square z-20">
-    <!-- WebGL 3D Globe (hidden if WebGL not supported) -->
+    <!-- WebGL 3D Globe (default) -->
     <div id="webgl-globe" class="w-full h-full">
       <WireframeGlobe client:only="react" forceColor={forceColor} />
     </div>
