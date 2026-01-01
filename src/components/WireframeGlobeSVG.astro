@@ -1,0 +1,116 @@
+---
+interface Props {
+  color?: string;
+  class?: string;
+}
+
+const { color = "#ffffff", class: className = "" } = Astro.props;
+---
+
+<div class={`wireframe-globe-svg ${className}`}>
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <g class="globe-rotate">
+      <!-- Horizontal latitude lines -->
+      <ellipse class="latitude lat-1" cx="50" cy="25" rx="43" ry="12" />
+      <ellipse class="latitude lat-2" cx="50" cy="35" rx="48" ry="14" />
+      <ellipse class="latitude equator" cx="50" cy="50" rx="50" ry="16" />
+      <ellipse class="latitude lat-3" cx="50" cy="65" rx="48" ry="14" />
+      <ellipse class="latitude lat-4" cx="50" cy="75" rx="43" ry="12" />
+      
+      <!-- Vertical longitude lines - these animate -->
+      <ellipse class="longitude long-1" cx="50" cy="50" rx="8" ry="50" />
+      <ellipse class="longitude long-2" cx="50" cy="50" rx="20" ry="50" />
+      <ellipse class="longitude long-3" cx="50" cy="50" rx="35" ry="50" />
+      <ellipse class="longitude long-4" cx="50" cy="50" rx="50" ry="50" />
+      <ellipse class="longitude long-5" cx="50" cy="50" rx="35" ry="50" transform="rotate(90 50 50)" />
+      <ellipse class="longitude long-6" cx="50" cy="50" rx="20" ry="50" transform="rotate(90 50 50)" />
+    </g>
+  </svg>
+</div>
+
+<style define:vars={{ globeColor: color }}>
+  .wireframe-globe-svg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .wireframe-globe-svg svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .globe-rotate {
+    transform-origin: 50% 50%;
+    animation: globeSpin 20s linear infinite;
+  }
+
+  @keyframes globeSpin {
+    from {
+      transform: rotateY(0deg);
+    }
+    to {
+      transform: rotateY(360deg);
+    }
+  }
+
+  .latitude,
+  .longitude {
+    fill: none;
+    stroke: var(--globeColor);
+    stroke-width: 0.8;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .equator {
+    stroke-width: 1.2;
+  }
+
+  /* Create a pseudo-3D spinning effect using animated rx on longitudes */
+  .longitude {
+    animation: longitudeSpin 8s linear infinite;
+    transform-origin: 50% 50%;
+  }
+
+  .long-1 { animation-delay: 0s; }
+  .long-2 { animation-delay: -1.33s; }
+  .long-3 { animation-delay: -2.66s; }
+  .long-4 { animation-delay: -4s; }
+  .long-5 { animation-delay: -5.33s; }
+  .long-6 { animation-delay: -6.66s; }
+
+  @keyframes longitudeSpin {
+    0% {
+      rx: 8;
+      opacity: 1;
+    }
+    25% {
+      rx: 35;
+      opacity: 1;
+    }
+    50% {
+      rx: 50;
+      opacity: 1;
+    }
+    75% {
+      rx: 35;
+      opacity: 0.3;
+    }
+    100% {
+      rx: 8;
+      opacity: 1;
+    }
+  }
+
+  /* Slight tilt effect on the whole globe */
+  .wireframe-globe-svg svg {
+    transform: perspective(300px) rotateX(15deg);
+  }
+</style>

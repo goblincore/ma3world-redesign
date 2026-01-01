@@ -1,6 +1,7 @@
 ---
 import SvgLogo from './SvgLogo.astro';
 import WireframeGlobe from './WireframeGlobe';
+import WireframeGlobeSVG from './WireframeGlobeSVG.astro';
 
 interface Props {
   className?: string;
@@ -19,6 +20,67 @@ const {
   <SvgLogo color={logoColor} class="w-full h-auto object-contain relative z-10" aria-label="MA3.0 World" />
   <!-- The globe is positioned to overlay the "O" in "WORLD" -->
   <div class="absolute left-[38%] top-[50%] -translate-y-[49%] w-[44%] aspect-square z-20">
-    <WireframeGlobe client:only="react" forceColor={forceColor} />
+    <!-- WebGL 3D Globe (hidden if WebGL not supported) -->
+    <div id="webgl-globe" class="w-full h-full">
+      <WireframeGlobe client:only="react" forceColor={forceColor} />
+    </div>
+    <!-- SVG/CSS Fallback Globe (hidden by default, shown if WebGL fails) -->
+    <div id="svg-globe" class="w-full h-full hidden">
+      <WireframeGlobeSVG color={forceColor || "#ffffff"} />
+    </div>
   </div>
 </div>
+
+<script>
+  // Detect WebGL support and canvas rendering issues
+  function checkWebGLSupport(): boolean {
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl2') || canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (!gl) return false;
+      
+      // Additional check: verify WebGL can actually render
+      const debugInfo = (gl as WebGLRenderingContext).getExtension('WEBGL_debug_renderer_info');
+      if (debugInfo) {
+        const renderer = (gl as WebGLRenderingContext).getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+        // Some virtual environments have issues with WebGL
+        if (renderer && (renderer.includes('SwiftShader') || renderer.includes('llvmpipe'))) {
+          return false;
+        }
+      }
+      
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function initGlobeFallback() {
+    const webglGlobe = document.getElementById('webgl-globe');
+    const svgGlobe = document.getElementById('svg-globe');
+    
+    if (!webglGlobe || !svgGlobe) return;
+
+    if (!checkWebGLSupport()) {
+      // WebGL not supported - use SVG fallback
+      webglGlobe.classList.add('hidden');
+      svgGlobe.classList.remove('hidden');
+    } else {
+      // WebGL supported - add a delayed check to see if canvas rendered
+      setTimeout(() => {
+        const canvas = webglGlobe.querySelector('canvas');
+        if (!canvas || canvas.width === 0 || canvas.height === 0) {
+          webglGlobe.classList.add('hidden');
+          svgGlobe.classList.remove('hidden');
+        }
+      }, 1000);
+    }
+  }
+
+  // Run on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGlobeFallback);
+  } else {
+    initGlobeFallback();
+  }
+</script>
