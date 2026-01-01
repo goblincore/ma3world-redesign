@@ -129,7 +129,17 @@ export const WireframeGlobe = ({ forceColor }: { forceColor?: string }) => {
 
   return (
     <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }}>
-      <Canvas camera={{ position: [0, 0, 2.5], fov: 45 }} alpha={true}>
+      <Canvas 
+        camera={{ position: [0, 0, 2.5], fov: 45 }} 
+        gl={{ 
+          alpha: true, 
+          antialias: true,
+          preserveDrawingBuffer: true,
+          powerPreference: 'high-performance'
+        }}
+        dpr={[1, 2]}
+        style={{ background: 'transparent' }}
+      >
         <ambientLight intensity={0.5} />
         <GlobeMesh color={globeColor} />
       </Canvas>
