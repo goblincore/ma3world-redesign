@@ -3,6 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'apps/web/**'
+      - 'pnpm-workspace.yaml'
+      - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
 permissions:
@@ -22,10 +26,6 @@ jobs:
         with:
           version: 9
 
-      - name: Setup Node
-        uses: actions/checkout@v4 # Re-using checkout steps if needed but setup-node is better
-        # Actually setup-node is standard
-      
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
@@ -35,13 +35,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build Astro
-        run: pnpm run build
+      - name: Build Astro site
+        run: pnpm --filter @ma3/web build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/
+          path: apps/web/dist/
 
   deploy:
     needs: build
