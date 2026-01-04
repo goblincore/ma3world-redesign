@@ -24,12 +24,15 @@ interface Props {
   newsItem?: News;
 }
 
+const isDev = import.meta.env.DEV;
 const { slug } = Astro.params;
 const { newsItem: staticItem } = Astro.props;
 
 // Use the news item from props (getStaticPaths) or fetch it
 let newsItem: News | undefined = staticItem;
-if (!newsItem && slug) {
+
+// In development, force a re-fetch to ensure we have the latest content from the CMS
+if ((isDev || !newsItem) && slug) {
   const fetched = await getNewsBySlug(slug, 'en');
   newsItem = fetched ?? undefined;
 }

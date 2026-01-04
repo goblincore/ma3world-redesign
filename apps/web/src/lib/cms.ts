@@ -81,6 +81,24 @@ interface PayloadResponse<T> {
 const CMS_URL = import.meta.env.CMS_URL || 'http://localhost:3001';
 
 /**
+ * Helper to flatten a nested object into Payload-style bracket notation
+ * e.g. { slug: { equals: 'foo' } } -> { 'where[slug][equals]': 'foo' }
+ */
+function flattenObject(obj: any, prefix = ''): Record<string, string> {
+  let result: Record<string, string> = {};
+  for (const key in obj) {
+    const value = obj[key];
+    const newKey = prefix ? `${prefix}[${key}]` : key;
+    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+      Object.assign(result, flattenObject(value, newKey));
+    } else {
+      result[newKey] = String(value);
+    }
+  }
+  return result;
+}
+
+/**
  * Generic fetch function for PayloadCMS API
  */
 async function fetchFromCMS<T>(
@@ -96,13 +114,18 @@ async function fetchFromCMS<T>(
   });
   
   if (where) {
-    params.append('where', JSON.stringify(where));
+    const flattened = flattenObject(where, 'where');
+    for (const [key, value] of Object.entries(flattened)) {
+      params.append(key, value);
+    }
   }
   
   const url = `${CMS_URL}/api/${endpoint}?${params}`;
   
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      cache: 'no-store'
+    });
     
     if (!response.ok) {
       console.error(`CMS API error: ${response.status} ${response.statusText}`);
