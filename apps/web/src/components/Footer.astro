@@ -50,7 +50,7 @@ const navLinks = [
       
       <!-- Contact Form -->
       <div class="w-full">
-        <form class="flex flex-col gap-6">
+        <form id="contact-form" class="flex flex-col gap-6">
           <div class="flex flex-col gap-2">
             <label for="name" class="text-[10px] uppercase tracking-[0.2em] font-bold text-theme-muted">
               <span class="lang-en">Name</span>
@@ -60,6 +60,7 @@ const navLinks = [
               type="text" 
               id="name" 
               name="name" 
+              required
               placeholder="Your Name / お名前"
               class="w-full bg-transparent border-b border-theme/50 py-3 focus:border-theme outline-none transition-colors text-lg placeholder:text-theme-muted/50"
             />
@@ -74,6 +75,7 @@ const navLinks = [
               type="email" 
               id="email" 
               name="email" 
+              required
               placeholder="hello@example.com"
               class="w-full bg-transparent border-b border-theme/50 py-3 focus:border-theme outline-none transition-colors text-lg placeholder:text-theme-muted/50"
             />
@@ -87,15 +89,22 @@ const navLinks = [
             <textarea 
               id="message" 
               name="message" 
+              required
               rows="4" 
               placeholder="Tell us about your project..."
               class="w-full bg-transparent border border-theme/50 p-4 focus:border-theme outline-none transition-colors text-lg resize-none placeholder:text-theme-muted/50"
             ></textarea>
           </div>
           
-          <button type="submit" class="mt-4 bg-white text-black py-4 px-8 self-start font-bold uppercase tracking-[0.2em] text-xs hover:bg-white/80 transition-colors">
-            <span class="lang-en">Send Message</span>
-            <span class="lang-ja">送信する</span>
+          <div id="form-message" class="hidden text-sm py-2 px-4 rounded-sm animate-fade-in"></div>
+
+          <button type="submit" id="submit-btn" class="mt-4 bg-white text-black py-4 px-8 self-start font-bold uppercase tracking-[0.2em] text-xs hover:bg-white/80 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+            <span class="submit-text lang-en">Send Message</span>
+            <span class="submit-text lang-ja">送信する</span>
+            <span class="loading-text hidden">
+              <span class="lang-en">Sending...</span>
+              <span class="lang-ja">送信中...</span>
+            </span>
           </button>
         </form>
       </div>
@@ -140,4 +149,73 @@ const navLinks = [
   h2, .font-serif {
     font-family: var(--font-serif);
   }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
 </style>
+
+<script is:inline>
+  const contactForm = document.getElementById('contact-form');
+  const formMessage = document.getElementById('form-message');
+  const submitBtn = document.getElementById('submit-btn');
+  const submitTexts = submitBtn.querySelectorAll('.submit-text');
+  const loadingText = submitBtn.querySelector('.loading-text');
+
+  // CMS URL
+  const CMS_URL = 'http://localhost:3001';
+
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(contactForm);
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        message: formData.get('message'),
+        source: window.location.pathname,
+      };
+
+      // Reset UI state
+      formMessage.classList.add('hidden');
+      formMessage.textContent = '';
+      submitBtn.disabled = true;
+      submitTexts.forEach(t => t.classList.add('hidden'));
+      loadingText.classList.remove('hidden');
+
+      try {
+        const response = await fetch(`${CMS_URL}/api/submissions`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+          formMessage.classList.remove('hidden');
+          formMessage.className = 'text-green-500 font-bold uppercase tracking-widest text-[10px] py-4 px-0 bg-transparent animate-fade-in';
+          formMessage.textContent = document.documentElement.lang === 'ja' ? 'メッセージが正常に送信されました。' : 'Message sent successfully.';
+          contactForm.reset();
+        } else {
+          throw new Error('Failed to send message');
+        }
+      } catch (error) {
+        console.error('Contact form error:', error);
+        formMessage.classList.remove('hidden');
+        formMessage.className = 'text-red-500 font-bold uppercase tracking-widest text-[10px] py-4 px-0 bg-transparent animate-fade-in';
+        formMessage.textContent = document.documentElement.lang === 'ja' ? 'エラーが発生しました。後でもう一度お試しください。' : 'An error occurred. Please try again later.';
+      } finally {
+        submitBtn.disabled = false;
+        submitTexts.forEach(t => t.classList.remove('hidden'));
+        loadingText.classList.add('hidden');
+      }
+    });
+  }
+</script>
