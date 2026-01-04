@@ -52,6 +52,5 @@ EXPOSE 3000
 ENV PORT 3000
 
 # server.js is created by next build from the standalone output
-# For monorepos, standalone output usually puts the entry point at the root or within the app folder
-# Depending on how Next.js wraps the standalone, we might need to point to apps/cms/server.js
-CMD HOSTNAME="0.0.0.0" node apps/cms/server.js
+# Next.js standalone puts the entrypoint at the root of the standalone directory
+CMD HOSTNAME="0.0.0.0" node server.js
