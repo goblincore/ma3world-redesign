@@ -7,7 +7,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Install pnpm
-RUN corepack enable pnpm
+RUN npm install -g pnpm@9.15.0
 
 # Copy root lockfile and package.json
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
@@ -15,13 +15,13 @@ COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 # Copy the cms package.json
 COPY apps/cms/package.json ./apps/cms/
 
-# Install dependencies for the whole workspace (filtered to cms if possible, but usually pnpm needs the whole tree for resolution)
+# Install dependencies for the whole workspace
 RUN pnpm install --frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
-RUN corepack enable pnpm
+RUN npm install -g pnpm@9.15.0
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/cms/node_modules ./apps/cms/node_modules
