@@ -33,6 +33,7 @@ async function seed() {
       featured: true,
       client: 'Imabari Towel',
       heroVideo: '/video/imabariditigalartgallery.mp4',
+      _status: 'published',
     },
     locale: 'en',
   })
@@ -59,6 +60,7 @@ async function seed() {
       description: 'Revitalizing local industry through sustainable, locally-sourced vegan leather made from rice. Supporting Fukushima reconstruction through innovative design.',
       featured: true,
       client: 'Fukushima Prefecture',
+      _status: 'published',
     },
     locale: 'en',
   })
@@ -83,6 +85,7 @@ async function seed() {
       year: '2024',
       description: 'Digital avatars merging talent × technology × local identity. Creating virtual ambassadors that represent the spirit of regional cultures in the metaverse.',
       featured: true,
+      _status: 'published',
     },
     locale: 'en',
   })
@@ -107,6 +110,7 @@ async function seed() {
       year: '2025',
       description: 'A groundbreaking virtual fashion experience blending traditional Japanese aesthetics with cyberpunk futurism. Showcasing digital-first designs in an immersive XR environment.',
       featured: false,
+      _status: 'published',
     },
     locale: 'en',
   })
@@ -131,6 +135,7 @@ async function seed() {
       year: '2025',
       description: 'An AI-powered cultural guide that brings forgotten rural destinations to life. Combining generative storytelling with AR experiences to revitalize local tourism.',
       featured: false,
+      _status: 'published',
     },
     locale: 'en',
   })
@@ -197,6 +202,7 @@ async function seed() {
       content: createContent('We are thrilled to unveil Phase II of the Imabari Towel Digital Art Gallery. This expansion introduces five new interactive exhibits featuring collaborations between traditional towel weavers and digital artists from around the world. Visit us to experience the future of textile art.'),
       linkType: 'detail',
       project: imabariProject.id,
+      _status: 'published',
     },
     locale: 'en',
   })
@@ -211,6 +217,7 @@ async function seed() {
       content: createContent('The MA3.0 team is honored to receive the Sustainability Innovation Award at this year\'s Tokyo Design Week. This recognition validates our mission to use technology and design to solve regional challenges. Special thanks to our partners in Fukushima Prefecture and the YUA community.'),
       linkType: 'detail',
       project: fukushimaProject.id,
+      _status: 'published',
     },
     locale: 'en',
   })
@@ -225,6 +232,7 @@ async function seed() {
       content: createContent('Neo-Tokyo 2099 is set to redefine the fashion runway. By combining XR (Extended Reality) technology with avant-garde fashion design, we are creating an immersive experience that transcends physical boundaries. Tickets go on sale next month.'),
       linkType: 'project', // Link directly to the project page for this one
       project: neoTokyoProject.id,
+      _status: 'published',
     },
     locale: 'en',
   })
@@ -239,6 +247,7 @@ async function seed() {
       content: createContent('We are proud to announce a strategic partnership with Niigata Prefecture. "Sakura AI" will be deployed in 50 key cultural sites, providing multilingual, interactive guides for visitors. This initiative aims to revitalize rural tourism through cutting-edge technology.'),
       linkType: 'detail',
       project: sakuraAIProject.id,
+      _status: 'published',
     },
     locale: 'en',
   })
@@ -252,6 +261,7 @@ async function seed() {
       description: 'Our approach to bridging traditional craftsmanship with cutting-edge digital experiences was featured in Wired Japan\'s annual innovation issue.',
       linkType: 'external',
       externalUrl: 'https://wired.jp/',
+      _status: 'published',
     },
     locale: 'en',
   })
