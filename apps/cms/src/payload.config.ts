@@ -7,6 +7,8 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { News } from './collections/News'
+import { Projects } from './collections/Projects'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -18,7 +20,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Users, Media, News, Projects],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -31,4 +33,24 @@ export default buildConfig({
   }),
   sharp,
   plugins: [],
+  localization: {
+    locales: [
+      {
+        label: 'English',
+        code: 'en',
+      },
+      {
+        label: '日本語',
+        code: 'ja',
+      },
+    ],
+    defaultLocale: 'en',
+    fallback: true,
+  },
+  cors: [
+    'http://localhost:4321', // Astro dev server
+    'http://localhost:3000', // Local CMS
+    process.env.ASTRO_URL || '',
+  ].filter(Boolean),
 })
+
