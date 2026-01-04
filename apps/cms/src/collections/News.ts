@@ -7,7 +7,17 @@ export const News: CollectionConfig = {
     defaultColumns: ['title', 'date', 'linkType', 'updatedAt'],
   },
   access: {
-    read: () => true,
+    read: ({ req: { user } }) => {
+      if (user) return true
+      return {
+        _status: {
+          equals: 'published',
+        },
+      }
+    },
+  },
+  versions: {
+    drafts: true,
   },
   fields: [
     {
