@@ -2,8 +2,10 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import { getProjects, getMediaUrl, getCmsUrl, type Project } from '../../lib/cms';
 
-const projects = [
+// Fallback data when CMS is unavailable
+const fallbackProjects = [
   { 
     title: "Imabari Towel Digital Art Gallery", 
     titleJa: "今治タオル デジタルアートギャラリー",
@@ -45,6 +47,28 @@ const projects = [
     description: "A platform connecting Japan and NYC to empower female creators."
   }
 ];
+
+// Fetch from CMS
+const cmsProjects = await getProjects('en');
+const cmsUrl = getCmsUrl();
+
+// Transform CMS data to match component props, or use fallback
+const projects = cmsProjects.length > 0 
+  ? cmsProjects.map((item: Project) => {
+      const imageUrl = getMediaUrl(item.image);
+      return {
+        title: item.title,
+        titleJa: item.title, // Will be different when fetching 'ja' locale
+        slug: item.slug,
+        category: item.category,
+        categoryJa: item.category, // Will be different when fetching 'ja' locale
+        year: item.year,
+        image: imageUrl ? `${cmsUrl}${imageUrl}` : '/placeholder.jpg',
+        description: item.description
+      };
+    })
+  : fallbackProjects;
+
 const base = import.meta.env.BASE_URL;
 const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : base;
 ---

@@ -1,0 +1,156 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getProjects, getProjectBySlug, getMediaUrl, getCmsUrl, type Project } from '../../lib/cms';
+
+export async function getStaticPaths() {
+  // Fetch all projects from CMS
+  const projects = await getProjects('en');
+  
+  // Generate paths for CMS projects
+  const paths = projects.map((project: Project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+  
+  return paths;
+}
+
+interface Props {
+  project?: Project;
+}
+
+const { slug } = Astro.params;
+const { project: staticProject } = Astro.props;
+
+// Use the project from props (getStaticPaths) or fetch it
+let project: Project | undefined = staticProject;
+if (!project && slug) {
+  const fetched = await getProjectBySlug(slug, 'en');
+  project = fetched ?? undefined;
+}
+
+// If no project found, 404
+if (!project) {
+  return Astro.redirect('/404');
+}
+
+const cmsUrl = getCmsUrl();
+const imageUrl = getMediaUrl(project.image);
+
+const base = import.meta.env.BASE_URL;
+const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : base;
+---
+
+<Layout title={`${project.title} | MA3.0 World`}>
+  <Header transparent={false} />
+  
+  <main class="bg-theme overflow-hidden">
+    <!-- Hero Section -->
+    <section class="project-hero relative min-h-[60vh] flex items-end pb-12 md:pb-24 px-6 md:px-12 overflow-hidden bg-theme">
+      <!-- Video Background (if available) -->
+      {project.heroVideo && (
+        <div class="absolute inset-0 z-0">
+          <video 
+            id="project-video"
+            src={`${assetBase}${project.heroVideo.startsWith('/') ? project.heroVideo.slice(1) : project.heroVideo}`} 
+            autoplay 
+            loop 
+            muted 
+            playsinline 
+            class="w-full h-full object-cover opacity-40"
+          ></video>
+          <div class="hero-overlay absolute inset-0 z-10"></div>
+        </div>
+      )}
+
+      <!-- Content Overlay -->
+      <div class="relative z-10 max-w-7xl w-full mx-auto pt-32">
+        <div class="max-w-4xl space-y-6">
+          <span class="text-[10px] md:text-xs tracking-[0.4em] uppercase font-bold opacity-50 block mb-4">
+            {project.category}
+          </span>
+          <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl leading-[0.9]">
+            {project.title}
+          </h1>
+          
+          <div class="flex flex-wrap items-center gap-x-8 gap-y-4 pt-8 border-t border-current/10">
+            {project.client && (
+              <div class="flex items-center gap-3">
+                <span class="text-[10px] uppercase tracking-[0.3em] font-bold opacity-50">Client</span>
+                <span class="text-sm md:text-base opacity-80">{project.client}</span>
+              </div>
+            )}
+            <div class="flex items-center gap-3">
+              <span class="text-[10px] uppercase tracking-[0.3em] font-bold opacity-50">Year</span>
+              <span class="text-sm md:text-base opacity-80">{project.year}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Project Content Section -->
+    <section class="py-24 md:py-32 px-6 md:px-12 flex justify-center border-b border-theme/10">
+      <div class="max-w-4xl w-full space-y-16">
+        <!-- Description -->
+        <div class="max-w-none text-xl md:text-2xl leading-relaxed text-theme-muted space-y-8">
+          <p>{project.description}</p>
+        </div>
+
+        <!-- Featured Image (if available) -->
+        {imageUrl && (
+          <div class="pt-8 pb-4">
+            <div class="aspect-[16/9] bg-theme-alt rounded-sm overflow-hidden">
+              <img 
+                src={`${cmsUrl}${imageUrl}`} 
+                alt={project.title} 
+                class="w-full h-full object-cover" 
+              />
+            </div>
+          </div>
+        )}
+        
+        <!-- Action Buttons -->
+        <div class="pt-16 border-t border-theme/10 flex flex-col md:flex-row justify-between items-center gap-8">
+          {project.externalLink?.url && (
+            <a href={project.externalLink.url} target="_blank" class="group relative px-12 py-6 border border-theme/20 overflow-hidden">
+              <div class="absolute inset-0 bg-theme translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+              <span class="relative z-10 text-xs font-bold uppercase tracking-widest group-hover:text-theme-alt transition-colors">
+                {project.externalLink.label || 'Visit Project'}
+              </span>
+            </a>
+          )}
+          
+          <a href={`${base}projects`} class="text-sm uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity flex items-center gap-4">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="rotate-180">
+              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="lang-en">Back to Projects</span>
+            <span class="lang-ja">プロジェクト一覧に戻る</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  main {
+    font-family: var(--font-sans);
+  }
+  h1, h2 {
+    font-family: var(--font-serif);
+  }
+  
+  .hero-overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2), transparent);
+  }
+  
+  :root[data-theme="light"] .hero-overlay {
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3), transparent);
+  }
+</style>

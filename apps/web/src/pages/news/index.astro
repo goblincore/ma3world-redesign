@@ -1,10 +1,12 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import NewsCard from '../components/NewsCard.astro';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import { getNews, getMediaUrl, getCmsUrl, type News } from '../../lib/cms';
 
-const newsItems = [
+// Fallback data when CMS is unavailable
+const fallbackNews = [
   {
     title: "「美少女図鑑AWARD 2025」広告ビジュアル公開（Photo by Mina）",
     date: "2024/07/28",
@@ -27,6 +29,36 @@ const newsItems = [
     href: "/projects/fukushima-yuacheer"
   }
 ];
+
+// Fetch from CMS
+const cmsNews = await getNews('en');
+const cmsUrl = getCmsUrl();
+
+// Transform CMS data to match component props, or use fallback
+const newsItems = cmsNews.length > 0 
+  ? cmsNews.map((item: News) => {
+      const imageUrl = getMediaUrl(item.image);
+      // Determine href based on linkType (default to detail page)
+      let href: string;
+      if (item.linkType === 'external' && item.externalUrl) {
+        href = item.externalUrl;
+      } else if (item.linkType === 'project' && item.project && typeof item.project !== 'number') {
+        href = `/projects/${item.project.slug}`;
+      } else {
+        // Default: news detail page
+        href = `/news/${item.slug}`;
+      }
+      
+      return {
+        title: item.title,
+        date: new Date(item.date).toLocaleDateString('en-CA').replace(/-/g, '/'),
+        image: imageUrl ? `${cmsUrl}${imageUrl}` : '/placeholder.jpg',
+        description: item.description,
+        href
+      };
+    })
+  : fallbackNews;
+
 const base = import.meta.env.BASE_URL;
 const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : base;
 ---

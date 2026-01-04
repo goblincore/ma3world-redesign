@@ -1,0 +1,104 @@
+---
+const { node } = Astro.props;
+
+interface TextNode {
+  text: string;
+  format: number; // bitmask for bold, italic, etc.
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  strikethrough?: boolean;
+  code?: boolean;
+}
+
+// Helper to handle text formatting
+const IS_BOLD = 1;
+const IS_ITALIC = 1 << 1;
+const IS_STRIKETHROUGH = 1 << 2;
+const IS_UNDERLINE = 1 << 3;
+const IS_CODE = 1 << 4;
+const IS_SUBSCRIPT = 1 << 5;
+const IS_SUPERSCRIPT = 1 << 6;
+
+function getTextClasses(format: number) {
+  const classes = [];
+  if (format & IS_BOLD) classes.push('font-bold');
+  if (format & IS_ITALIC) classes.push('italic');
+  if (format & IS_STRIKETHROUGH) classes.push('line-through');
+  if (format & IS_UNDERLINE) classes.push('underline');
+  if (format & IS_CODE) classes.push('font-mono bg-theme-muted/10 px-1 rounded');
+  return classes.join(' ');
+}
+---
+
+{/* Recursive rendering based on node type */}
+{(() => {
+  if (!node) return null;
+
+  if (node.type === 'text') {
+    const classes = getTextClasses(node.format);
+    return classes ? <span class={classes}>{node.text}</span> : <>{node.text}</>;
+  }
+
+  if (node.type === 'paragraph') {
+    return (
+      <p class="mb-4 leading-relaxed">
+        {node.children?.map((child: any) => <Astro.self node={child} />)}
+      </p>
+    );
+  }
+
+  if (node.type === 'heading') {
+    const Tag = node.tag as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+    const sizes = {
+      h1: 'text-4xl font-bold mb-6 mt-8',
+      h2: 'text-3xl font-bold mb-5 mt-8',
+      h3: 'text-2xl font-bold mb-4 mt-6',
+      h4: 'text-xl font-bold mb-3 mt-6',
+      h5: 'text-lg font-bold mb-2 mt-4',
+      h6: 'text-base font-bold mb-2 mt-4',
+    };
+    return (
+      <Tag class={sizes[Tag]}>
+        {node.children?.map((child: any) => <Astro.self node={child} />)}
+      </Tag>
+    );
+  }
+
+  if (node.type === 'list') {
+    const Tag = node.tag === 'ol' ? 'ol' : 'ul';
+    const classes = node.tag === 'ol' ? 'list-decimal' : 'list-disc';
+    return (
+      <Tag class={`${classes} pl-6 mb-4 space-y-1`}>
+        {node.children?.map((child: any) => <Astro.self node={child} />)}
+      </Tag>
+    );
+  }
+
+  if (node.type === 'listitem') {
+    return (
+      <li>
+        {node.children?.map((child: any) => <Astro.self node={child} />)}
+      </li>
+    );
+  }
+  
+  if (node.type === 'link') {
+     return (
+        <a href={node.fields.url} target={node.fields.newTab ? "_blank" : "_self"} class="underline text-theme-alt hover:opacity-80">
+            {node.children?.map((child: any) => <Astro.self node={child} />)}
+        </a>
+     )
+  }
+
+  // Root or other container nodes
+  if (node.children) {
+    return (
+      <>
+        {node.children.map((child: any) => <Astro.self node={child} />)}
+      </>
+    );
+  }
+
+  return null;
+})()}

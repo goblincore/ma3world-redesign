@@ -1,0 +1,119 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import RichTextRenderer from '../../components/RichTextRenderer.astro';
+import { getNews, getNewsBySlug, getMediaUrl, getCmsUrl, type News } from '../../lib/cms';
+
+export async function getStaticPaths() {
+  // Fetch all news items from CMS
+  const newsItems = await getNews('en');
+  
+  // Generate paths for CMS news items with detail pages
+  const paths = newsItems
+    .filter((item: News) => item.linkType === 'detail' || !item.linkType)
+    .map((item: News) => ({
+      params: { slug: item.slug },
+      props: { newsItem: item },
+    }));
+  
+  return paths;
+}
+
+interface Props {
+  newsItem?: News;
+}
+
+const { slug } = Astro.params;
+const { newsItem: staticItem } = Astro.props;
+
+// Use the news item from props (getStaticPaths) or fetch it
+let newsItem: News | undefined = staticItem;
+if (!newsItem && slug) {
+  const fetched = await getNewsBySlug(slug, 'en');
+  newsItem = fetched ?? undefined;
+}
+
+// If no news item found, 404
+if (!newsItem) {
+  return Astro.redirect('/404');
+}
+
+const cmsUrl = getCmsUrl();
+const imageUrl = getMediaUrl(newsItem.image);
+const formattedDate = new Date(newsItem.date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout title={`${newsItem.title} | MA3.0 World News`}>
+  <Header transparent={false} />
+  
+  <main class="bg-theme overflow-hidden">
+    <!-- Article Header -->
+    <article class="pt-32 pb-24 px-6 md:px-12">
+      <div class="max-w-4xl mx-auto">
+        <!-- Meta Info -->
+        <div class="flex items-center gap-4 text-[10px] uppercase tracking-[0.2em] font-bold opacity-50 mb-8">
+          <time datetime={newsItem.date}>{formattedDate}</time>
+          <span class="w-1 h-1 bg-current rounded-full"></span>
+          <span>MA3.0 Press</span>
+        </div>
+        
+        <!-- Title -->
+        <h1 class="font-serif text-4xl md:text-6xl lg:text-7xl leading-tight mb-12">
+          {newsItem.title}
+        </h1>
+        
+        <!-- Featured Image -->
+        {imageUrl && (
+          <div class="aspect-[16/9] bg-theme-alt rounded-sm overflow-hidden mb-12">
+            <img 
+              src={`${cmsUrl}${imageUrl}`} 
+              alt={newsItem.title} 
+              class="w-full h-full object-cover" 
+            />
+          </div>
+        )}
+        
+        <!-- Description / Lead -->
+        <div class="text-xl md:text-2xl leading-relaxed text-theme-muted mb-12 border-l-2 border-theme/30 pl-8">
+          <p>{newsItem.description}</p>
+        </div>
+        
+        <!-- Rich Content -->
+        {newsItem.content && (
+          <div class="prose prose-lg max-w-none text-theme">
+            <RichTextRenderer node={newsItem.content.root} />
+          </div>
+        )}
+        
+        <!-- Back Link -->
+        <div class="pt-16 border-t border-theme/10">
+          <a href={`${base}news`} class="text-sm uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity flex items-center gap-4">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="rotate-180">
+              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="lang-en">Back to News</span>
+            <span class="lang-ja">ニュースに戻る</span>
+          </a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  main {
+    font-family: var(--font-sans);
+  }
+  h1 {
+    font-family: var(--font-serif);
+  }
+</style>

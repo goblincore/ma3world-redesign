@@ -33,12 +33,18 @@ const { class: className = "" } = Astro.props;
     height: auto;
   }
   
+  /* Sections with no-snap class don't have min-height constraint on mobile */
+  .fullpage-wrapper > :global(section.no-snap) {
+    min-height: auto;
+    height: auto;
+  }
+  
   /* Desktop: fullpage scroll-snap */
   @media (min-width: 1024px) {
     .fullpage-wrapper {
       height: 100vh;
       overflow-y: scroll;
-      scroll-snap-type: y mandatory;
+      scroll-snap-type: y proximity; /* proximity allows stopping anywhere, prefers snap points */
       scroll-behavior: smooth;
     }
     
@@ -49,6 +55,15 @@ const { class: className = "" } = Astro.props;
       height: 100vh;
       min-height: 100vh;
       overflow: hidden;
+    }
+    
+    /* No-snap sections: still a snap point but with natural height */
+    .fullpage-wrapper > :global(section.no-snap) {
+      scroll-snap-align: start;
+      scroll-snap-stop: normal; /* Allow scrolling through without stopping */
+      height: auto;
+      min-height: auto;
+      overflow: visible;
     }
   }
 </style>

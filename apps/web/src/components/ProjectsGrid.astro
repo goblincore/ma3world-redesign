@@ -1,4 +1,6 @@
 ---
+import { getFeaturedProjects, getMediaUrl, getCmsUrl, type Project as CMSProject } from '../lib/cms';
+
 interface Project {
   title: string;
   titleJa: string;
@@ -9,7 +11,12 @@ interface Project {
   image?: string;
 }
 
-const projects = [
+interface Props {
+  projects?: Project[];
+}
+
+// Fallback hardcoded projects
+const fallbackProjects: Project[] = [
   { 
     title: "Imabari Towel Digital Art Gallery", 
     titleJa: "今治タオル デジタルアートギャラリー",
@@ -29,11 +36,40 @@ const projects = [
     image: "/project/fukushima/yuacheer.jpeg"
   },
 ];
+
+// Fetch from CMS if no props provided
+let projects: Project[];
+
+if (Astro.props.projects) {
+  projects = Astro.props.projects;
+} else {
+  // Try to fetch featured projects from CMS
+  const cmsProjects = await getFeaturedProjects('en');
+  const cmsUrl = getCmsUrl();
+  
+  if (cmsProjects.length > 0) {
+    projects = cmsProjects.map((item: CMSProject) => {
+      const imageUrl = getMediaUrl(item.image);
+      return {
+        title: item.title,
+        titleJa: item.title,
+        slug: item.slug,
+        category: item.category,
+        categoryJa: item.category,
+        year: item.year,
+        image: imageUrl ? `${cmsUrl}${imageUrl}` : undefined
+      };
+    });
+  } else {
+    projects = fallbackProjects;
+  }
+}
+
 const base = import.meta.env.BASE_URL;
 const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : base;
 ---
 
-<section id="projects" class="bg-theme py-16 md:py-24 lg:py-32 px-6 md:px-12 flex items-center justify-center border-b border-theme">
+<section id="projects" class="no-snap bg-theme py-16 md:py-24 lg:py-32 px-6 md:px-12 border-b border-theme">
   <div class="max-w-7xl w-full">
     <!-- Section Header -->
     <div class="flex items-end justify-between mb-16">
