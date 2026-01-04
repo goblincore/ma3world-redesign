@@ -41,6 +41,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # Copy standalone build
+# This includes node_modules and the apps/cms directory
 COPY --from=builder --chown=nextjs:nodejs /app/apps/cms/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/cms/.next/static ./apps/cms/.next/static
 
@@ -50,6 +51,5 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-# server.js is created by next build from the standalone output
-# Next.js standalone puts the entrypoint at the root of the standalone directory
-CMD HOSTNAME="0.0.0.0" node server.js
+# In monorepos, the entrypoint is located at apps/cms/server.js
+CMD HOSTNAME="0.0.0.0" node apps/cms/server.js
