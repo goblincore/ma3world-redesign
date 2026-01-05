@@ -20,18 +20,17 @@ const { title, date, image, description, href, category = "NEWS" } = Astro.props
         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
       />
     ) : (
-      <div class="w-full h-full flex items-center justify-center relative bg-theme-muted">
-        <div class="absolute inset-0 bg-theme-alt opacity-20 transition-transform duration-1000 group-hover:scale-105"></div>
+      <div class="w-full h-full flex items-center justify-center relative bg-theme-muted group-hover:bg-theme-alt/10 transition-colors duration-700">
         <img 
-          src="/ma3world-redesign/news-placeholder-light.png" 
+          src="/ma3world-redesign/news-placeholder-light-v2.png" 
           alt="News placeholder" 
-          class="relative z-10 w-40 h-40 md:w-56 md:h-56 object-contain light-placeholder transition-transform duration-700 group-hover:scale-105 opacity-20 group-hover:opacity-40"
+          class="relative z-10 w-40 h-40 md:w-56 md:h-56 object-contain light-placeholder transition-all duration-700 group-hover:scale-105 opacity-15 group-hover:opacity-30"
           style="mix-blend-mode: multiply;"
         />
         <img 
-          src="/ma3world-redesign/news-placeholder-dark.png" 
+          src="/ma3world-redesign/news-placeholder-dark-v2.png" 
           alt="News placeholder" 
-          class="relative z-10 w-40 h-40 md:w-56 md:h-56 object-contain dark-placeholder hidden transition-transform duration-700 group-hover:scale-105"
+          class="relative z-10 w-40 h-40 md:w-56 md:h-56 object-contain dark-placeholder hidden transition-all duration-700 group-hover:scale-105 opacity-30 group-hover:opacity-60"
           style="mix-blend-mode: screen;"
         />
       </div>
