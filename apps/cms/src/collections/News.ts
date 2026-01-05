@@ -3,6 +3,16 @@ import { revalidateAstro } from '../hooks/revalidateAstro'
 
 export const News: CollectionConfig = {
   slug: 'news',
+  labels: {
+    singular: {
+      en: 'News',
+      ja: 'ニュース',
+    },
+    plural: {
+      en: 'News',
+      ja: 'ニュース',
+    },
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'date', 'linkType', 'updatedAt'],
@@ -26,21 +36,33 @@ export const News: CollectionConfig = {
   fields: [
     {
       name: 'title',
+      label: {
+        en: 'Title',
+        ja: 'タイトル',
+      },
       type: 'text',
       required: true,
       localized: true,
     },
     {
       name: 'slug',
+      label: 'Slug (URL)',
       type: 'text',
       required: true,
       unique: true,
       admin: {
-        description: 'URL-friendly identifier (e.g., "tokyo-design-week-2024")',
+        description: {
+          en: 'URL-friendly identifier (e.g., "tokyo-design-week-2024")',
+          ja: 'URL用識別子（例: tokyo-design-week-2024）',
+        },
       },
     },
     {
       name: 'date',
+      label: {
+        en: 'Publish Date',
+        ja: '公開日',
+      },
       type: 'date',
       required: true,
       admin: {
@@ -52,55 +74,94 @@ export const News: CollectionConfig = {
     },
     {
       name: 'image',
+      label: {
+        en: 'Featured Image',
+        ja: 'アイキャッチ画像',
+      },
       type: 'upload',
       relationTo: 'media',
     },
     {
       name: 'description',
+      label: {
+        en: 'Summary',
+        ja: '概要',
+      },
       type: 'textarea',
       required: true,
       localized: true,
       admin: {
-        description: 'Short summary for listing pages',
+        description: {
+          en: 'Short summary for listing pages',
+          ja: '一覧ページ用の短い概要文',
+        },
       },
     },
     {
       name: 'content',
+      label: {
+        en: 'Article Content',
+        ja: '記事本文',
+      },
       type: 'richText',
       localized: true,
       admin: {
-        description: 'Full article content for the detail page',
+        description: {
+          en: 'Full article content for the detail page',
+          ja: '詳細ページ用の記事本文（リッチテキスト）',
+        },
       },
     },
     {
       name: 'linkType',
+      label: {
+        en: 'Click Behavior',
+        ja: 'クリック時の動作',
+      },
       type: 'radio',
       defaultValue: 'detail',
       options: [
-        { label: 'News Detail Page', value: 'detail' },
-        { label: 'Link to Project', value: 'project' },
-        { label: 'External URL', value: 'external' },
+        { label: { en: 'News Detail Page', ja: 'ニュース詳細ページ' }, value: 'detail' },
+        { label: { en: 'Link to Project', ja: 'プロジェクトへリンク' }, value: 'project' },
+        { label: { en: 'External URL', ja: '外部リンク' }, value: 'external' },
       ],
       admin: {
         layout: 'horizontal',
-        description: 'Where should clicking this news item go?',
+        description: {
+          en: 'Where should clicking this news item go?',
+          ja: 'このニュース項目をクリックした際の遷移先',
+        },
       },
     },
     {
       name: 'project',
+      label: {
+        en: 'Related Project',
+        ja: '関連プロジェクト',
+      },
       type: 'relationship',
       relationTo: 'projects',
       admin: {
         condition: (data) => data?.linkType === 'project',
-        description: 'Link to an existing project',
+        description: {
+          en: 'Link to an existing project',
+          ja: '既存のプロジェクトにリンクします',
+        },
       },
     },
     {
       name: 'externalUrl',
+      label: {
+        en: 'External URL',
+        ja: '外部リンクURL',
+      },
       type: 'text',
       admin: {
         condition: (data) => data?.linkType === 'external',
-        description: 'External URL to link to',
+        description: {
+          en: 'External URL to link to',
+          ja: 'リンク先のプロトコルを含むURL（例: https://example.com）',
+        },
       },
     },
   ],
