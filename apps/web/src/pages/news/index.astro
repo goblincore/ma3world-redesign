@@ -52,7 +52,7 @@ const newsItems = cmsNews.length > 0
       return {
         title: item.title,
         date: new Date(item.date).toLocaleDateString('en-CA').replace(/-/g, '/'),
-        image: imageUrl ? `${cmsUrl}${imageUrl}` : '/placeholder.jpg',
+        image: imageUrl ? `${cmsUrl}${imageUrl}` : undefined,
         description: item.description,
         href
       };
@@ -84,7 +84,7 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
           <NewsCard 
             {...item} 
             href={item.href.startsWith('/') ? `${base}${item.href.slice(1)}` : item.href}
-            image={item.image.startsWith('/') ? `${assetBase}${item.image.slice(1)}` : item.image}
+            image={item.image ? (item.image.startsWith('/') ? `${assetBase}${item.image.slice(1)}` : item.image) : undefined}
           />
         ))}
       </div>
