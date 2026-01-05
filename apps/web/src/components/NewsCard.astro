@@ -2,7 +2,7 @@
 interface Props {
   title: string;
   date: string;
-  image: string;
+  image?: string;
   description: string;
   href: string;
   category?: string;
@@ -12,12 +12,30 @@ const { title, date, image, description, href, category = "NEWS" } = Astro.props
 ---
 
 <a href={href} class="group block space-y-4">
-  <div class="relative aspect-[16/10] overflow-hidden bg-theme-alt rounded-sm">
-    <img 
-      src={image} 
-      alt={title} 
-      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-    />
+  <div class="relative aspect-[16/10] overflow-hidden bg-theme-muted rounded-sm">
+    {image ? (
+      <img 
+        src={image} 
+        alt={title} 
+        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+      />
+    ) : (
+      <div class="w-full h-full flex items-center justify-center relative bg-theme-muted">
+        <div class="absolute inset-0 bg-theme-alt opacity-20 transition-transform duration-1000 group-hover:scale-105"></div>
+        <img 
+          src="/ma3world-redesign/news-placeholder-light.png" 
+          alt="News placeholder" 
+          class="relative z-10 w-40 h-40 md:w-56 md:h-56 object-contain light-placeholder transition-transform duration-700 group-hover:scale-105"
+          style="mix-blend-mode: multiply;"
+        />
+        <img 
+          src="/ma3world-redesign/news-placeholder-dark.png" 
+          alt="News placeholder" 
+          class="relative z-10 w-40 h-40 md:w-56 md:h-56 object-contain dark-placeholder hidden transition-transform duration-700 group-hover:scale-105"
+          style="mix-blend-mode: screen;"
+        />
+      </div>
+    )}
   </div>
   
   <div class="space-y-3">
