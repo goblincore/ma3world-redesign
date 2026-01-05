@@ -63,7 +63,7 @@ const projects = cmsProjects.length > 0
         category: item.category,
         categoryJa: item.category, // Will be different when fetching 'ja' locale
         year: item.year,
-        image: imageUrl ? `${cmsUrl}${imageUrl}` : '/placeholder.jpg',
+        image: imageUrl ? `${cmsUrl}${imageUrl}` : undefined,
         description: item.description
       };
     })
@@ -100,13 +100,22 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-24">
         {projects.map((project, index) => (
           <a href={`${base}projects/${project.slug}`} class="group relative block">
-            <div class="aspect-[16/10] bg-theme-alt overflow-hidden rounded-sm mb-8 relative">
-              <img 
-                src={`${assetBase}${project.image.startsWith('/') ? project.image.slice(1) : project.image}`} 
-                alt={project.title} 
-                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-              <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex items-center justify-center">
+            <div class="aspect-[16/10] bg-theme-muted overflow-hidden rounded-sm mb-8 relative group">
+              {project.image ? (
+                <img 
+                  src={`${assetBase}${project.image.startsWith('/') ? project.image.slice(1) : project.image}`} 
+                  alt={project.title} 
+                  class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                />
+              ) : (
+                <div class="w-full h-full flex items-center justify-center relative">
+                  <div class="absolute inset-0 bg-theme-alt transition-transform duration-1000 group-hover:scale-105"></div>
+                  <span class="text-6xl md:text-8xl font-serif text-theme-muted relative z-10 transition-opacity group-hover:opacity-80">
+                    0{index + 1}
+                  </span>
+                </div>
+              )}
+              <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex items-center justify-center z-20">
                 <div class="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center scale-90 group-hover:scale-100 transition-transform duration-500">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M5 12h14M12 5l7 7-7 7"/>
