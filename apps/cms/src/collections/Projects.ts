@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateAstro } from '../hooks/revalidateAstro'
 
 export const Projects: CollectionConfig = {
   slug: 'projects',
@@ -18,6 +19,9 @@ export const Projects: CollectionConfig = {
   },
   versions: {
     drafts: true,
+  },
+  hooks: {
+    afterChange: [revalidateAstro],
   },
   fields: [
     {
