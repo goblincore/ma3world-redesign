@@ -14,21 +14,13 @@ export const revalidateAstro: CollectionAfterChangeHook = async ({ doc, previous
     console.log(`Triggering GitHub build for ${OWNER}/${REPO}...`)
 
     try {
-      const response = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/dispatches`, {
+      const response = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/pages/builds`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${GITHUB_PAT}`,
           Accept: 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json',
           'User-Agent': 'PayloadCMS-Webhook',
         },
-        body: JSON.stringify({
-          event_type: 'cms_update',
-          client_payload: {
-            operation,
-            docId: doc.id,
-          },
-        }),
       })
 
       if (response.ok) {
