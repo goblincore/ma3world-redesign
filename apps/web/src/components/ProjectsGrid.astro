@@ -95,13 +95,13 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
         <a href={`${base}projects/${project.slug || project.title.toLowerCase().replace(' ', '-')}`} class="group block">
           <!-- Image Container -->
           <div class="aspect-[4/3] bg-theme-muted rounded-sm overflow-hidden mb-6 relative">
-            {project.image ? (
-              <img 
-                src={`${assetBase}${project.image.startsWith('/') ? project.image.slice(1) : project.image}`} 
-                alt={project.title}
-                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 project-image"
-              />
-            ) : (
+              {project.image ? (
+                <img 
+                  src={project.image.startsWith('http') ? project.image : `${assetBase}${project.image.startsWith('/') ? project.image.slice(1) : project.image}`} 
+                  alt={project.title}
+                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 project-image"
+                />
+              ) : (
               <>
                 <div class="absolute inset-0 bg-theme-alt transition-transform duration-700 project-placeholder-bg"></div>
                 <div class="absolute inset-0 flex items-center justify-center">

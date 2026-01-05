@@ -57,7 +57,7 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
         <div class="absolute inset-0 z-0">
           <video 
             id="project-video"
-            src={`${assetBase}${project.heroVideo.startsWith('/') ? project.heroVideo.slice(1) : project.heroVideo}`} 
+            src={project.heroVideo.startsWith('http') ? project.heroVideo : `${assetBase}${project.heroVideo.startsWith('/') ? project.heroVideo.slice(1) : project.heroVideo}`} 
             autoplay 
             loop 
             muted 
@@ -107,7 +107,7 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
           <div class="pt-8 pb-4">
             <div class="aspect-[16/9] bg-theme-alt rounded-sm overflow-hidden">
               <img 
-                src={`${cmsUrl}${imageUrl}`} 
+                src={imageUrl.startsWith('http') ? imageUrl : `${cmsUrl}${imageUrl}`} 
                 alt={project.title} 
                 class="w-full h-full object-cover" 
               />

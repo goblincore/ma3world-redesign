@@ -103,7 +103,7 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
             <div class="aspect-[16/10] bg-theme-muted overflow-hidden rounded-sm mb-8 relative group">
               {project.image ? (
                 <img 
-                  src={`${assetBase}${project.image.startsWith('/') ? project.image.slice(1) : project.image}`} 
+                  src={project.image ? (project.image.startsWith('http') ? project.image : `${assetBase}${project.image.startsWith('/') ? project.image.slice(1) : project.image}`) : undefined} 
                   alt={project.title} 
                   class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 />

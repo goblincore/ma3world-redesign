@@ -84,7 +84,7 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
           <NewsCard 
             {...item} 
             href={item.href.startsWith('/') ? `${base}${item.href.slice(1)}` : item.href}
-            image={item.image ? (item.image.startsWith('/') ? `${assetBase}${item.image.slice(1)}` : item.image) : undefined}
+            image={item.image ? (item.image.startsWith('http') ? item.image : (item.image.startsWith('/') ? `${assetBase}${item.image.slice(1)}` : item.image)) : undefined}
           />
         ))}
       </div>
