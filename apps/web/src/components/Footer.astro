@@ -158,6 +158,14 @@ const navLinks = [
   .animate-fade-in {
     animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
+
+  /* Robust theme-aware placeholders */
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-text-muted);
+    opacity: 0.5;
+    transition: color 0.3s ease;
+  }
 </style>
 
 <script is:inline>
