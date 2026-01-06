@@ -140,6 +140,32 @@ async function fetchFromCMS<T>(
 }
 
 /**
+ * Fetch a Global from PayloadCMS
+ */
+async function fetchGlobalFromCMS<T>(
+  slug: string, 
+  options: { locale?: 'en' | 'ja'; depth?: number } = {}
+): Promise<T | null> {
+  const { locale = 'en', depth = 1 } = options;
+  
+  const params = new URLSearchParams({
+    locale,
+    depth: String(depth),
+  });
+  
+  const url = `${CMS_URL}/api/globals/${slug}?${params}`;
+  
+  try {
+    const response = await fetch(url, { cache: 'no-store' });
+    if (!response.ok) return null;
+    return response.json();
+  } catch (error) {
+    console.error(`CMS Global fetch error (${slug}):`, error);
+    return null;
+  }
+}
+
+/**
  * Fetch all news items
  */
 export async function getNews(locale: 'en' | 'ja' = 'en'): Promise<News[]> {
@@ -175,8 +201,17 @@ export async function getProjects(locale: 'en' | 'ja' = 'en'): Promise<Project[]
 
 /**
  * Fetch featured projects for homepage
+ * Prioritizes projects selected in the Settings global, then falls back to 'featured' flag
  */
 export async function getFeaturedProjects(locale: 'en' | 'ja' = 'en', limit: number = 4): Promise<Project[]> {
+  // 1. Try to get curated list from Settings
+  const settings = await fetchGlobalFromCMS<{ featuredProjects?: Project[] }>('settings', { locale, depth: 1 });
+  
+  if (settings?.featuredProjects && settings.featuredProjects.length > 0) {
+    return settings.featuredProjects.slice(0, limit);
+  }
+
+  // 2. Fallback to projects with featured=true
   const response = await fetchFromCMS<Project>('projects', { 
     locale, 
     depth: 1,

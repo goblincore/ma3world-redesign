@@ -12,6 +12,7 @@ import { News } from './collections/News'
 import { Projects } from './collections/Projects'
 import { Submissions } from './collections/Submissions'
 import { YouTube } from './blocks/YouTube'
+import { Settings } from './globals/Settings'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -24,6 +25,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, News, Projects, Submissions],
+  globals: [Settings],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,
