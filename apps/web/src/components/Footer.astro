@@ -17,6 +17,8 @@ const navLinks = [
   { name: "Clients", nameJa: "クライアント", url: `${base}#clients` },
   { name: "Contact", nameJa: "お問い合わせ", url: `${base}#contact` },
 ];
+
+const CMS_URL = import.meta.env.CMS_URL || 'http://localhost:3001';
 ---
 
 <footer id="contact" class="bg-theme py-16 md:py-24 lg:py-32 px-6 md:px-12 flex items-center justify-center">
@@ -168,15 +170,14 @@ const navLinks = [
   }
 </style>
 
-<script is:inline>
+<script is:inline define:vars={{ CMS_URL }}>
   const contactForm = document.getElementById('contact-form');
   const formMessage = document.getElementById('form-message');
   const submitBtn = document.getElementById('submit-btn');
   const submitTexts = submitBtn.querySelectorAll('.submit-text');
   const loadingText = submitBtn.querySelector('.loading-text');
 
-  // CMS URL
-  const CMS_URL = 'http://localhost:3001';
+  // CMS URL is injected via define:vars
 
   if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
