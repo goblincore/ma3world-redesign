@@ -79,6 +79,7 @@ export default buildConfig({
   cors: [
     'http://localhost:4321', // Astro dev server
     'http://localhost:3000', // Local CMS
+    'https://goblincore.github.io', // Production frontend
     process.env.ASTRO_URL || '',
   ].filter(Boolean),
 })
