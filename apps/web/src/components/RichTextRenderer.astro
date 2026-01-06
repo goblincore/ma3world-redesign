@@ -91,6 +91,45 @@ function getTextClasses(format: number) {
      )
   }
 
+  if (node.type === 'block') {
+    const { blockType, fields } = node.fields;
+    
+    if (blockType === 'youtube') {
+      const url = fields.url;
+      // Extract video ID from URL
+      let videoId = '';
+      if (url.includes('youtube.com/watch?v=')) {
+        videoId = url.split('v=')[1].split('&')[0];
+      } else if (url.includes('youtu.be/')) {
+        videoId = url.split('youtu.be/')[1].split('?')[0];
+      } else if (url.includes('youtube.com/embed/')) {
+        videoId = url.split('embed/')[1].split('?')[0];
+      }
+
+      if (videoId) {
+        return (
+          <div class="my-8">
+            <div class="relative w-full aspect-video rounded-sm overflow-hidden bg-theme-muted">
+              <iframe
+                src={`https://www.youtube.com/embed/${videoId}`}
+                title={fields.caption || 'YouTube video player'}
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                class="absolute inset-0 w-full h-full"
+              ></iframe>
+            </div>
+            {fields.caption && (
+              <p class="mt-2 text-sm text-theme-muted italic text-center">
+                {fields.caption}
+              </p>
+            )}
+          </div>
+        );
+      }
+    }
+  }
+
   // Root or other container nodes
   if (node.children) {
     return (
