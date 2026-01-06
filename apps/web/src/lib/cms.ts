@@ -205,7 +205,7 @@ export async function getProjects(locale: 'en' | 'ja' = 'en'): Promise<Project[]
  */
 export async function getFeaturedProjects(locale: 'en' | 'ja' = 'en', limit: number = 4): Promise<Project[]> {
   // 1. Try to get curated list from Settings
-  const settings = await fetchGlobalFromCMS<{ featuredProjects?: Project[] }>('settings', { locale, depth: 1 });
+  const settings = await fetchGlobalFromCMS<{ featuredProjects?: Project[] }>('settings', { locale, depth: 2 });
   
   if (settings?.featuredProjects && settings.featuredProjects.length > 0) {
     return settings.featuredProjects.slice(0, limit);
