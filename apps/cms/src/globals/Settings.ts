@@ -1,4 +1,5 @@
 import type { GlobalConfig } from 'payload'
+import { revalidateAstroGlobal } from '../hooks/revalidateAstro'
 
 export const Settings: GlobalConfig = {
   slug: 'settings',
@@ -12,6 +13,9 @@ export const Settings: GlobalConfig = {
   access: {
     read: () => true,
   },
+  hooks: {
+    afterChange: [revalidateAstroGlobal],
+  },
   fields: [
     {
       name: 'featuredProjects',
@@ -22,6 +26,11 @@ export const Settings: GlobalConfig = {
       type: 'relationship',
       relationTo: 'projects',
       hasMany: true,
+      filterOptions: {
+        featured: {
+          equals: true,
+        },
+      },
       admin: {
         description: {
           en: 'Select and drag projects to change their order on the homepage/projects page.',
