@@ -75,11 +75,11 @@ function formatDate(dateString: string) {
               </header>
 
               {getMediaUrl(item.en.image) && (
-                <div class="aspect-[16/9] bg-theme-alt rounded-sm overflow-hidden mb-12">
+                <div class="bg-theme-alt rounded-sm mb-12 flex justify-center overflow-hidden">
                   <img 
                     src={getMediaUrl(item.en.image)!} 
                     alt={item.en.title} 
-                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                    class="max-w-full h-auto max-h-[85vh] object-contain transition-transform duration-700 group-hover:scale-105" 
                   />
                 </div>
               )}
@@ -90,7 +90,7 @@ function formatDate(dateString: string) {
               </div>
 
               {item.en.content && (
-                <div class="prose prose-lg dark:prose-invert max-w-none text-theme mb-12">
+                <div class="prose prose-lg dark:prose-invert max-w-none text-theme mb-12 journal-content">
                   <div class="lang-en">
                     <RichTextRenderer node={item.en.content.root} />
                   </div>
@@ -158,5 +158,21 @@ function formatDate(dateString: string) {
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* Language visibility logic is assumed to be handled globally or by top-level state */
+  /* Portrait Image Fix */
+  :global(.journal-content img) {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-height: 85vh !important;
+    width: auto !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
+    border-radius: 0.125rem;
+  }
+
+  :global(.journal-content .aspect-video) {
+    max-width: 900px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
 </style>

@@ -102,11 +102,11 @@ function getTextClasses(format: number) {
     const imageUrl = getMediaUrl(node.value);
     if (!imageUrl) return null;
     return (
-      <div class="my-12">
+      <div class="my-12 flex justify-center">
         <img 
           src={imageUrl} 
           alt={node.value?.alt || ''} 
-          class="w-full h-auto rounded-sm"
+          class="max-w-full h-auto rounded-sm block"
         />
         {node.fields?.caption && (
           <p class="mt-4 text-sm text-theme-muted italic text-center">
