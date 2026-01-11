@@ -78,7 +78,8 @@ interface PayloadResponse<T> {
 }
 
 // CMS URL - defaults to localhost in dev, can be overridden via env var
-const CMS_URL = import.meta.env.CMS_URL || (typeof process !== 'undefined' ? process.env.CMS_URL : undefined) || 'http://localhost:3001';
+const rawUrl = import.meta.env.CMS_URL || (typeof process !== 'undefined' ? process.env.CMS_URL : undefined) || 'http://localhost:3001';
+const CMS_URL = rawUrl.replace(/\/$/, '');
 
 /**
  * Helper to flatten a nested object into Payload-style bracket notation
