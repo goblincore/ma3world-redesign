@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import NewsCard from '../../components/NewsCard.astro';
+import EmptyJournalState from '../../components/EmptyJournalState.astro';
 import { getJournal, getMediaUrl, getCmsUrl, getSettings, type Journal } from '../../lib/cms';
 
 // Fetch from CMS
@@ -83,9 +84,7 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
         </div>
       ) : (
         !featuredPost && (
-          <div class="text-center py-20 opacity-40">
-            <p class="text-xl">No journal entries found.</p>
-          </div>
+          <EmptyJournalState />
         )
       )}
     </div>

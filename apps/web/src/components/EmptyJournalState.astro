@@ -1,0 +1,77 @@
+---
+---
+
+<div class="flex flex-col items-center justify-center py-20 px-4 text-center">
+  <div class="relative w-full max-w-[300px] mb-8 opacity-40 group">
+    <svg viewBox="0 0 400 300" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <!-- Stars -->
+      <g class="stars">
+        <path d="M 80,60 L 82,62 M 80,62 L 82,60" class="animate-twinkle" style="animation-delay: 0s" />
+        <path d="M 320,40 L 322,42 M 320,42 L 322,40" class="animate-twinkle" style="animation-delay: 1.5s" />
+        <path d="M 350,120 L 352,122 M 350,122 L 352,120" class="animate-twinkle" style="animation-delay: 0.8s" />
+        <path d="M 50,130 L 52,132 M 50,132 L 52,130" class="animate-twinkle" style="animation-delay: 2.1s" />
+        <circle cx="200" cy="50" r="0.8" fill="currentColor" class="animate-twinkle" style="animation-delay: 0.4s" />
+        <circle cx="120" cy="90" r="0.8" fill="currentColor" class="animate-twinkle" style="animation-delay: 1.2s" />
+        <circle cx="280" cy="80" r="0.8" fill="currentColor" class="animate-twinkle" style="animation-delay: 1.9s" />
+      </g>
+
+      <!-- Moon -->
+      <g transform="translate(240, 60)" class="animate-float">
+        <path d="M 20,0 A 30,30 0 1 0 50,30 A 22,22 0 1 1 20,0 Z" />
+      </g>
+
+      <!-- Original Book Design -->
+      <g transform="translate(100, 180)">
+        <!-- Book Spine/Base -->
+        <path d="M 0,0 Q 100,20 200,0" />
+        <path d="M 0,80 Q 100,100 200,80" />
+        <line x1="0" y1="0" x2="0" y2="80" />
+        <line x1="200" y1="0" x2="200" y2="80" />
+        <line x1="100" y1="15" x2="100" y2="95" />
+
+        <!-- Open Pages -->
+        <path d="M 5,-10 Q 100,10 195,-10 L 195,70 Q 100,90 5,70 Z" />
+        <path d="M 5,-10 Q 100,5 100,-10 L 100,70 Q 100,85 5,70 Z" />
+        <path d="M 100,-10 Q 100,5 195,-10 L 195,70 Q 100,85 100,70 Z" />
+        
+        <!-- Subtle page lines -->
+        <line x1="20" y1="20" x2="80" y2="20" opacity="0.3" stroke-dasharray="2,4" />
+        <line x1="20" y1="35" x2="80" y2="35" opacity="0.3" stroke-dasharray="2,4" />
+        <line x1="20" y1="50" x2="80" y2="50" opacity="0.3" stroke-dasharray="2,4" />
+        
+        <line x1="120" y1="20" x2="180" y2="20" opacity="0.3" stroke-dasharray="2,4" />
+        <line x1="120" y1="35" x2="180" y2="35" opacity="0.3" stroke-dasharray="2,4" />
+        <line x1="120" y1="50" x2="180" y2="50" opacity="0.3" stroke-dasharray="2,4" />
+      </g>
+    </svg>
+  </div>
+  
+  <h3 class="text-2xl font-serif mb-3 opacity-90">
+    <span class="lang-en">The pages are still blank</span>
+    <span class="lang-ja">まだ白紙のページです</span>
+  </h3>
+  <p class="text-neutral-500 max-w-sm mx-auto leading-relaxed">
+    <span class="lang-en">Check back soon for new reflections and thoughts.</span>
+    <span class="lang-ja">新しい思索や発見を近々またチェックしてください。</span>
+  </p>
+</div>
+
+<style>
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(240px, 60px); }
+    50% { transform: translate(242px, 55px); }
+  }
+
+  .animate-twinkle {
+    animation: twinkle 3s infinite ease-in-out;
+  }
+
+  .animate-float {
+    animation: float 6s infinite ease-in-out;
+  }
+</style>
