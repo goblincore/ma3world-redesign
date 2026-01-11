@@ -81,12 +81,13 @@ function formatDate(dateString: string) {
                 </h2>
               </header>
 
-              {getMediaUrl(item.en.image) && (
+              {getMediaUrl(item.en.image, { width: 1200 }) && (
                 <div class="bg-theme-alt rounded-sm mb-12 flex justify-center overflow-hidden">
                   <img 
-                    src={getMediaUrl(item.en.image)!} 
+                    src={getMediaUrl(item.en.image, { width: 1200 })!} 
                     alt={item.en.title} 
-                    class="max-w-full h-auto max-h-[85vh] object-contain transition-transform duration-700 group-hover:scale-105" 
+                    class="max-w-full h-auto max-h-[85vh] object-contain transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
                   />
                 </div>
               )}

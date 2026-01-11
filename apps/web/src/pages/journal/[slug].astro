@@ -49,7 +49,7 @@ if (!journalItem) {
   return Astro.redirect('/404');
 }
 
-const imageUrl = getMediaUrl(journalItem.image);
+const imageUrl = getMediaUrl(journalItem.image, { width: 1600 });
 const formattedDate = new Date(journalItem.date).toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',

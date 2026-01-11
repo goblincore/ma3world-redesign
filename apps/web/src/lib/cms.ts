@@ -12,6 +12,14 @@ export interface Media {
   height?: number | null;
 }
 
+export interface ImageOptions {
+  width?: number;
+  height?: number;
+  quality?: number;
+  aspect_ratio?: string;
+  crop?: string;
+}
+
 export interface News {
   id: number;
   title: string;
@@ -315,20 +323,52 @@ export async function getProjectBySlug(slug: string, locale: 'en' | 'ja' = 'en')
 }
 
 /**
- * Get the image URL from a media field
+ * Get the image URL from a media field, optionally optimized via BunnyCDN
  */
-export function getMediaUrl(media: number | Media | null | undefined): string | null {
+export function getMediaUrl(media: number | Media | null | undefined, options?: ImageOptions): string | null {
   if (!media) return null;
   if (typeof media === 'number') return null; // Not populated
   
-  const url = media.url || null;
+  let url = media.url || null;
   if (!url) return null;
   
-  // If the URL is already absolute (starts with http), return it as is
+  // If the URL is already absolute (starts with http), check if it's a Supabase/S3 URL we can rewrite
   if (url.startsWith('http')) {
-    return url;
+    // Logic to rewrite Supabase storage URLs to BunnyCDN pull zone
+    // Example: https://[project].supabase.co/storage/v1/object/public/[bucket]/[filename]
+    if (url.includes('supabase.co/storage/v1/object/public/')) {
+      const parts = url.split('/storage/v1/object/public/');
+      if (parts.length === 2) {
+        // parts[1] contains [bucket]/[filename]
+        // We should keep the full path from the origin root
+        const fullPath = parts[1];
+        
+        // Only rewrite to CDN in production or if explicitly requested
+        const useCDN = import.meta.env.PROD || import.meta.env.PUBLIC_USE_CDN === 'true';
+        if (useCDN) {
+          url = `https://ma3worldbunny.b-cdn.net/${fullPath}`;
+        }
+      }
+    }
+  } else {
+    // Otherwise, prepend the CMS URL (local dev fallback)
+    url = `${getCmsUrl()}${url}`;
+  }
+
+  // Apply BunnyCDN optimization parameters if available and we are on the CDN domain
+  if (options && url.includes('b-cdn.net')) {
+    const params = new URLSearchParams();
+    if (options.width) params.append('width', String(options.width));
+    if (options.height) params.append('height', String(options.height));
+    if (options.quality) params.append('quality', String(options.quality));
+    if (options.aspect_ratio) params.append('aspect_ratio', options.aspect_ratio);
+    if (options.crop) params.append('crop', options.crop);
+    
+    const queryString = params.toString();
+    if (queryString) {
+      url = `${url}?${queryString}`;
+    }
   }
   
-  // Otherwise, prepend the CMS URL
-  return `${getCmsUrl()}${url}`;
+  return url;
 }

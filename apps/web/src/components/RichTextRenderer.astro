@@ -99,7 +99,7 @@ function getTextClasses(format: number) {
   }
 
   if (node.type === 'upload') {
-    const imageUrl = getMediaUrl(node.value);
+    const imageUrl = getMediaUrl(node.value, { width: 1200 });
     if (!imageUrl) return null;
     return (
       <div class="my-12 flex justify-center">
@@ -107,6 +107,7 @@ function getTextClasses(format: number) {
           src={imageUrl} 
           alt={node.value?.alt || ''} 
           class="max-w-full h-auto rounded-sm block"
+          loading="lazy"
         />
         {node.fields?.caption && (
           <p class="mt-4 text-sm text-theme-muted italic text-center">

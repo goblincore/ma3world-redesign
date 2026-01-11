@@ -51,8 +51,8 @@ if (!project) {
 }
 
 const cmsUrl = getCmsUrl();
-const mainImageUrl = getMediaUrl(project.image);
-const heroImageUrl = project.heroImage ? getMediaUrl(project.heroImage) : mainImageUrl;
+const mainImageUrl = getMediaUrl(project.image, { width: 1200 });
+const heroImageUrl = project.heroImage ? getMediaUrl(project.heroImage, { width: 1600 }) : mainImageUrl;
 const fallbackImageUrl = heroImageUrl || mainImageUrl;
 
 const base = import.meta.env.BASE_URL;

@@ -45,7 +45,7 @@ const showJournal = settings?.showJournal ?? true;
 const newsItems = cmsNewsEn.length > 0 
   ? cmsNewsEn.map((item: News) => {
       const jaItem = cmsNewsJa.find(ja => ja.slug === item.slug);
-      const imageUrl = getMediaUrl(item.image);
+      const imageUrl = getMediaUrl(item.image, { width: 800 });
       
       // Determine href based on linkType (default to detail page)
       let href: string;
@@ -72,7 +72,6 @@ const newsItems = cmsNewsEn.length > 0
   : []; // Removed fallback news for clean CMS integration
 
 const base = import.meta.env.BASE_URL;
-const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : base;
 ---
 
 <Layout title="News | MA3.0 World">
@@ -96,7 +95,7 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
           <NewsCard 
             {...item} 
             href={item.href.startsWith('/') ? `${base}${item.href.slice(1)}` : item.href}
-            image={item.image ? (item.image.startsWith('http') ? item.image : (item.image.startsWith('/') ? `${assetBase}${item.image.slice(1)}` : item.image)) : undefined}
+            image={item.image}
           />
         ))}
       </div>
