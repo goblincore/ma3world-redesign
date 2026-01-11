@@ -68,6 +68,14 @@ export interface Project {
   createdAt: string;
 }
 
+export interface Tag {
+  id: number;
+  name: string;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+
 export interface Journal {
   id: number;
   title: string;
@@ -86,6 +94,7 @@ export interface Journal {
     };
     [k: string]: unknown;
   } | null;
+  tags?: (number | Tag)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -129,15 +138,16 @@ function flattenObject(obj: any, prefix = ''): Record<string, string> {
  */
 async function fetchFromCMS<T>(
   endpoint: string, 
-  options: { locale?: 'en' | 'ja'; depth?: number; limit?: number; where?: Record<string, unknown> } = {}
+  options: { locale?: 'en' | 'ja'; depth?: number; limit?: number; page?: number; where?: Record<string, unknown> } = {}
 ): Promise<PayloadResponse<T>> {
-  const { locale = 'en', depth = 1, limit = 100, where } = options;
+  const { locale = 'en', depth = 1, limit = 100, page = 1, where } = options;
   const CMS_URL = getCmsUrl();
   
   const params = new URLSearchParams({
     locale,
     depth: String(depth),
     limit: String(limit),
+    page: String(page),
   });
   
   if (where) {
@@ -240,9 +250,22 @@ export async function getSettings(locale: 'en' | 'ja' = 'en'): Promise<{ feature
 export async function getJournal(locale: 'en' | 'ja' = 'en'): Promise<Journal[]> {
   const response = await fetchFromCMS<Journal>('journal', { 
     locale, 
-    depth: 1 
+    depth: 2,
+    limit: 1000 // Get all for static paths or fallback
   });
   return response.docs;
+}
+
+/**
+ * Fetch journal items with pagination
+ */
+export async function getJournalPaged(locale: 'en' | 'ja' = 'en', page: number = 1, limit: number = 10): Promise<PayloadResponse<Journal>> {
+  return fetchFromCMS<Journal>('journal', { 
+    locale, 
+    depth: 2, // Include full content
+    page,
+    limit
+  });
 }
 
 /**

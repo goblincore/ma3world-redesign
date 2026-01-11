@@ -112,5 +112,18 @@ export const Journal: CollectionConfig = {
         },
       },
     },
+    {
+      name: 'tags',
+      label: {
+        en: 'Tags',
+        ja: 'タグ',
+      },
+      type: 'relationship',
+      relationTo: 'tags',
+      hasMany: true,
+      admin: {
+        position: 'sidebar',
+      },
+    },
   ],
 }

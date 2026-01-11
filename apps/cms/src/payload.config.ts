@@ -13,6 +13,7 @@ import { News } from './collections/News'
 import { Journal } from './collections/Journal'
 import { Projects } from './collections/Projects'
 import { Submissions } from './collections/Submissions'
+import { Tags } from './collections/Tags'
 import { YouTube } from './blocks/YouTube'
 import { Settings } from './globals/Settings'
 
@@ -26,7 +27,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, News, Journal, Projects, Submissions],
+  collections: [Users, Media, News, Journal, Projects, Submissions, Tags],
   globals: [Settings],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
