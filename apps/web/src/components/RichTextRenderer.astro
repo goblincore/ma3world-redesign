@@ -171,6 +171,31 @@ function getTextClasses(format: number) {
         );
       }
     }
+    
+    if (blockType === 'video') {
+      const video = fields.video;
+      if (!video) return null;
+      
+      const videoUrl = getMediaUrl(video);
+      if (!videoUrl) return null;
+      
+      return (
+        <div class="my-12 flex flex-col items-center">
+          <video 
+            src={videoUrl} 
+            poster={getMediaUrl(video?.thumbnail)}
+            controls 
+            playsinline
+            class="w-full aspect-video rounded-sm block bg-theme-muted/20"
+          />
+          {fields.caption && (
+            <p class="mt-4 text-sm text-theme-muted italic text-center">
+              {fields.caption}
+            </p>
+          )}
+        </div>
+      );
+    }
   }
 
   // Root or other container nodes

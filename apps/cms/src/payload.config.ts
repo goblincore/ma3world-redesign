@@ -15,6 +15,7 @@ import { Projects } from './collections/Projects'
 import { Submissions } from './collections/Submissions'
 import { Tags } from './collections/Tags'
 import { YouTube } from './blocks/YouTube'
+import { Video } from './blocks/Video'
 import { Settings } from './globals/Settings'
 
 const filename = fileURLToPath(import.meta.url)
@@ -33,7 +34,7 @@ export default buildConfig({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,
       BlocksFeature({
-        blocks: [YouTube],
+        blocks: [YouTube, Video],
       }),
     ],
   }),
