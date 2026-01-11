@@ -108,15 +108,15 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
 
     <!-- Project Content Section -->
     <section class="py-24 md:py-32 px-6 md:px-12 flex justify-center border-b border-theme/10">
-      <div class="max-w-4xl w-full space-y-16">
+      <div class="max-w-5xl w-full space-y-16">
         <!-- Description -->
-        <div class="max-w-none text-xl md:text-2xl leading-relaxed text-theme-muted space-y-8">
+        <div class="max-w-none text-xl md:text-2xl lg:text-[32px] leading-relaxed text-theme-muted space-y-8">
           <p>{project.description}</p>
         </div>
 
         <!-- Rich Content -->
         {project.content && (
-          <div class="prose prose-lg lg:prose-2xl max-w-none text-theme">
+          <div class="prose max-w-none text-theme prose-p:text-lg md:prose-p:text-xl lg:prose-p:text-[26px] prose-p:leading-relaxed">
             <RichTextRenderer node={project.content.root} />
           </div>
         )}
@@ -166,6 +166,110 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
   }
   h1, h2 {
     font-family: var(--font-serif);
+  }
+
+  /* Use :global() to target elements inside RichTextRenderer because Astro scopes styles by default */
+  :global(.prose) {
+    max-width: none !important;
+  }
+
+  :global(.prose p) {
+    font-size: 1.1rem !important;
+    line-height: 1.6 !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  :global(.prose h2) {
+    font-size: 2.25rem !important;
+    line-height: 1.1 !important;
+    margin-top: 4rem !important;
+    margin-bottom: 2rem !important;
+    font-weight: 700 !important;
+  }
+
+  :global(.prose h3) {
+    font-size: 1.85rem !important;
+    line-height: 1.2 !important;
+    margin-top: 3.5rem !important;
+    margin-bottom: 1.5rem !important;
+    font-weight: 700 !important;
+  }
+
+  :global(.prose h4) {
+    font-size: 1.5rem !important;
+    line-height: 1.2 !important;
+    margin-top: 3rem !important;
+    margin-bottom: 1.25rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    opacity: 0.9 !important;
+    font-weight: 700 !important;
+  }
+
+  @media (min-width: 768px) {
+    :global(.prose p) {
+      font-size: 1.25rem !important;
+    }
+    :global(.prose h2) {
+      font-size: 3rem !important;
+    }
+    :global(.prose h3) {
+      font-size: 2.5rem !important;
+    }
+    :global(.prose h4) {
+      font-size: 1.75rem !important;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    :global(.prose p) {
+      font-size: 26px !important;
+      line-height: 1.7 !important;
+    }
+    :global(.prose h2) {
+      font-size: 3.5rem !important;
+    }
+    :global(.prose h3) {
+      font-size: 2.75rem !important;
+    }
+    :global(.prose h4) {
+      font-size: 2.125rem !important;
+    }
+  }
+
+  :global(.prose blockquote) {
+    position: relative !important;
+    border-left-width: 4px !important;
+    padding-left: 4.5rem !important;
+    margin-top: 5rem !important;
+    margin-bottom: 5rem !important;
+    font-style: italic !important;
+    font-size: 1.5rem !important;
+  }
+
+  @media (min-width: 1024px) {
+    :global(.prose blockquote) {
+      font-size: 30px !important;
+    }
+  }
+
+  :global(.prose blockquote::before) {
+    content: '“' !important;
+    position: absolute !important;
+    left: -1rem !important;
+    top: -2.5rem !important;
+    font-size: 12rem !important;
+    font-family: var(--font-serif) !important;
+    color: var(--color-text-muted) !important;
+    opacity: 0.1 !important;
+    pointer-events: none !important;
+  }
+
+  :global(.prose blockquote p) {
+    font-size: inherit !important;
+    line-height: 1.5 !important;
+    margin-bottom: 0 !important;
+    color: var(--color-text-muted) !important;
   }
   
   .hero-overlay {

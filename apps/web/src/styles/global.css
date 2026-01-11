@@ -78,12 +78,6 @@ html[lang="en"] .lang-ja { display: none !important; }
     -moz-osx-osx-grayscale: grayscale;
   }
 
-  @media (min-width: 1024px) {
-    body {
-      font-size: 2.5rem;
-    }
-  }
-
   /* Selection styling */
   ::selection {
     background-color: var(--color-text);

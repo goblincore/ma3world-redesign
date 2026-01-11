@@ -52,18 +52,18 @@ function getTextClasses(format: number) {
 
   if (node.type === 'heading') {
     const Tag = node.tag as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-    const sizes = {
-      h1: 'text-4xl font-bold mb-6 mt-8',
-      h2: 'text-3xl font-bold mb-5 mt-8',
-      h3: 'text-2xl font-bold mb-4 mt-6',
-      h4: 'text-xl font-bold mb-3 mt-6',
-      h5: 'text-lg font-bold mb-2 mt-4',
-      h6: 'text-base font-bold mb-2 mt-4',
-    };
     return (
-      <Tag class={sizes[Tag]}>
+      <Tag class="font-bold">
         {node.children?.map((child: any) => <Astro.self node={child} />)}
       </Tag>
+    );
+  }
+
+  if (node.type === 'quote') {
+    return (
+      <blockquote class="relative border-l-4 border-theme-alt/30 pl-10 my-16 italic text-theme-muted quote-content">
+        {node.children?.map((child: any) => <Astro.self node={child} />)}
+      </blockquote>
     );
   }
 
@@ -87,8 +87,12 @@ function getTextClasses(format: number) {
   
   if (node.type === 'link') {
      const url = node.fields?.url || '#';
+     const isExternal = url.startsWith('http');
+     const target = node.fields?.newTab || isExternal ? "_blank" : "_self";
+     const rel = target === "_blank" ? "noopener noreferrer" : undefined;
+     
      return (
-        <a href={url} target={node.fields?.newTab ? "_blank" : "_self"} class="underline text-theme-alt hover:opacity-80">
+        <a href={url} target={target} rel={rel} class="underline text-theme-alt hover:opacity-80">
             {node.children?.map((child: any) => <Astro.self node={child} />)}
         </a>
      )
@@ -114,11 +118,12 @@ function getTextClasses(format: number) {
   }
 
   if (node.type === 'block') {
-    if (!node.fields) return null;
-    const { blockType, fields } = node.fields;
+    const fields = node.fields || node.value;
+    if (!fields) return null;
     
+    const blockType = fields.blockType;
     if (blockType === 'youtube') {
-      const url = fields?.url;
+      const url = fields.url;
       if (!url) return null;
       // Extract video ID from URL
       let videoId = '';
