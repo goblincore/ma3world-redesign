@@ -1,4 +1,5 @@
 ---
+import LegalModal from './LegalModal.astro';
 const currentYear = new Date().getFullYear();
 
 const socialLinks = [
@@ -141,18 +142,18 @@ const CMS_URL = import.meta.env.CMS_URL || 'http://localhost:3001';
       </div>
 
       <!-- Fine Print -->
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-[9px] uppercase tracking-[0.2em] text-theme-muted/10">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-[9px] uppercase tracking-[0.2em] text-theme-muted/30">
         <div class="flex gap-6">
-          <a href="/terms" class="hover:text-white transition-colors">
+          <button id="open-terms" class="hover:text-theme transition-colors cursor-pointer">
             <span class="lang-en">Terms</span>
             <span class="lang-ja">利用規約</span>
-          </a>
-          <a href="/privacy" class="hover:text-white transition-colors">
+          </button>
+          <button id="open-privacy" class="hover:text-theme transition-colors cursor-pointer text-left">
             <span class="lang-en">Privacy Policy</span>
             <span class="lang-ja">プライバシーポリシー</span>
-          </a>
+          </button>
         </div>
-        <a href="mailto:withallmyhrt@gmail.com" class="hover:text-white transition-colors">
+        <a href="mailto:withallmyhrt@gmail.com" class="hover:text-theme transition-colors">
           Site design and implementation by jonnydont.surf
         </a>
       </div>
@@ -251,4 +252,63 @@ const CMS_URL = import.meta.env.CMS_URL || 'http://localhost:3001';
       }
     });
   }
+
+  // Legal Modals Setup
+  document.getElementById('open-terms')?.addEventListener('click', () => {
+    window.dispatchEvent(new CustomEvent('open-modal', { detail: { id: 'modal-terms' } }));
+  });
+
+  document.getElementById('open-privacy')?.addEventListener('click', () => {
+    window.dispatchEvent(new CustomEvent('open-modal', { detail: { id: 'modal-privacy' } }));
+  });
 </script>
+
+<LegalModal id="modal-terms" titleEn="Terms of Service" titleJa="利用規約">
+  <div class="space-y-6">
+    <section>
+      <h4 class="text-lg font-serif mb-2">1. Acceptance of Terms</h4>
+      <p class="text-[14px] leading-relaxed opacity-70">By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement.</p>
+      <p class="opacity-50 text-[11px] mt-2 font-ja">当ウェブサイトをご利用になることで、本規約に同意したものとみなされます。</p>
+    </section>
+    <section>
+      <h4 class="text-lg font-serif mb-2">2. Intellectual Property</h4>
+      <p class="text-[14px] leading-relaxed opacity-70">All content including logos, text, and media on this site are the property of MA3world Inc. and are protected by international copyright laws.</p>
+      <p class="opacity-50 text-[11px] mt-2 font-ja">ロゴ、テキスト、メディアを含む当サイトのすべてのコンテンツはMA3world Inc.の所有物であり、国際著作権法によって保護されています。</p>
+    </section>
+    <section>
+      <h4 class="text-lg font-serif mb-2">3. User Conduct</h4>
+      <p class="text-[14px] leading-relaxed opacity-70">Users agree not to use the website for any unlawful purposes or to interfere with the operation of the site in any way.</p>
+      <p class="opacity-50 text-[11px] mt-2 font-ja">利用者は、違法な目的で、あるいはサイトの運営を妨害するような形で当ウェブサイトを利用しないことに同意するものとします。</p>
+    </section>
+    <section>
+      <h4 class="text-lg font-serif mb-2">4. Limitation of Liability</h4>
+      <p class="text-[14px] leading-relaxed opacity-70">MA3world Inc. shall not be liable for any indirect, incidental, or consequential damages resulting from the use or inability to use the site.</p>
+      <p class="opacity-50 text-[11px] mt-2 font-ja">MA3world Inc.は、当サイトの利用または利用不能から生じるいかなる間接的、付随的、または結果的な損害についても責任を負いません。</p>
+    </section>
+  </div>
+</LegalModal>
+
+<LegalModal id="modal-privacy" titleEn="Privacy Policy" titleJa="プライバシーポリシー">
+  <div class="space-y-6">
+    <section>
+      <h4 class="text-lg font-serif mb-2">1. Information Collection</h4>
+      <p class="text-[14px] leading-relaxed opacity-70">We collect information that you provide to us directly via our contact form, including your name and email address.</p>
+      <p class="opacity-50 text-[11px] mt-2 font-ja">お問い合わせフォームを通じて直接提供される氏名やメールアドレスなどの情報を収集します。</p>
+    </section>
+    <section>
+      <h4 class="text-lg font-serif mb-2">2. Use of Information</h4>
+      <p class="text-[14px] leading-relaxed opacity-70">The information we collect is used solely to respond to your inquiries and to provide better services to our clients.</p>
+      <p class="opacity-50 text-[11px] mt-2 font-ja">収集した情報は、お問い合わせへの回答や利用者へのより良いサービスの提供にのみ使用されます。</p>
+    </section>
+    <section>
+      <h4 class="text-lg font-serif mb-2">3. Data Protection</h4>
+      <p class="text-[14px] leading-relaxed opacity-70">We implement a variety of security measures to maintain the safety of your personal information when you enter, submit, or access your personal information.</p>
+      <p class="opacity-50 text-[11px] mt-2 font-ja">個人情報の入力、送信、アクセスが行われる際、その安全性を維持するために様々なセキュリティ対策を実施しています。</p>
+    </section>
+    <section>
+      <h4 class="text-lg font-serif mb-2">4. Cookies</h4>
+      <p class="text-[14px] leading-relaxed opacity-70">We may use cookies to understand and save your preferences for future visits and compile aggregate data about site traffic.</p>
+      <p class="opacity-50 text-[11px] mt-2 font-ja">将来の訪問時の設定を理解して保存し、サイトトラフィックに関する集計データを収集するためにクッキーを使用する場合があります。</p>
+    </section>
+  </div>
+</LegalModal>

@@ -1,0 +1,126 @@
+---
+interface Props {
+  id: string;
+  titleEn: string;
+  titleJa: string;
+}
+
+const { id, titleEn, titleJa } = Astro.props;
+---
+
+<div id={id} class="legal-modal fixed inset-0 z-[100] flex items-center justify-center pointer-events-none opacity-0 transition-all duration-500">
+  <!-- Backdrop -->
+  <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+  
+  <!-- Modal Content -->
+  <div class="modal-container relative w-full max-w-lg max-h-[80vh] bg-theme border border-white/10 rounded-sm shadow-2xl overflow-hidden translate-y-8 transition-transform duration-500 mx-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between p-6 border-b border-white/5">
+      <h3 class="text-xl md:text-2xl font-serif">
+        <span class="lang-en">{titleEn}</span>
+        <span class="lang-ja">{titleJa}</span>
+      </h3>
+      <button class="close-modal text-white/50 hover:text-white transition-colors p-2 -mr-2" aria-label="Close">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Body -->
+    <div class="modal-body p-8 overflow-y-auto max-h-[calc(80vh-80px)] prose prose-invert prose-sm max-w-none">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<style>
+  .legal-modal.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .legal-modal.open .modal-container {
+    transform: translateY(0);
+  }
+
+  .modal-body {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  }
+
+  .modal-body::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .modal-body::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .modal-body::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+  }
+
+  :root[data-theme="light"] .legal-modal .modal-container {
+    background-color: white;
+    border-color: rgba(0,0,0,0.1);
+    color: black;
+  }
+
+  :root[data-theme="light"] .modal-backdrop {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+
+  :root[data-theme="light"] .close-modal {
+    color: rgba(0,0,0,0.4);
+  }
+
+  :root[data-theme="light"] .close-modal:hover {
+    color: black;
+  }
+
+  :root[data-theme="light"] .modal-body {
+    scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+  }
+
+  :root[data-theme="light"] .modal-body::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const initModal = (modal) => {
+      const closeBtn = modal.querySelector('.close-modal');
+      const backdrop = modal.querySelector('.modal-backdrop');
+      
+      const closeModal = () => {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+      };
+      
+      closeBtn?.addEventListener('click', closeModal);
+      backdrop?.addEventListener('click', closeModal);
+      
+      // Listen for Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('open')) {
+          closeModal();
+        }
+      });
+
+      // Global event to open this specific modal
+      window.addEventListener('open-modal', (e) => {
+        if (e.detail?.id === modal.id) {
+          modal.classList.add('open');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    };
+
+    // Initialize all modals on the page
+    document.querySelectorAll('.legal-modal').forEach(initModal);
+  })();
+</script>
