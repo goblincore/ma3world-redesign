@@ -121,18 +121,7 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
           </div>
         )}
 
-        <!-- Featured Image (if available) -->
-        {mainImageUrl && (
-          <div class="pt-8 pb-4">
-            <div class="aspect-[16/9] bg-theme-alt rounded-sm overflow-hidden">
-              <img 
-                src={mainImageUrl} 
-                alt={project.title} 
-                class="w-full h-full object-cover" 
-              />
-            </div>
-          </div>
-        )}
+
         
         <!-- Action Buttons -->
         <div class="pt-16 border-t border-theme/10 flex flex-col md:flex-row justify-between items-center gap-8">
