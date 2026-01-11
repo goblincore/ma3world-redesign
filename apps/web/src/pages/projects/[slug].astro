@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import RichTextRenderer from '../../components/RichTextRenderer.astro';
 import { getProjects, getProjectBySlug, getMediaUrl, getCmsUrl, type Project } from '../../lib/cms';
 
 export async function getStaticPaths() {
@@ -112,6 +113,13 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
         <div class="max-w-none text-xl md:text-2xl leading-relaxed text-theme-muted space-y-8">
           <p>{project.description}</p>
         </div>
+
+        <!-- Rich Content -->
+        {project.content && (
+          <div class="prose prose-lg max-w-none text-theme">
+            <RichTextRenderer node={project.content.root} />
+          </div>
+        )}
 
         <!-- Featured Image (if available) -->
         {mainImageUrl && (
