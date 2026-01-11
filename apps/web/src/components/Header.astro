@@ -16,8 +16,11 @@ const isHome = Astro.url.pathname === base || Astro.url.pathname === base.replac
     <a href={base} class="header-bubble logo-bubble min-w-[150px] md:min-w-[200px] flex items-center relative h-12 group overflow-hidden rounded-full pl-4 pr-6 -ml-4 transition-all duration-500">
       <!-- Greeting (visible only when hero is in view on Home) -->
       {isHome && (
-        <span id="header-greeting" class="text-lg md:text-xl font-serif tracking-wide opacity-0 transition-all duration-500 absolute left-4 translate-y-0">
-          MA3.0<span class="text-xs align-super font-sans ml-1">®</span>
+        <span id="header-greeting" class="text-lg md:text-xl font-serif tracking-wide opacity-0 transition-all duration-500 absolute left-4 translate-y-0 flex items-center">
+          <svg class="w-6 h-6 animate-butterfly-mini opacity-40" viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 50 C25 20 5 35 15 55 C20 70 45 65 50 60 C45 70 25 90 15 80 C5 70 25 50 50 55" />
+            <path d="M50 50 C75 20 95 35 85 55 C80 70 55 65 50 60 C55 70 75 90 85 80 C95 70 75 50 50 55" />
+          </svg>
         </span>
       )}
       
@@ -377,6 +380,17 @@ const isHome = Astro.url.pathname === base || Astro.url.pathname === base.replac
   @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+  }
+
+  @keyframes butterfly-mini-flap {
+    0% { transform: scaleX(1); opacity: 0.3; }
+    50% { transform: scaleX(0.4); opacity: 0.6; }
+    100% { transform: scaleX(1); opacity: 0.3; }
+  }
+
+  .animate-butterfly-mini {
+    animation: butterfly-mini-flap 0.8s infinite ease-in-out;
+    transform-origin: center;
   }
 </style>
 
