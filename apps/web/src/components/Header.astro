@@ -1,13 +1,24 @@
 ---
 interface Props {
   transparent?: boolean;
+  showNews?: boolean;
+  showJournal?: boolean;
 }
 
 import LogoGlobe from './LogoGlobe.astro';
 
-const { transparent = true } = Astro.props;
+const { 
+  transparent = true, 
+  showNews = true, 
+  showJournal = true 
+} = Astro.props;
+
 const base = import.meta.env.BASE_URL;
 const isHome = Astro.url.pathname === base || Astro.url.pathname === base.replace(/\/$/, "");
+
+const aboutHref = isHome ? "#about" : base + "#about";
+const projectsHref = isHome ? "#projects" : base + "#projects";
+const contactHref = isHome ? "#contact" : base + "#contact";
 ---
 
 <header id="main-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-transparent">
@@ -32,22 +43,30 @@ const isHome = Astro.url.pathname === base || Astro.url.pathname === base.replac
     
     <!-- Navigation Links with bubble - negative margin compensates for bubble padding -->
     <div class="header-bubble nav-bubble hidden md:flex items-center gap-6 text-sm tracking-wide rounded-full px-6 py-2.5 -mr-4 transition-all duration-500">
-      <a href={`${base}news`} class="hover:opacity-60 transition-opacity">
-        <span class="lang-en">News</span>
-        <span class="lang-ja">ニュース</span>
-      </a>
-      <a href={isHome ? "#about" : `${base}#about`} class="hover:opacity-60 transition-opacity">
+      {showNews && (
+        <a href={base + "news"} class="hover:opacity-60 transition-opacity">
+          <span class="lang-en">News</span>
+          <span class="lang-ja">ニュース</span>
+        </a>
+      )}
+      <a href={aboutHref} class="hover:opacity-60 transition-opacity">
         <span class="lang-en">About</span>
         <span class="lang-ja">私たちについて</span>
       </a>
-      <a href={isHome ? "#projects" : `${base}#projects`} class="hover:opacity-60 transition-opacity">
+      <a href={projectsHref} class="hover:opacity-60 transition-opacity">
         <span class="lang-en">Projects</span>
         <span class="lang-ja">プロジェクト</span>
       </a>
-      <a href={isHome ? "#contact" : `${base}#contact`} class="hover:opacity-60 transition-opacity">
+      <a href={contactHref} class="hover:opacity-60 transition-opacity">
         <span class="lang-en">Contact</span>
         <span class="lang-ja">お問い合わせ</span>
       </a>
+      {showJournal && (
+        <a href={base + "journal"} class="hover:opacity-60 transition-opacity">
+          <span class="lang-en">Journal</span>
+          <span class="lang-ja">ジャーナル</span>
+        </a>
+      )}
       
       <span class="w-px h-4 bg-current opacity-20"></span>
       
@@ -96,22 +115,30 @@ const isHome = Astro.url.pathname === base || Astro.url.pathname === base.replac
   <!-- Mobile Menu Overlay -->
   <div id="mobile-menu" class="fixed inset-0 bg-theme z-40 translate-x-full transition-transform duration-500 ease-expo pointer-events-none p-12 pt-32">
     <div class="flex flex-col justify-start h-full gap-8 text-4xl font-serif">
-      <a href={`${base}news`} class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-100 cursor-pointer">
-        <span class="lang-en">News</span>
-        <span class="lang-ja">ニュース</span>
-      </a>
-      <a href={isHome ? "#about" : `${base}#about`} class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-[150ms] cursor-pointer">
+      {showNews && (
+        <a href={base + "news"} class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-100 cursor-pointer">
+          <span class="lang-en">News</span>
+          <span class="lang-ja">ニュース</span>
+        </a>
+      )}
+      <a href={aboutHref} class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-[150ms] cursor-pointer">
         <span class="lang-en">About</span>
         <span class="lang-ja">私たちについて</span>
       </a>
-      <a href={isHome ? "#projects" : `${base}#projects`} class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-[200ms] cursor-pointer">
+      <a href={projectsHref} class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-[200ms] cursor-pointer">
         <span class="lang-en">Projects</span>
         <span class="lang-ja">プロジェクト</span>
       </a>
-      <a href={isHome ? "#contact" : `${base}#contact`} class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-[250ms] cursor-pointer">
+      <a href={contactHref} class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-[250ms] cursor-pointer">
         <span class="lang-en">Contact</span>
         <span class="lang-ja">お問い合わせ</span>
       </a>
+      {showJournal && (
+        <a href={base + "journal"} class="mobile-link opacity-0 translate-y-4 transition-all duration-500 delay-[300ms] cursor-pointer">
+          <span class="lang-en">Journal</span>
+          <span class="lang-ja">ジャーナル</span>
+        </a>
+      )}
       
       <div class="mt-auto pb-12 opacity-0 translate-y-4 transition-all duration-500 delay-[350ms] mobile-controls">
         <!-- Theme Toggle -->

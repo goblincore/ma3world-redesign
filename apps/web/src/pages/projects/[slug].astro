@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import RichTextRenderer from '../../components/RichTextRenderer.astro';
-import { getProjects, getProjectBySlug, getMediaUrl, getCmsUrl, type Project } from '../../lib/cms';
+import { getProjects, getProjectBySlug, getMediaUrl, getCmsUrl, getSettings, type Project } from '../../lib/cms';
 
 export async function getStaticPaths() {
   // Fetch all projects from CMS
@@ -39,6 +39,10 @@ if (slug) {
   projectJa = fetchedJa ?? undefined;
 }
 
+const settings = await getSettings();
+const showNews = settings?.showNews ?? true;
+const showJournal = settings?.showJournal ?? true;
+
 // Fallback to one if other is missing, or use static prop, or 404 if both missing
 const project = projectEn || projectJa || staticProject;
 
@@ -56,7 +60,7 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
 ---
 
 <Layout title={`${project.title} | MA3.0 World`}>
-  <Header transparent={false} />
+  <Header transparent={false} showNews={showNews} showJournal={showJournal} />
   
   <main class="bg-theme">
     <!-- Hero Section -->
@@ -163,7 +167,7 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
     </section>
   </main>
 
-  <Footer />
+  <Footer showNews={showNews} showJournal={showJournal} />
 </Layout>
 
 <style>

@@ -1,22 +1,26 @@
 ---
 import LegalModal from './LegalModal.astro';
+
+interface Props {
+  showNews?: boolean;
+  showJournal?: boolean;
+}
+
+const { 
+  showNews = true, 
+  showJournal = true 
+} = Astro.props;
+
 const currentYear = new Date().getFullYear();
-
-const socialLinks = [
-  { name: "Instagram", url: "#" },
-  { name: "Twitter", url: "#" },
-  { name: "LinkedIn", url: "#" },
-  { name: "Dribbble", url: "#" },
-];
-
 const base = import.meta.env.BASE_URL;
 
 const navLinks = [
-  { name: "News", nameJa: "ニュース", url: `${base}news` },
-  { name: "Projects", nameJa: "実績", url: `${base}#projects` },
-  { name: "About", nameJa: "私たちについて", url: `${base}#about` },
-  { name: "Clients", nameJa: "クライアント", url: `${base}#clients` },
-  { name: "Contact", nameJa: "お問い合わせ", url: `${base}#contact` },
+  ...(showNews ? [{ name: "News", nameJa: "ニュース", url: base + "news" }] : []),
+  { name: "Projects", nameJa: "実績", url: base + "#projects" },
+  { name: "About", nameJa: "私たちについて", url: base + "#about" },
+  { name: "Clients", nameJa: "クライアント", url: base + "#clients" },
+  { name: "Contact", nameJa: "お問い合わせ", url: base + "#contact" },
+  ...(showJournal ? [{ name: "Journal", nameJa: "ジャーナル", url: base + "journal" }] : []),
 ];
 
 const CMS_URL = import.meta.env.CMS_URL || 'http://localhost:3001';

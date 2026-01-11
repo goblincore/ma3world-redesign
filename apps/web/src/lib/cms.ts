@@ -68,6 +68,28 @@ export interface Project {
   createdAt: string;
 }
 
+export interface Journal {
+  id: number;
+  title: string;
+  slug: string;
+  date: string;
+  image: number | Media;
+  description: string;
+  content?: {
+    root: {
+      type: string;
+      children: unknown[];
+      direction: ('ltr' | 'rtl') | null;
+      format: string;
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+}
+
 interface PayloadResponse<T> {
   docs: T[];
   hasNextPage: boolean;
@@ -78,9 +100,11 @@ interface PayloadResponse<T> {
   totalPages: number;
 }
 
-// CMS URL - defaults to localhost in dev, can be overridden via env var
-const rawUrl = import.meta.env.CMS_URL || (typeof process !== 'undefined' ? process.env.CMS_URL : undefined) || 'http://localhost:3000';
-const CMS_URL = rawUrl.replace(/\/$/, '');
+// Helper to get CMS URL at runtime
+export function getCmsUrl(): string {
+  const url = import.meta.env.CMS_URL || 'http://localhost:3000';
+  return url.replace(/\/$/, '');
+}
 
 /**
  * Helper to flatten a nested object into Payload-style bracket notation
@@ -108,6 +132,7 @@ async function fetchFromCMS<T>(
   options: { locale?: 'en' | 'ja'; depth?: number; limit?: number; where?: Record<string, unknown> } = {}
 ): Promise<PayloadResponse<T>> {
   const { locale = 'en', depth = 1, limit = 100, where } = options;
+  const CMS_URL = getCmsUrl();
   
   const params = new URLSearchParams({
     locale,
@@ -149,6 +174,7 @@ async function fetchGlobalFromCMS<T>(
   options: { locale?: 'en' | 'ja'; depth?: number } = {}
 ): Promise<T | null> {
   const { locale = 'en', depth = 1 } = options;
+  const CMS_URL = getCmsUrl();
   
   const params = new URLSearchParams({
     locale,
@@ -202,12 +228,41 @@ export async function getProjects(locale: 'en' | 'ja' = 'en'): Promise<Project[]
 }
 
 /**
+ * Fetch site settings
+ */
+export async function getSettings(locale: 'en' | 'ja' = 'en'): Promise<{ featuredProjects?: Project[]; showNews?: boolean; showJournal?: boolean } | null> {
+  return fetchGlobalFromCMS<{ featuredProjects?: Project[]; showNews?: boolean; showJournal?: boolean }>('settings', { locale, depth: 2 });
+}
+
+/**
+ * Fetch all journal items
+ */
+export async function getJournal(locale: 'en' | 'ja' = 'en'): Promise<Journal[]> {
+  const response = await fetchFromCMS<Journal>('journal', { 
+    locale, 
+    depth: 1 
+  });
+  return response.docs;
+}
+
+/**
+ * Fetch a single journal item by slug
+ */
+export async function getJournalBySlug(slug: string, locale: 'en' | 'ja' = 'en'): Promise<Journal | null> {
+  const response = await fetchFromCMS<Journal>('journal', { 
+    locale, 
+    depth: 2,
+    where: { slug: { equals: slug } }
+  });
+  return response.docs[0] || null;
+}
+
+/**
  * Fetch featured projects for homepage
- * Prioritizes projects selected in the Settings global, then falls back to 'featured' flag
  */
 export async function getFeaturedProjects(locale: 'en' | 'ja' = 'en', limit?: number): Promise<Project[]> {
   // 1. Try to get curated list from Settings
-  const settings = await fetchGlobalFromCMS<{ featuredProjects?: Project[] }>('settings', { locale, depth: 2 });
+  const settings = await getSettings(locale);
   
   if (settings?.featuredProjects && settings.featuredProjects.length > 0) {
     const projects = settings.featuredProjects;
@@ -252,12 +307,5 @@ export function getMediaUrl(media: number | Media | null | undefined): string | 
   }
   
   // Otherwise, prepend the CMS URL
-  return `${CMS_URL}${url}`;
-}
-
-/**
- * Get the CMS base URL for absolute URLs
- */
-export function getCmsUrl(): string {
-  return CMS_URL;
+  return `${getCmsUrl()}${url}`;
 }

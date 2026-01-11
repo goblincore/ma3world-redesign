@@ -38,5 +38,29 @@ export const Settings: GlobalConfig = {
         },
       },
     },
+    {
+      name: 'showNews',
+      label: {
+        en: 'Show News in Menu',
+        ja: 'メニューにニュースを表示',
+      },
+      type: 'checkbox',
+      defaultValue: true,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'showJournal',
+      label: {
+        en: 'Show Journal in Menu',
+        ja: 'メニューにジャーナルを表示',
+      },
+      type: 'checkbox',
+      defaultValue: true,
+      admin: {
+        position: 'sidebar',
+      },
+    },
   ],
 }

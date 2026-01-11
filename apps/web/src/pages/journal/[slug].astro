@@ -3,39 +3,36 @@ import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import RichTextRenderer from '../../components/RichTextRenderer.astro';
-import { getNews, getNewsBySlug, getMediaUrl, getCmsUrl, getSettings, type News } from '../../lib/cms';
+import { getJournal, getJournalBySlug, getMediaUrl, getCmsUrl, getSettings, type Journal } from '../../lib/cms';
 
 export async function getStaticPaths() {
-  // Fetch all news items from CMS
-  const newsItems = await getNews('en');
+  // Fetch all journal items from CMS
+  const journalItems = await getJournal('en');
   
-  // Generate paths for CMS news items with detail pages
-  const paths = newsItems
-    .filter((item: News) => item.linkType === 'detail' || !item.linkType)
-    .map((item: News) => ({
-      params: { slug: item.slug },
-      props: { newsItem: item },
-    }));
+  // Generate paths for all journal items
+  const paths = journalItems.map((item: Journal) => ({
+    params: { slug: item.slug },
+    props: { journalItem: item },
+  }));
   
   return paths;
 }
 
 interface Props {
-  newsItem?: News;
+  journalItem?: Journal;
 }
 
-const isDev = import.meta.env.DEV;
 const { slug } = Astro.params;
-const { newsItem: staticItem } = Astro.props;
+const { journalItem: staticItem } = Astro.props;
 
 // Fetch both English and Japanese versions
-let itemEn: News | undefined;
-let itemJa: News | undefined;
+let itemEn: Journal | undefined;
+let itemJa: Journal | undefined;
 
 if (slug) {
   const [fetchedEn, fetchedJa] = await Promise.all([
-    getNewsBySlug(slug, 'en'),
-    getNewsBySlug(slug, 'ja')
+    getJournalBySlug(slug, 'en'),
+    getJournalBySlug(slug, 'ja')
   ]);
   itemEn = fetchedEn ?? undefined;
   itemJa = fetchedJa ?? undefined;
@@ -46,15 +43,14 @@ const showNews = settings?.showNews ?? true;
 const showJournal = settings?.showJournal ?? true;
 
 // Fallback to one if other is missing, or use static prop, or 404 if both missing
-const newsItem = itemEn || itemJa || staticItem;
+const journalItem = itemEn || itemJa || staticItem;
 
-if (!newsItem) {
+if (!journalItem) {
   return Astro.redirect('/404');
 }
 
-const cmsUrl = getCmsUrl();
-const imageUrl = getMediaUrl(newsItem.image);
-const formattedDate = new Date(newsItem.date).toLocaleDateString('en-US', {
+const imageUrl = getMediaUrl(journalItem.image);
+const formattedDate = new Date(journalItem.date).toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
@@ -63,7 +59,7 @@ const formattedDate = new Date(newsItem.date).toLocaleDateString('en-US', {
 const base = import.meta.env.BASE_URL;
 ---
 
-<Layout title={`${newsItem.title} | MA3.0 World News`}>
+<Layout title={`${journalItem.title} | Journal | MA3.0 World`}>
   <Header transparent={false} showNews={showNews} showJournal={showJournal} />
   
   <main class="bg-theme overflow-hidden">
@@ -72,15 +68,15 @@ const base = import.meta.env.BASE_URL;
       <div class="max-w-4xl mx-auto">
         <!-- Meta Info -->
         <div class="flex items-center gap-4 text-[10px] uppercase tracking-[0.2em] font-bold opacity-50 mb-8">
-          <time datetime={newsItem.date}>{formattedDate}</time>
+          <time datetime={journalItem.date}>{formattedDate}</time>
           <span class="w-1 h-1 bg-current rounded-full"></span>
-          <span>MA3.0 Press</span>
+          <span>MA3.0 Journal</span>
         </div>
         
         <!-- Title -->
         <h1 class="font-serif text-4xl md:text-6xl lg:text-7xl leading-tight mb-12">
-          <span class="lang-en">{itemEn?.title || newsItem.title}</span>
-          <span class="lang-ja">{itemJa?.title || newsItem.title}</span>
+          <span class="lang-en">{itemEn?.title || journalItem.title}</span>
+          <span class="lang-ja">{itemJa?.title || journalItem.title}</span>
         </h1>
         
         <!-- Featured Image -->
@@ -88,7 +84,7 @@ const base = import.meta.env.BASE_URL;
           <div class="aspect-[16/9] bg-theme-alt rounded-sm overflow-hidden mb-12">
             <img 
               src={imageUrl} 
-              alt={newsItem.title} 
+              alt={journalItem.title} 
               class="w-full h-full object-cover" 
             />
           </div>
@@ -114,12 +110,12 @@ const base = import.meta.env.BASE_URL;
         
         <!-- Back Link -->
         <div class="pt-16 border-t border-theme/10">
-          <a href={`${base}news`} class="text-sm uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity flex items-center gap-4">
+          <a href={`${base}journal`} class="text-sm uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity flex items-center gap-4">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="rotate-180">
               <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <span class="lang-en">Back to News</span>
-            <span class="lang-ja">ニュースに戻る</span>
+            <span class="lang-en">Back to Journal</span>
+            <span class="lang-ja">ジャーナルに戻る</span>
           </a>
         </div>
       </div>

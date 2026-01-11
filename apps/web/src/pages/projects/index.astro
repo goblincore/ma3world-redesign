@@ -2,11 +2,15 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import { getFeaturedProjects, getMediaUrl, getCmsUrl, type Project } from '../../lib/cms';
+import { getFeaturedProjects, getMediaUrl, getCmsUrl, getSettings, type Project } from '../../lib/cms';
 
 // Fetch Featured Projects from CMS (respects custom ordering)
 const cmsProjects = await getFeaturedProjects('en');
 const cmsUrl = getCmsUrl();
+
+const settings = await getSettings();
+const showNews = settings?.showNews ?? true;
+const showJournal = settings?.showJournal ?? true;
 
 // Transform CMS data to match component props
 const projects = cmsProjects.map((item: Project) => {
@@ -28,7 +32,7 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
 ---
 
 <Layout title="Projects | MA3.0 World">
-  <Header />
+  <Header showNews={showNews} showJournal={showJournal} />
   
   <main class="bg-theme pt-32 pb-32 px-6 md:px-12 min-h-screen">
     <div class="max-w-7xl mx-auto">
@@ -99,7 +103,7 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
     </div>
   </main>
 
-  <Footer />
+  <Footer showNews={showNews} showJournal={showJournal} />
 </Layout>
 
 <style>

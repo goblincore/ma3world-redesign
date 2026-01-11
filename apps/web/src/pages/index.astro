@@ -7,10 +7,15 @@ import About from '../components/About.astro';
 import Footer from '../components/Footer.astro';
 import PageDots from '../components/PageDots.astro';
 import FullpageWrapper from '../components/FullpageWrapper.astro';
+
+import { getSettings } from '../lib/cms';
+const settings = await getSettings();
+const showNews = settings?.showNews ?? true;
+const showJournal = settings?.showJournal ?? true;
 ---
 
 <Layout title="MA3.0 World | Hybrid Cultural Innovation">
-  <Header />
+  <Header showNews={showNews} showJournal={showJournal} />
   <FullpageWrapper>
     <Hero 
       title="Hybrid Cultural Innovation"
@@ -21,7 +26,7 @@ import FullpageWrapper from '../components/FullpageWrapper.astro';
       description="MA3world Inc. is a hybrid cultural innovation company that transforms digital creativity into physical products, exhibitions, and sustainable economic value. Through projects such as the Imabari Towel Digital Art Gallery, Rice Leather Project, and Bishoujo-Zukan × NYC, we bridge global creators and local industries, developing avatars, products, and collaborative platforms that enable cultural circulation. We especially focus on empowering women creators and emerging talent worldwide, driving projects that connect creativity with culture, community, and industry."
     />
     <ProjectsGrid />
-    <Footer />
+    <Footer showNews={showNews} showJournal={showJournal} />
   </FullpageWrapper>
 </Layout>
 

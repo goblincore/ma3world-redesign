@@ -10,6 +10,7 @@ import sharp from 'sharp'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { News } from './collections/News'
+import { Journal } from './collections/Journal'
 import { Projects } from './collections/Projects'
 import { Submissions } from './collections/Submissions'
 import { YouTube } from './blocks/YouTube'
@@ -25,7 +26,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, News, Projects, Submissions],
+  collections: [Users, Media, News, Journal, Projects, Submissions],
   globals: [Settings],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [

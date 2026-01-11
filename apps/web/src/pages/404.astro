@@ -2,13 +2,18 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { getSettings } from '../lib/cms';
+
+const settings = await getSettings();
+const showNews = settings?.showNews ?? true;
+const showJournal = settings?.showJournal ?? true;
 
 const base = import.meta.env.BASE_URL;
 const petals = [...Array(30)];
 ---
 
 <Layout title="404: Page Not Found | MA3.0 World">
-  <Header transparent={false} />
+  <Header transparent={false} showNews={showNews} showJournal={showJournal} />
   
   <main class="relative min-h-screen bg-theme flex items-center justify-center overflow-hidden">
     <!-- Sakura Storm Background -->
@@ -73,7 +78,7 @@ const petals = [...Array(30)];
     </div>
   </main>
 
-  <Footer />
+  <Footer showNews={showNews} showJournal={showJournal} />
 </Layout>
 
 <style>
