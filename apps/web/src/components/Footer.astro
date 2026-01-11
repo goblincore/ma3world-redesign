@@ -101,9 +101,18 @@ const CMS_URL = import.meta.env.CMS_URL || 'http://localhost:3001';
           <div id="form-message" class="hidden text-sm py-2 px-4 rounded-sm animate-fade-in"></div>
 
           <button type="submit" id="submit-btn" class="group mt-8 flex items-center gap-3 bg-theme text-theme border border-current py-4 px-10 self-start font-bold uppercase tracking-[0.2em] text-[10px] hover:bg-theme-alt transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
-            <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 2L11 13"></path>
-              <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+            <svg class="w-5 h-5 transition-all group-hover:scale-110" viewBox="0 0 100 100" fill="currentColor">
+              <!-- Antennae -->
+              <path d="M50 34 Q50 20 40 15 M50 34 Q50 20 60 15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+              <!-- Wings Group -->
+              <g class="origin-center butterfly-wings">
+                <!-- Left Wings -->
+                <path d="M50 50 C25 20 5 35 15 55 C20 70 45 65 50 60 C45 70 25 90 15 80 C5 70 25 50 50 55" />
+                <!-- Right Wings -->
+                <path d="M50 50 C75 20 95 35 85 55 C80 70 55 65 50 60 C55 70 75 90 85 80 C95 70 75 50 50 55" />
+              </g>
+              <!-- Body -->
+              <path d="M48 35 L52 35 L52 70 L48 70 Z" />
             </svg>
             <span class="submit-text lang-en">Send Message</span>
             <span class="submit-text lang-ja">送信する</span>
@@ -171,6 +180,16 @@ const CMS_URL = import.meta.env.CMS_URL || 'http://localhost:3001';
     color: var(--color-text-muted);
     opacity: 0.5;
     transition: color 0.3s ease;
+  }
+
+  @keyframes butterfly-flap {
+    0% { transform: scaleX(1); }
+    50% { transform: scaleX(0.3); }
+    100% { transform: scaleX(1); }
+  }
+
+  .group:hover .butterfly-wings {
+    animation: butterfly-flap 0.25s infinite ease-in-out;
   }
 </style>
 
