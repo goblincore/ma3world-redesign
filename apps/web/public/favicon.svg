@@ -4,12 +4,19 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-        text {
+        .globe {
             transform-origin: center;
             animation: spin 3s linear infinite;
-            font-size: 100px;
+            fill: none;
+            stroke: black;
+            stroke-width: 6;
+            stroke-linecap: round;
         }
     </style>
-    <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle">🌐</text>
+    <g class="globe">
+        <circle cx="64" cy="64" r="54" />
+        <path d="M64 10v108M10 64h108" />
+        <ellipse cx="64" cy="64" rx="28" ry="54" />
+    </g>
 </svg>
 
