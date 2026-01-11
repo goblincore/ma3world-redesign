@@ -15,30 +15,8 @@ interface Props {
   projects?: Project[];
 }
 
-// Fallback hardcoded projects
-const fallbackProjects: Project[] = [
-  { 
-    title: "Imabari Towel Digital Art Gallery", 
-    titleJa: "今治タオル デジタルアートギャラリー",
-    slug: "imbari-towel",
-    category: "Digital Innovation / Art", 
-    categoryJa: "デジタル・イノベーション / アート",
-    year: "2024",
-    image: "/project/imabari-dag/towelbridge.png"
-  },
-  { 
-    title: "MA3.0 YUA Rice Leather Fukushima Reconstruction Support Cheer Project", 
-    titleJa: "MA3.0 YUA ライスレザー福島復興支援応援プロジェクト",
-    slug: "fukushima-yuacheer",
-    category: "Social Innovation / Design", 
-    categoryJa: "ソーシャル・イノベーション / デザイン",
-    year: "2024",
-    image: "/project/fukushima/yuacheer.jpeg"
-  },
-];
-
 // Fetch from CMS if no props provided
-let projects: Project[];
+let projects: Project[] = [];
 
 if (Astro.props.projects) {
   projects = Astro.props.projects;
@@ -60,8 +38,6 @@ if (Astro.props.projects) {
         image: imageUrl || undefined
       };
     });
-  } else {
-    projects = fallbackProjects;
   }
 }
 

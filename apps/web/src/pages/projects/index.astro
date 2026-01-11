@@ -4,70 +4,24 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import { getProjects, getMediaUrl, getCmsUrl, type Project } from '../../lib/cms';
 
-// Fallback data when CMS is unavailable
-const fallbackProjects = [
-  { 
-    title: "Imabari Towel Digital Art Gallery", 
-    titleJa: "今治タオル デジタルアートギャラリー",
-    slug: "imbari-towel",
-    category: "Digital Innovation / Art", 
-    categoryJa: "デジタル・イノベーション / アート",
-    year: "2024",
-    image: "/project/imabari-dag/towelbridge.png",
-    description: "A hybrid cultural innovation project bridging traditional craftsmanship with digital art."
-  },
-  { 
-    title: "MA3.0 YUA Rice Leather Fukushima Reconstruction Support Cheer Project", 
-    titleJa: "MA3.0 YUA ライスレザー福島復興支援応援プロジェクト",
-    slug: "fukushima-yuacheer",
-    category: "Social Innovation / Design", 
-    categoryJa: "ソーシャル・イノベーション / デザイン",
-    year: "2024",
-    image: "/project/fukushima/yuacheer.jpeg",
-    description: "Revitalizing local industry through sustainable, locally-sourced vegan leather."
-  },
-  { 
-    title: "MA3.0 Avatar", 
-    titleJa: "MA3.0 アバター",
-    slug: "avatar",
-    category: "Talent / Technology", 
-    categoryJa: "タレント / テクノロジー",
-    year: "2024",
-    image: "/project/ma3avatar/ma3avatarthumb.jpg",
-    description: "Digital avatars merging talent × technology × local identity."
-  },
-  { 
-    title: "Bishoujo-Zukan × NY", 
-    titleJa: "美少女図鑑 × NY",
-    slug: "bishoujo-zukan-ny",
-    category: "Platform / Empowerment", 
-    categoryJa: "プラットフォーム / エンパワーメント",
-    year: "2024",
-    image: "/project/bzukan/bzukanthumb.jpg",
-    description: "A platform connecting Japan and NYC to empower female creators."
-  }
-];
-
 // Fetch from CMS
 const cmsProjects = await getProjects('en');
 const cmsUrl = getCmsUrl();
 
-// Transform CMS data to match component props, or use fallback
-const projects = cmsProjects.length > 0 
-  ? cmsProjects.map((item: Project) => {
-      const imageUrl = getMediaUrl(item.image);
-      return {
-        title: item.title,
-        titleJa: item.title, // Will be different when fetching 'ja' locale
-        slug: item.slug,
-        category: item.category,
-        categoryJa: item.category, // Will be different when fetching 'ja' locale
-        year: item.year,
-        image: imageUrl || undefined,
-        description: item.description
-      };
-    })
-  : fallbackProjects;
+// Transform CMS data to match component props
+const projects = cmsProjects.map((item: Project) => {
+  const imageUrl = getMediaUrl(item.image);
+  return {
+    title: item.title,
+    titleJa: item.title, // Will be different when fetching 'ja' locale
+    slug: item.slug,
+    category: item.category,
+    categoryJa: item.category, // Will be different when fetching 'ja' locale
+    year: item.year,
+    image: imageUrl || undefined,
+    description: item.description
+  };
+});
 
 const base = import.meta.env.BASE_URL;
 const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : base;
