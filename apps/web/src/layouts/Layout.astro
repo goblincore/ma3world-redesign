@@ -91,41 +91,9 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
 			});
 		</script>
     <script>
-      import Lenis from 'lenis';
-      
-      const base = import.meta.env.BASE_URL;
-      const pathname = window.location.pathname;
-      const isHomepage = pathname === base || pathname === base.replace(/\/$/, "") || pathname === '/';
-
-      // Initialize Lenis for non-homepage only
-      if (!isHomepage) {
-        const lenis = new Lenis({
-          duration: 1.5,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-          direction: 'vertical',
-          gestureDirection: 'vertical',
-          smoothWheel: true,
-          wheelMultiplier: 1.2,
-        });
-
-        function raf(time) {
-          lenis.raf(time);
-          requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-        
-        // Handle anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-          anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href').substring(1);
-            const targetElement = document.getElementById(targetId);
-            if (targetElement) {
-              lenis.scrollTo(targetElement);
-            }
-          });
-        });
-      }
+      // Smooth scroll behavior is handled by CSS (scroll-behavior: smooth) 
+      // and natively by the browser for a more consistent feel.
+      // Homepage uses FullpageWrapper for snapping.
     </script>
 	</body>
 </html>
