@@ -31,8 +31,9 @@ const fallbackNews = [
 ];
 
 // Fetch from CMS
-const [cmsNews, settings] = await Promise.all([
+const [cmsNewsEn, cmsNewsJa, settings] = await Promise.all([
   getNews('en'),
+  getNews('ja'),
   getSettings()
 ]);
 
@@ -41,9 +42,11 @@ const showNews = settings?.showNews ?? true;
 const showJournal = settings?.showJournal ?? true;
 
 // Transform CMS data to match component props, or use fallback
-const newsItems = cmsNews.length > 0 
-  ? cmsNews.map((item: News) => {
+const newsItems = cmsNewsEn.length > 0 
+  ? cmsNewsEn.map((item: News) => {
+      const jaItem = cmsNewsJa.find(ja => ja.slug === item.slug);
       const imageUrl = getMediaUrl(item.image);
+      
       // Determine href based on linkType (default to detail page)
       let href: string;
       if (item.linkType === 'external' && item.externalUrl) {
@@ -57,9 +60,12 @@ const newsItems = cmsNews.length > 0
       
       return {
         title: item.title,
-        date: new Date(item.date).toLocaleDateString('en-CA').replace(/-/g, '/'),
+        titleJa: jaItem?.title || item.title,
+        date: new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+        dateJa: new Date(item.date).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' }),
         image: imageUrl || undefined,
         description: item.description,
+        descriptionJa: jaItem?.description || item.description,
         href
       };
     })

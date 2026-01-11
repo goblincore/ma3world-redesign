@@ -105,15 +105,21 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
           <div class="flex flex-wrap items-center gap-x-8 gap-y-4 pt-8 border-t border-current/10">
             {(projectEn?.client || projectJa?.client) && (
               <div class="flex items-center gap-3">
-                <span class="text-[10px] uppercase tracking-[0.3em] font-bold opacity-50">Client</span>
+                <span class="text-[10px] uppercase tracking-[0.3em] font-bold opacity-50">
+                  <span class="lang-en">Client</span>
+                  <span class="lang-ja">クライアント</span>
+                </span>
                 <span class="text-sm md:text-base opacity-80">
                   <span class="lang-en">{projectEn?.client}</span>
-                  <span class="lang-ja">{projectJa?.client}</span>
+                  <span class="lang-ja">{projectJa?.client || projectEn?.client}</span>
                 </span>
               </div>
             )}
             <div class="flex items-center gap-3">
-              <span class="text-[10px] uppercase tracking-[0.3em] font-bold opacity-50">Year</span>
+              <span class="text-[10px] uppercase tracking-[0.3em] font-bold opacity-50">
+                <span class="lang-en">Year</span>
+                <span class="lang-ja">年度</span>
+              </span>
               <span class="text-sm md:text-base opacity-80">{project.year}</span>
             </div>
           </div>
@@ -126,8 +132,8 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
       <div class="max-w-5xl w-full space-y-16">
         <!-- Description -->
         <div class="max-w-none text-xl md:text-2xl lg:text-[32px] leading-relaxed text-theme-muted space-y-8">
-          <div class="lang-en"><p>{projectEn?.description}</p></div>
-          <div class="lang-ja"><p>{projectJa?.description}</p></div>
+          <div class="lang-en"><p>{projectEn?.description || project.description}</p></div>
+          <div class="lang-ja"><p>{projectJa?.description || projectEn?.description || project.description}</p></div>
         </div>
 
         <!-- Rich Content -->
@@ -150,7 +156,8 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
             <a href={project.externalLink.url} target="_blank" class="group relative px-12 py-6 border border-theme/20 overflow-hidden">
               <div class="absolute inset-0 bg-theme translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
               <span class="relative z-10 text-xs font-bold uppercase tracking-widest group-hover:text-theme-alt transition-colors">
-                {project.externalLink.label || 'Visit Project'}
+                <span class="lang-en">{project.externalLink.label || 'Visit Project'}</span>
+                <span class="lang-ja">{projectJa?.externalLink?.label || project.externalLink.label || 'プロジェクトを見る'}</span>
               </span>
             </a>
           )}

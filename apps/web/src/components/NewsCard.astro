@@ -1,14 +1,17 @@
 ---
 interface Props {
   title: string;
+  titleJa?: string;
   date: string;
+  dateJa?: string;
   image?: string;
   description: string;
+  descriptionJa?: string;
   href: string;
   category?: string;
 }
 
-const { title, date, image, description, href, category = "NEWS" } = Astro.props;
+const { title, titleJa, date, dateJa, image, description, descriptionJa, href, category = "NEWS" } = Astro.props;
 ---
 
 <a href={href} class="group block space-y-4">
@@ -39,19 +42,26 @@ const { title, date, image, description, href, category = "NEWS" } = Astro.props
   
   <div class="space-y-3">
     <div class="flex items-center gap-4 text-[10px] uppercase tracking-[0.2em] font-bold opacity-50">
-      <span>{date}</span>
+      <span class="lang-en">{date}</span>
+      <span class="lang-ja">{dateJa || date}</span>
       <span class="w-1 h-1 bg-current rounded-full"></span>
-      <span>MA3.0 Press</span>
+      <span class="lang-en">MA3.0 Press</span>
+      <span class="lang-ja">MA3.0 プレス</span>
     </div>
     
-    <h2 class="text-xl md:text-2xl font-serif leading-tight group-hover:text-theme-muted transition-colors" set:html={title} />
+    <h2 class="text-xl md:text-2xl font-serif leading-tight group-hover:text-theme-muted transition-colors">
+      <span class="lang-en" set:html={title} />
+      <span class="lang-ja" set:html={titleJa || title} />
+    </h2>
     
-    <p class="text-sm leading-relaxed opacity-60 line-clamp-2">
-      {description}
-    </p>
+    <div class="text-sm leading-relaxed opacity-60 line-clamp-2">
+      <p class="lang-en">{description}</p>
+      <p class="lang-ja">{descriptionJa || description}</p>
+    </div>
     
     <div class="pt-2 flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-bold group-hover:gap-4 transition-all">
-      <span>Read Article</span>
+      <span class="lang-en">Read Article</span>
+      <span class="lang-ja">記事を読む</span>
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
         <path d="M5 12h14M12 5l7 7-7 7"/>
       </svg>

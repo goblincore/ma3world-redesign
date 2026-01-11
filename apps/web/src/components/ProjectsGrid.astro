@@ -21,19 +21,22 @@ let projects: Project[] = [];
 if (Astro.props.projects) {
   projects = Astro.props.projects;
 } else {
-  // Try to fetch featured projects from CMS (homepage limit is 4)
-  const cmsProjects = await getFeaturedProjects('en', 4);
-  const cmsUrl = getCmsUrl();
+  // Try to fetch featured projects from CMS for both languages
+  const [cmsProjectsEn, cmsProjectsJa] = await Promise.all([
+    getFeaturedProjects('en', 4),
+    getFeaturedProjects('ja', 4)
+  ]);
   
-  if (cmsProjects.length > 0) {
-    projects = cmsProjects.map((item: CMSProject) => {
+  if (cmsProjectsEn.length > 0) {
+    projects = cmsProjectsEn.map((item: CMSProject) => {
+      const jaItem = cmsProjectsJa.find(ja => ja.slug === item.slug);
       const imageUrl = getMediaUrl(item.image);
       return {
         title: item.title,
-        titleJa: item.title,
+        titleJa: jaItem?.title || item.title,
         slug: item.slug,
         category: item.category,
-        categoryJa: item.category,
+        categoryJa: jaItem?.category || item.category,
         year: item.year,
         image: imageUrl || undefined
       };
