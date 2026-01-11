@@ -100,7 +100,11 @@ const CMS_URL = import.meta.env.CMS_URL || 'http://localhost:3001';
           
           <div id="form-message" class="hidden text-sm py-2 px-4 rounded-sm animate-fade-in"></div>
 
-          <button type="submit" id="submit-btn" class="mt-4 bg-white text-black py-4 px-8 self-start font-bold uppercase tracking-[0.2em] text-xs hover:bg-white/80 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+          <button type="submit" id="submit-btn" class="group mt-8 flex items-center gap-3 bg-theme text-theme border border-current py-4 px-10 self-start font-bold uppercase tracking-[0.2em] text-[10px] hover:bg-theme-alt transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+            <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 2L11 13"></path>
+              <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+            </svg>
             <span class="submit-text lang-en">Send Message</span>
             <span class="submit-text lang-ja">送信する</span>
             <span class="loading-text hidden">

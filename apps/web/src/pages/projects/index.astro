@@ -63,7 +63,7 @@ const projects = cmsProjects.length > 0
         category: item.category,
         categoryJa: item.category, // Will be different when fetching 'ja' locale
         year: item.year,
-        image: imageUrl ? `${cmsUrl}${imageUrl}` : undefined,
+        image: imageUrl || undefined,
         description: item.description
       };
     })

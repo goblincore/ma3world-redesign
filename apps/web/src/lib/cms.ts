@@ -239,7 +239,17 @@ export async function getProjectBySlug(slug: string, locale: 'en' | 'ja' = 'en')
 export function getMediaUrl(media: number | Media | null | undefined): string | null {
   if (!media) return null;
   if (typeof media === 'number') return null; // Not populated
-  return media.url || null;
+  
+  const url = media.url || null;
+  if (!url) return null;
+  
+  // If the URL is already absolute (starts with http), return it as is
+  if (url.startsWith('http')) {
+    return url;
+  }
+  
+  // Otherwise, prepend the CMS URL
+  return `${CMS_URL}${url}`;
 }
 
 /**

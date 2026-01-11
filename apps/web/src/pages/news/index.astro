@@ -52,7 +52,7 @@ const newsItems = cmsNews.length > 0
       return {
         title: item.title,
         date: new Date(item.date).toLocaleDateString('en-CA').replace(/-/g, '/'),
-        image: imageUrl ? `${cmsUrl}${imageUrl}` : undefined,
+        image: imageUrl || undefined,
         description: item.description,
         href
       };

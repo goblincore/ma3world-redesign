@@ -76,7 +76,7 @@ const base = import.meta.env.BASE_URL;
         {imageUrl && (
           <div class="aspect-[16/9] bg-theme-alt rounded-sm overflow-hidden mb-12">
             <img 
-              src={imageUrl.startsWith('http') ? imageUrl : `${cmsUrl}${imageUrl}`} 
+              src={imageUrl} 
               alt={newsItem.title} 
               class="w-full h-full object-cover" 
             />

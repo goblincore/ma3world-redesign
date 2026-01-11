@@ -57,7 +57,7 @@ if (Astro.props.projects) {
         category: item.category,
         categoryJa: item.category,
         year: item.year,
-        image: imageUrl ? `${cmsUrl}${imageUrl}` : undefined
+        image: imageUrl || undefined
       };
     });
   } else {
