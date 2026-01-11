@@ -205,19 +205,20 @@ export async function getProjects(locale: 'en' | 'ja' = 'en'): Promise<Project[]
  * Fetch featured projects for homepage
  * Prioritizes projects selected in the Settings global, then falls back to 'featured' flag
  */
-export async function getFeaturedProjects(locale: 'en' | 'ja' = 'en', limit: number = 4): Promise<Project[]> {
+export async function getFeaturedProjects(locale: 'en' | 'ja' = 'en', limit?: number): Promise<Project[]> {
   // 1. Try to get curated list from Settings
   const settings = await fetchGlobalFromCMS<{ featuredProjects?: Project[] }>('settings', { locale, depth: 2 });
   
   if (settings?.featuredProjects && settings.featuredProjects.length > 0) {
-    return settings.featuredProjects.slice(0, limit);
+    const projects = settings.featuredProjects;
+    return limit ? projects.slice(0, limit) : projects;
   }
 
   // 2. Fallback to projects with featured=true
   const response = await fetchFromCMS<Project>('projects', { 
     locale, 
     depth: 1,
-    limit,
+    limit: limit || 100,
     where: { featured: { equals: true } }
   });
   return response.docs;

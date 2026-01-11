@@ -2,10 +2,10 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import { getProjects, getMediaUrl, getCmsUrl, type Project } from '../../lib/cms';
+import { getFeaturedProjects, getMediaUrl, getCmsUrl, type Project } from '../../lib/cms';
 
-// Fetch from CMS
-const cmsProjects = await getProjects('en');
+// Fetch Featured Projects from CMS (respects custom ordering)
+const cmsProjects = await getFeaturedProjects('en');
 const cmsUrl = getCmsUrl();
 
 // Transform CMS data to match component props

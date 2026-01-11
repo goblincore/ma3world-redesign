@@ -21,8 +21,8 @@ let projects: Project[] = [];
 if (Astro.props.projects) {
   projects = Astro.props.projects;
 } else {
-  // Try to fetch featured projects from CMS
-  const cmsProjects = await getFeaturedProjects('en');
+  // Try to fetch featured projects from CMS (homepage limit is 4)
+  const cmsProjects = await getFeaturedProjects('en', 4);
   const cmsUrl = getCmsUrl();
   
   if (cmsProjects.length > 0) {
