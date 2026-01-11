@@ -260,6 +260,20 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
     margin-bottom: 0 !important;
     color: var(--color-text-muted) !important;
   }
+
+  /* Media centering and max-width constraints */
+  :global(.prose img) {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-height: 85vh !important;
+    object-fit: contain !important;
+  }
+
+  :global(.prose .aspect-video) {
+    max-width: 900px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
   
   .hero-overlay {
     background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2), transparent);
