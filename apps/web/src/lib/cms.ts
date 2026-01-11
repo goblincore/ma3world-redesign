@@ -336,19 +336,21 @@ export function getMediaUrl(media: number | Media | null | undefined, options?: 
   // If the URL is already absolute (starts with http), check if it's a Supabase/S3 URL we can rewrite
   if (url.startsWith('http')) {
     // Logic to rewrite Supabase storage URLs to BunnyCDN pull zone
-    // Example: https://[project].supabase.co/storage/v1/object/public/[bucket]/[filename]
-    if (url.includes('supabase.co/storage/v1/object/public/')) {
-      const parts = url.split('/storage/v1/object/public/');
-      if (parts.length === 2) {
-        // parts[1] contains [bucket]/[filename]
-        // We should keep the full path from the origin root
-        const fullPath = parts[1];
+    // Supabase storage URLs usually follow: https://[project].supabase.co/storage/v1/object/public/[bucket]/[filename]
+    if (url.includes('supabase.co/')) {
+      try {
+        const urlObj = new URL(url);
+        const fullPath = urlObj.pathname;
         
         // Only rewrite to CDN in production or if explicitly requested
         const useCDN = import.meta.env.PROD || import.meta.env.PUBLIC_USE_CDN === 'true';
         if (useCDN) {
-          url = `https://ma3worldbunny.b-cdn.net/${fullPath}`;
+          // We point to the same full path on the CDN
+          // This assumes the Pull Zone origin is set to the Supabase host (e.g., https://[ref].supabase.co)
+          url = `https://ma3worldbunny.b-cdn.net${fullPath}`;
         }
+      } catch (e) {
+        console.error('Error parsing media URL:', e);
       }
     }
   } else {
