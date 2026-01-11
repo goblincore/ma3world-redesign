@@ -116,7 +116,7 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
 
         <!-- Rich Content -->
         {project.content && (
-          <div class="prose prose-lg max-w-none text-theme">
+          <div class="prose prose-lg lg:prose-2xl max-w-none text-theme">
             <RichTextRenderer node={project.content.root} />
           </div>
         )}

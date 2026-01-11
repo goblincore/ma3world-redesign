@@ -1,4 +1,6 @@
 ---
+import { getMediaUrl } from '../lib/cms';
+
 const { node } = Astro.props;
 
 interface TextNode {
@@ -90,6 +92,25 @@ function getTextClasses(format: number) {
             {node.children?.map((child: any) => <Astro.self node={child} />)}
         </a>
      )
+  }
+
+  if (node.type === 'upload') {
+    const imageUrl = getMediaUrl(node.value);
+    if (!imageUrl) return null;
+    return (
+      <div class="my-12">
+        <img 
+          src={imageUrl} 
+          alt={node.value?.alt || ''} 
+          class="w-full h-auto rounded-sm"
+        />
+        {node.fields?.caption && (
+          <p class="mt-4 text-sm text-theme-muted italic text-center">
+            {node.fields.caption}
+          </p>
+        )}
+      </div>
+    );
   }
 
   if (node.type === 'block') {
