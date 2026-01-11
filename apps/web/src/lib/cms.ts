@@ -48,6 +48,7 @@ export interface Project {
   featured?: boolean | null;
   client?: string | null;
   heroVideo?: string | null;
+  heroImage?: number | Media | null;
   content?: {
     root: {
       type: string;

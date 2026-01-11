@@ -40,7 +40,9 @@ if (!project) {
 }
 
 const cmsUrl = getCmsUrl();
-const imageUrl = getMediaUrl(project.image);
+const mainImageUrl = getMediaUrl(project.image);
+const heroImageUrl = project.heroImage ? getMediaUrl(project.heroImage) : mainImageUrl;
+const fallbackImageUrl = heroImageUrl || mainImageUrl;
 
 const base = import.meta.env.BASE_URL;
 const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : base;
@@ -52,9 +54,10 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
   <main class="bg-theme overflow-hidden">
     <!-- Hero Section -->
     <section class="project-hero relative min-h-[60vh] flex items-end pb-12 md:pb-24 px-6 md:px-12 overflow-hidden bg-theme">
-      <!-- Video Background (if available) -->
-      {project.heroVideo && (
-        <div class="absolute inset-0 z-0">
+      <!-- Background Media -->
+      <div class="absolute inset-0 z-0">
+        <!-- Video Background (if available) -->
+        {project.heroVideo ? (
           <video 
             id="project-video"
             src={project.heroVideo.startsWith('http') ? project.heroVideo : `${assetBase}${project.heroVideo.startsWith('/') ? project.heroVideo.slice(1) : project.heroVideo}`} 
@@ -64,9 +67,17 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
             playsinline 
             class="w-full h-full object-cover opacity-40"
           ></video>
-          <div class="hero-overlay absolute inset-0 z-10"></div>
-        </div>
-      )}
+        ) : (
+          fallbackImageUrl && (
+            <img 
+              src={fallbackImageUrl} 
+              alt={project.title}
+              class="w-full h-full object-cover opacity-40"
+            />
+          )
+        )}
+        <div class="hero-overlay absolute inset-0 z-10"></div>
+      </div>
 
       <!-- Content Overlay -->
       <div class="relative z-10 max-w-7xl w-full mx-auto pt-32">
@@ -103,11 +114,11 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
         </div>
 
         <!-- Featured Image (if available) -->
-        {imageUrl && (
+        {mainImageUrl && (
           <div class="pt-8 pb-4">
             <div class="aspect-[16/9] bg-theme-alt rounded-sm overflow-hidden">
               <img 
-                src={imageUrl} 
+                src={mainImageUrl} 
                 alt={project.title} 
                 class="w-full h-full object-cover" 
               />

@@ -159,6 +159,21 @@ export const Projects: CollectionConfig = {
       },
     },
     {
+      name: 'heroImage',
+      label: {
+        en: 'Hero Photo',
+        ja: 'ヒーロー写真',
+      },
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: {
+          en: 'Hero background image (optional fallback for video)',
+          ja: 'ヒーロー背景画像（ビデオがない場合の任意フォールバック）',
+        },
+      },
+    },
+    {
       name: 'content',
       label: {
         en: 'Content',
