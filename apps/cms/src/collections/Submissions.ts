@@ -42,7 +42,7 @@ export const Submissions: CollectionConfig = {
         if (operation === 'create') {
           try {
             await req.payload.sendEmail({
-              to: process.env.CONTACT_FORM_RECIPIENT || 'hello@ma3world.com',
+              to: process.env.CONTACT_FORM_RECIPIENT || 'info@ma3world.com',
               from: process.env.SMTP_FROM || 'no-reply@ma3world.com',
               subject: `New Contact Form Submission from ${doc.name}`,
               html: `

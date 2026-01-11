@@ -1,4 +1,5 @@
 import { s3Storage } from '@payloadcms/storage-s3'
+import { resendAdapter } from '@payloadcms/email-resend'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor, BlocksFeature } from '@payloadcms/richtext-lexical'
 import path from 'path'
@@ -95,5 +96,10 @@ export default buildConfig({
     'https://goblincore.github.io', // Production frontend
     process.env.ASTRO_URL || '',
   ].filter(Boolean),
+  email: resendAdapter({
+    defaultFromAddress: 'info@ma3world.com',
+    defaultFromName: 'MA3world Contact Form',
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
 })
 
