@@ -347,7 +347,7 @@ export function getMediaUrl(media: number | Media | null | undefined, options?: 
         if (useCDN) {
           // We point to the same full path on the CDN
           // This assumes the Pull Zone origin is set to the Supabase host (e.g., https://[ref].supabase.co)
-          url = `https://ma3worldbunny.b-cdn.net${fullPath}`;
+          url = `https://ma3media.b-cdn.net${fullPath}`;
         }
       } catch (e) {
         console.error('Error parsing media URL:', e);
@@ -358,8 +358,8 @@ export function getMediaUrl(media: number | Media | null | undefined, options?: 
     url = `${getCmsUrl()}${url}`;
   }
 
-  // Apply BunnyCDN optimization parameters if available and we are on the CDN domain
-  if (options && url.includes('b-cdn.net')) {
+  // Apply BunnyCDN optimization parameters if available and we are on the media CDN domain
+  if (options && url.includes('ma3media.b-cdn.net')) {
     const params = new URLSearchParams();
     if (options.width) params.append('width', String(options.width));
     if (options.height) params.append('height', String(options.height));
