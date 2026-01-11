@@ -41,8 +41,8 @@ if (slug) {
   itemJa = fetchedJa ?? undefined;
 }
 
-// Fallback to one if other is missing, or 404 if both missing
-const newsItem = itemEn || itemJa;
+// Fallback to one if other is missing, or use static prop, or 404 if both missing
+const newsItem = itemEn || itemJa || staticItem;
 
 if (!newsItem) {
   return Astro.redirect('/404');

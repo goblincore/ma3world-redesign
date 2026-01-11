@@ -39,8 +39,8 @@ if (slug) {
   projectJa = fetchedJa ?? undefined;
 }
 
-// Fallback to one if other is missing, or 404 if both missing
-const project = projectEn || projectJa;
+// Fallback to one if other is missing, or use static prop, or 404 if both missing
+const project = projectEn || projectJa || staticProject;
 
 if (!project) {
   return Astro.redirect('/404');
