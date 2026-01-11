@@ -109,6 +109,7 @@ function getTextClasses(format: number) {
         {isVideo ? (
           <video 
             src={mediaUrl} 
+            poster={getMediaUrl(node.value?.thumbnail)}
             controls 
             playsinline
             class="w-full aspect-video rounded-sm block bg-theme-muted/20"

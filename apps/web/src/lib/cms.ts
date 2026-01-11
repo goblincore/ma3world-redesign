@@ -11,6 +11,7 @@ export interface Media {
   width?: number | null;
   height?: number | null;
   mimeType?: string | null;
+  thumbnail?: number | Media | null;
 }
 
 export interface ImageOptions {
