@@ -28,16 +28,22 @@ const isDev = import.meta.env.DEV;
 const { slug } = Astro.params;
 const { newsItem: staticItem } = Astro.props;
 
-// Use the news item from props (getStaticPaths) or fetch it
-let newsItem: News | undefined = staticItem;
+// Fetch both English and Japanese versions
+let itemEn: News | undefined;
+let itemJa: News | undefined;
 
-// In development, force a re-fetch to ensure we have the latest content from the CMS
-if ((isDev || !newsItem) && slug) {
-  const fetched = await getNewsBySlug(slug, 'en');
-  newsItem = fetched ?? undefined;
+if (slug) {
+  const [fetchedEn, fetchedJa] = await Promise.all([
+    getNewsBySlug(slug, 'en'),
+    getNewsBySlug(slug, 'ja')
+  ]);
+  itemEn = fetchedEn ?? undefined;
+  itemJa = fetchedJa ?? undefined;
 }
 
-// If no news item found, 404
+// Fallback to one if other is missing, or 404 if both missing
+const newsItem = itemEn || itemJa;
+
 if (!newsItem) {
   return Astro.redirect('/404');
 }
@@ -69,7 +75,8 @@ const base = import.meta.env.BASE_URL;
         
         <!-- Title -->
         <h1 class="font-serif text-4xl md:text-6xl lg:text-7xl leading-tight mb-12">
-          {newsItem.title}
+          <span class="lang-en">{itemEn?.title || newsItem.title}</span>
+          <span class="lang-ja">{itemJa?.title || newsItem.title}</span>
         </h1>
         
         <!-- Featured Image -->
@@ -85,13 +92,19 @@ const base = import.meta.env.BASE_URL;
         
         <!-- Description / Lead -->
         <div class="text-xl md:text-2xl leading-relaxed text-theme-muted mb-12 border-l-2 border-theme/30 pl-8">
-          <p>{newsItem.description}</p>
+          <div class="lang-en"><p>{itemEn?.description}</p></div>
+          <div class="lang-ja"><p>{itemJa?.description}</p></div>
         </div>
         
         <!-- Rich Content -->
-        {newsItem.content && (
-          <div class="prose prose-lg max-w-none text-theme">
-            <RichTextRenderer node={newsItem.content.root} />
+        {itemEn?.content && (
+          <div class="lang-en prose prose-lg max-w-none text-theme">
+            <RichTextRenderer node={itemEn.content.root} />
+          </div>
+        )}
+        {itemJa?.content && (
+          <div class="lang-ja prose prose-lg max-w-none text-theme">
+            <RichTextRenderer node={itemJa.content.root} />
           </div>
         )}
         
