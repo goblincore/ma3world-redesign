@@ -47,7 +47,20 @@ export default buildConfig({
   plugins: [
     s3Storage({
       collections: {
-        media: true,
+        media: {
+          disablePayloadAccessControl: true,
+          generateFileURL: ({ filename }) => {
+            const endpoint = process.env.S3_ENDPOINT || ''
+            const bucket = process.env.S3_BUCKET || ''
+            if (endpoint.includes('supabase.co')) {
+              const projectRef = endpoint.match(/https:\/\/(.*)\.supabase\.co/)?.[1]
+              if (projectRef) {
+                return `https://${projectRef}.supabase.co/storage/v1/object/public/${bucket}/${filename}`
+              }
+            }
+            return `/api/media/file/${filename}` // Fallback to Payload's default local path if not Supabase
+          },
+        },
       },
       bucket: process.env.S3_BUCKET || '',
       acl: null as any,
