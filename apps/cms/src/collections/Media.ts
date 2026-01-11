@@ -20,9 +20,6 @@ export const Media: CollectionConfig = {
     staticDir: 'media',
     mimeTypes: ['image/*', 'video/*'],
     adminThumbnail: ({ doc }: any) => {
-      if (doc.mimeType?.startsWith('video/')) {
-        return null
-      }
       return doc.url
     },
   },
