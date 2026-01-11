@@ -336,18 +336,28 @@ export function getMediaUrl(media: number | Media | null | undefined, options?: 
   // If the URL is already absolute (starts with http), check if it's a Supabase/S3 URL we can rewrite
   if (url.startsWith('http')) {
     // Logic to rewrite Supabase storage URLs to BunnyCDN pull zone
-    // Supabase storage URLs usually follow: https://[project].supabase.co/storage/v1/object/public/[bucket]/[filename]
+    // Standard: https://[project].supabase.co/storage/v1/object/public/[bucket]/[filename]
     if (url.includes('supabase.co/')) {
       try {
         const urlObj = new URL(url);
-        const fullPath = urlObj.pathname;
+        const pathname = urlObj.pathname;
         
         // Only rewrite to CDN in production or if explicitly requested
         const useCDN = import.meta.env.PROD || import.meta.env.PUBLIC_USE_CDN === 'true';
+        
         if (useCDN) {
-          // We point to the same full path on the CDN
-          // This assumes the Pull Zone origin is set to the Supabase host (e.g., https://[ref].supabase.co)
-          url = `https://ma3media.b-cdn.net${fullPath}`;
+          // Optimized Path: We point to ma3media.b-cdn.net
+          // We recommend setting the Bunny Origin to:
+          // https://[project].supabase.co/storage/v1/object/public/media
+          // So we strip the prefix and just pass the filename.
+          const storagePrefix = '/storage/v1/object/public/media/';
+          if (pathname.startsWith(storagePrefix)) {
+             const filename = pathname.replace(storagePrefix, '');
+             url = `https://ma3media.b-cdn.net/${filename}`;
+          } else {
+             // Fallback: use full path if it doesn't match the expected bucket
+             url = `https://ma3media.b-cdn.net${pathname}`;
+          }
         }
       } catch (e) {
         console.error('Error parsing media URL:', e);
@@ -359,7 +369,9 @@ export function getMediaUrl(media: number | Media | null | undefined, options?: 
   }
 
   // Apply BunnyCDN optimization parameters if available and we are on the media CDN domain
-  if (options && url.includes('ma3media.b-cdn.net')) {
+  // (Videos should not have optimization params appended)
+  const isVideo = media.mimeType?.startsWith('video/');
+  if (options && !isVideo && url.includes('ma3media.b-cdn.net')) {
     const params = new URLSearchParams();
     if (options.width) params.append('width', String(options.width));
     if (options.height) params.append('height', String(options.height));
