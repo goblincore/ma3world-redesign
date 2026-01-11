@@ -65,7 +65,7 @@ const CMS_URL = import.meta.env.CMS_URL || 'http://localhost:3001';
               name="name" 
               required
               placeholder="Your Name / お名前"
-              class="w-full bg-transparent border-b border-theme/50 py-3 focus:border-theme outline-none transition-colors text-lg placeholder:text-theme-muted/50"
+              class="w-full bg-transparent border-b border-theme/50 px-4 py-3 focus:border-theme outline-none transition-colors text-lg placeholder:text-theme-muted/50"
             />
           </div>
           
@@ -80,7 +80,7 @@ const CMS_URL = import.meta.env.CMS_URL || 'http://localhost:3001';
               name="email" 
               required
               placeholder="hello@example.com"
-              class="w-full bg-transparent border-b border-theme/50 py-3 focus:border-theme outline-none transition-colors text-lg placeholder:text-theme-muted/50"
+              class="w-full bg-transparent border-b border-theme/50 px-4 py-3 focus:border-theme outline-none transition-colors text-lg placeholder:text-theme-muted/50"
             />
           </div>
           
@@ -191,6 +191,23 @@ const CMS_URL = import.meta.env.CMS_URL || 'http://localhost:3001';
 
   .group:hover .butterfly-wings {
     animation: butterfly-flap 0.25s infinite ease-in-out;
+  }
+
+  /* Fix autofill background */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--color-text);
+    -webkit-box-shadow: 0 0 0px 1000px var(--color-bg) inset;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  :root[data-theme="light"] input:-webkit-autofill,
+  :root[data-theme="light"] textarea:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
   }
 </style>
 
