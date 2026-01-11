@@ -10,6 +10,7 @@ export interface Media {
   filename?: string | null;
   width?: number | null;
   height?: number | null;
+  mimeType?: string | null;
 }
 
 export interface ImageOptions {

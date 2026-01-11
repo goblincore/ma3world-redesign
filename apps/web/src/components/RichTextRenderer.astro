@@ -99,16 +99,28 @@ function getTextClasses(format: number) {
   }
 
   if (node.type === 'upload') {
-    const imageUrl = getMediaUrl(node.value, { width: 1200 });
-    if (!imageUrl) return null;
+    const isVideo = node.value?.mimeType?.startsWith('video/');
+    const mediaUrl = getMediaUrl(node.value, isVideo ? undefined : { width: 1200 });
+    
+    if (!mediaUrl) return null;
+
     return (
-      <div class="my-12 flex justify-center">
-        <img 
-          src={imageUrl} 
-          alt={node.value?.alt || ''} 
-          class="max-w-full h-auto rounded-sm block"
-          loading="lazy"
-        />
+      <div class="my-12 flex flex-col items-center">
+        {isVideo ? (
+          <video 
+            src={mediaUrl} 
+            controls 
+            playsinline
+            class="max-w-full h-auto rounded-sm block"
+          />
+        ) : (
+          <img 
+            src={mediaUrl} 
+            alt={node.value?.alt || ''} 
+            class="max-w-full h-auto rounded-sm block"
+            loading="lazy"
+          />
+        )}
         {node.fields?.caption && (
           <p class="mt-4 text-sm text-theme-muted italic text-center">
             {node.fields.caption}

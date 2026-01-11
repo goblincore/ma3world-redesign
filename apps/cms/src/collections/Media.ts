@@ -16,5 +16,14 @@ export const Media: CollectionConfig = {
       required: false,
     },
   ],
-  upload: true,
+  upload: {
+    staticDir: 'media',
+    mimeTypes: ['image/*', 'video/*'],
+    adminThumbnail: ({ doc }: any) => {
+      if (doc.mimeType?.startsWith('video/')) {
+        return null
+      }
+      return doc.url
+    },
+  },
 }
