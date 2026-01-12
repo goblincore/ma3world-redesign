@@ -142,9 +142,19 @@ const contactHref = isHome ? "#contact" : base + "#contact";
       
       <div class="mt-auto pt-12 opacity-0 translate-y-4 transition-all duration-500 delay-[350ms] mobile-controls">
         <!-- Theme Toggle -->
-        <button id="mobile-theme-toggle" class="flex items-center gap-4 text-xs sm:text-sm tracking-widest uppercase border border-current rounded-full px-5 sm:px-6 py-2.5 sm:py-3 hover:opacity-60 transition-opacity cursor-pointer">
-          <span class="lang-en">Switch Theme</span>
-          <span class="lang-ja">テーマ切替</span>
+        <button id="mobile-theme-toggle" class="flex items-center gap-2.5 border border-current rounded-full px-5 sm:px-6 py-2.5 sm:py-3 hover:opacity-60 transition-opacity cursor-pointer" aria-label="Toggle theme">
+          <!-- Sun Icon -->
+          <svg class="w-5 h-5 theme-icon-sun transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+          <!-- Bidirectional Arrow -->
+          <svg class="w-4 h-4 opacity-60" style="order: 2;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+          </svg>
+          <!-- Moon Icon -->
+          <svg class="w-5 h-5 theme-icon-moon transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+          </svg>
         </button>
 
         <!-- Language Toggle -->
@@ -167,15 +177,34 @@ const contactHref = isHome ? "#contact" : base + "#contact";
     const html = document.documentElement;
     const darkIcon = toggle.querySelector('.dark-icon');
     const lightIcon = toggle.querySelector('.light-icon');
+    const sunIcon = toggle.querySelector('.theme-icon-sun');
+    const moonIcon = toggle.querySelector('.theme-icon-moon');
 
     const updateIcons = () => {
       const isLight = html.getAttribute('data-theme') === 'light';
-      if (isLight) {
-        darkIcon?.classList.add('hidden');
-        lightIcon?.classList.remove('hidden');
-      } else {
-        darkIcon?.classList.remove('hidden');
-        lightIcon?.classList.add('hidden');
+      
+      // Only update icons if they exist (desktop version has toggling icons)
+      if (darkIcon && lightIcon) {
+        if (isLight) {
+          darkIcon.classList.add('hidden');
+          lightIcon.classList.remove('hidden');
+        } else {
+          darkIcon.classList.remove('hidden');
+          lightIcon.classList.add('hidden');
+        }
+      }
+      
+      // Reorder sun/moon icons for mobile (current theme on left, next theme on right)
+      if (sunIcon && moonIcon) {
+        if (isLight) {
+          // Light mode: Sun (current) on left, Moon (next) on right
+          (sunIcon as HTMLElement).style.order = '1';
+          (moonIcon as HTMLElement).style.order = '3';
+        } else {
+          // Dark mode: Moon (current) on left, Sun (next) on right
+          (moonIcon as HTMLElement).style.order = '1';
+          (sunIcon as HTMLElement).style.order = '3';
+        }
       }
     };
     
