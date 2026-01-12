@@ -4,26 +4,31 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import { getFeaturedProjects, getMediaUrl, getCmsUrl, getSettings, type Project } from '../../lib/cms';
 
-// Fetch Featured Projects from CMS (respects custom ordering)
-const cmsProjects = await getFeaturedProjects('en');
+// Fetch Featured Projects from CMS for both languages (respects custom ordering)
+const [cmsProjectsEn, cmsProjectsJa] = await Promise.all([
+  getFeaturedProjects('en'),
+  getFeaturedProjects('ja')
+]);
 const cmsUrl = getCmsUrl();
 
 const settings = await getSettings();
 const showNews = settings?.showNews ?? true;
 const showJournal = settings?.showJournal ?? true;
 
-// Transform CMS data to match component props
-const projects = cmsProjects.map((item: Project) => {
+// Transform CMS data to match component props, merging EN and JA content
+const projects = cmsProjectsEn.map((item: Project) => {
+  const jaItem = cmsProjectsJa.find(ja => ja.slug === item.slug);
   const imageUrl = getMediaUrl(item.image, { width: 1000 });
   return {
     title: item.title,
-    titleJa: item.title, // Will be different when fetching 'ja' locale
+    titleJa: jaItem?.title || item.title,
     slug: item.slug,
     category: item.category,
-    categoryJa: item.category, // Will be different when fetching 'ja' locale
+    categoryJa: jaItem?.category || item.category,
     year: item.year,
     image: imageUrl || undefined,
-    description: item.description
+    description: item.description,
+    descriptionJa: jaItem?.description || item.description
   };
 });
 
@@ -84,7 +89,10 @@ const base = import.meta.env.BASE_URL;
             
             <div class="space-y-4">
               <div class="flex items-center justify-between">
-                <span class="text-[10px] uppercase tracking-[0.3em] font-bold opacity-50">{project.category}</span>
+                <span class="text-[10px] uppercase tracking-[0.3em] font-bold opacity-50">
+                  <span class="lang-en">{project.category}</span>
+                  <span class="lang-ja">{project.categoryJa}</span>
+                </span>
                 <span class="text-[10px] font-bold opacity-30 tracking-widest">{project.year}</span>
               </div>
               
@@ -95,6 +103,7 @@ const base = import.meta.env.BASE_URL;
               
               <p class="text-base md:text-lg opacity-60 leading-relaxed max-w-xl">
                 <span class="lang-en">{project.description}</span>
+                <span class="lang-ja">{project.descriptionJa}</span>
               </p>
             </div>
           </a>
