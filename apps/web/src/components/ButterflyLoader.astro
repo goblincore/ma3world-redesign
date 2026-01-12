@@ -1,7 +1,7 @@
 ---
 const petals = [...Array(30)];
 ---
-<div class="butterfly-loader absolute inset-0 overflow-hidden flex items-center justify-center bg-theme transition-colors duration-1000">
+<div class="butterfly-loader absolute inset-0 overflow-hidden flex items-center justify-center bg-[#050505] transition-colors duration-1000">
   
   <!-- DARK MODE: Starry Sky & Butterflies -->
   <div class="dark-mode-elements absolute inset-0 pointer-events-none transition-opacity duration-1000">
@@ -81,9 +81,9 @@ const petals = [...Array(30)];
     opacity: 1;
   }
 
-  /* Force loading text color in light mode */
+  /* Force loading text color in light mode - kept visible on dark background */
   :root[data-theme="light"] .loading-text {
-    color: rgba(0,0,0,0.3);
+    color: rgba(255, 255, 255, 0.4);
   }
   
   /* Sakura Styles */

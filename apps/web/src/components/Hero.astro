@@ -13,12 +13,12 @@ const base = import.meta.env.BASE_URL;
 const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : base;
 
 // Video sources
-const darkVideoSrc = `${assetBase}video/loopingyua.mp4`;
-const lightVideoSrc = `${assetBase}video/lightloop2.mp4`;
+const darkVideoSrc = `${assetBase}video/loopingyua_lobitrate.mp4`;
+const lightVideoSrc = `${assetBase}video/lightloop_lobitrate.mp4`;
 
 // Fallback image sources (for when video doesn't load)
 const darkFallbackSrc = `${assetBase}video/darkherostatic.jpg`;
-const lightFallbackSrc = `${assetBase}video/lightherostatic.jpg`;
+const lightFallbackSrc = `${assetBase}video/lightherostatic.webp`;
 ---
 
 <section id="hero" class="relative h-[100svh] w-full flex items-center justify-center overflow-hidden">
@@ -47,8 +47,8 @@ const lightFallbackSrc = `${assetBase}video/lightherostatic.jpg`;
     <div class="absolute inset-0 bg-black/20 z-20 pointer-events-none"></div>
     <div class="absolute inset-x-0 top-0 h-64 hero-top-gradient z-25 pointer-events-none"></div>
     
-    <!-- Initial Loading Overlay -->
-    <div id="video-loader" class="absolute inset-0 bg-theme z-30 transition-opacity duration-700">
+    <!-- Initial Loading Overlay - Always dark for smooth transition to video/dark theme -->
+    <div id="video-loader" class="absolute inset-0 bg-[#050505] z-30 transition-opacity duration-700">
       <ButterflyLoader />
     </div>
   </div>
@@ -236,7 +236,7 @@ const lightFallbackSrc = `${assetBase}video/lightherostatic.jpg`;
   
   const updateFallbackImage = () => {
     const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-    const newFallbackSrc = isLight ? `${assetBase}video/lightherostatic.jpg` : `${assetBase}video/darkherostatic.jpg`;
+    const newFallbackSrc = isLight ? `${assetBase}video/lightherostatic.webp` : `${assetBase}video/darkherostatic.jpg`;
     
     if (fallback && fallback.getAttribute('src') !== newFallbackSrc) {
       fallback.setAttribute('src', newFallbackSrc);
