@@ -23,6 +23,8 @@ interface Props {
 const { title, description = "Digital-first Design Agency" } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : base;
+
+const isHome = Astro.url.pathname === base || Astro.url.pathname === base.replace(/\/$/, "");
 ---
 
 <!doctype html>
@@ -64,8 +66,54 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
 				});
 			})();
 		</script>
+		
+		{isHome && (
+			<style is:inline>
+				/* Critical CSS for instant Sakura loader */
+				#instant-loader {
+					position: fixed;
+					inset: 0;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					background-color: #050505; /* Default to dark to avoid white flash */
+					z-index: 10000;
+					transition: opacity 0.5s ease, visibility 0.5s ease;
+				}
+				:root[data-theme="light"] #instant-loader {
+					background-color: #ffffff;
+				}
+				.sakura-spinner {
+					width: 64px;
+					height: 64px;
+					color: #FFB7C5;
+					animation: sakura-spin 12s linear infinite;
+					opacity: 0.8;
+				}
+				@keyframes sakura-spin {
+					from { transform: rotate(0deg); }
+					to { transform: rotate(360deg); }
+				}
+				#instant-loader.hidden {
+					opacity: 0;
+					visibility: hidden;
+					pointer-events: none;
+				}
+			</style>
+		)}
 	</head>
-	<body>
+	<body class={isHome ? "is-home" : ""}>
+		{isHome && (
+			<div id="instant-loader" aria-hidden="true">
+				<svg class="sakura-spinner" viewBox="0 0 100 100" fill="currentColor">
+					<path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50"></path>
+					<path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(72 50 50)"></path>
+					<path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(144 50 50)"></path>
+					<path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(216 50 50)"></path>
+					<path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(288 50 50)"></path>
+				</svg>
+			</div>
+		)}
 		<div id="theme-transition-overlay" class="fixed inset-0 z-[9999] pointer-events-none opacity-0 transition-opacity duration-300 bg-black"></div>
 		<slot />
 		
@@ -99,6 +147,17 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
 						overlay.classList.add('opacity-0');
 					}, 50);
 				}, 350);
+			});
+
+			// Instant loader handoff
+			window.addEventListener('load', () => {
+				const instantLoader = document.getElementById('instant-loader');
+				if (instantLoader) {
+					setTimeout(() => {
+						instantLoader.classList.add('hidden');
+						setTimeout(() => instantLoader.remove(), 500);
+					}, 200);
+				}
 			});
 		</script>
     <script>
