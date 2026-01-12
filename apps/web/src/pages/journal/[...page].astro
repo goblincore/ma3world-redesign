@@ -111,19 +111,33 @@ function formatDate(dateString: string) {
               )}
 
               <footer class="pt-8 border-t border-theme-alt/10">
-                {item.en.tags && item.en.tags.length > 0 && (
-                  <div class="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.2em] font-bold">
-                    <span class="opacity-30 mr-2">
-                      <span class="lang-en">Tags:</span>
-                      <span class="lang-ja">タグ:</span>
-                    </span>
-                    {item.en.tags.map((tag: any) => (
-                      <span class="opacity-60 hover:opacity-100 transition-opacity cursor-default">
-                        #{tag.name || tag}
+                <div class="flex items-center justify-between gap-4 flex-wrap">
+                  {item.en.tags && item.en.tags.length > 0 && (
+                    <div class="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.2em] font-bold">
+                      <span class="opacity-30 mr-2">
+                        <span class="lang-en">Tags:</span>
+                        <span class="lang-ja">タグ:</span>
                       </span>
-                    ))}
-                  </div>
-                )}
+                      {item.en.tags.map((tag: any) => (
+                        <span class="opacity-60 hover:opacity-100 transition-opacity cursor-default">
+                          #{tag.name || tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  
+                  <a 
+                    href={`${base}journal/${item.en.slug}`} 
+                    class="text-[10px] uppercase tracking-[0.2em] font-bold opacity-40 hover:opacity-100 transition-opacity flex items-center gap-2 group"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-60">
+                      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
+                    <span class="lang-en">Permalink</span>
+                    <span class="lang-ja">パーマリンク</span>
+                  </a>
+                </div>
               </footer>
             </article>
           ))}
