@@ -88,12 +88,12 @@ const base = import.meta.env.BASE_URL;
             </div>
             
             <div class="space-y-4">
-              <div class="flex items-center justify-between">
+              <div class="flex items-center justify-between gap-4 flex-wrap">
                 <span class="text-[10px] uppercase tracking-[0.3em] font-bold opacity-50">
                   <span class="lang-en">{project.category}</span>
                   <span class="lang-ja">{project.categoryJa}</span>
                 </span>
-                <span class="text-[10px] font-bold opacity-30 tracking-widest">{project.year}</span>
+                <span class="text-[10px] font-bold opacity-30 tracking-widest whitespace-nowrap">{project.year}</span>
               </div>
               
               <h2 class="text-2xl md:text-4xl font-serif leading-tight group-hover:opacity-60 transition-opacity">

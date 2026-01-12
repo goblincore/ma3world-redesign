@@ -93,18 +93,19 @@ const base = import.meta.env.BASE_URL;
           </div>
           
           <!-- Project Info -->
-          <div class="flex items-start justify-between">
-            <div>
-              <h3 class="text-xl md:text-2xl font-medium mb-1 transition-opacity project-title">
-                <span class="lang-en" set:html={project.title}></span>
-                <span class="lang-ja" set:html={project.titleJa}></span>
-              </h3>
-              <span class="text-sm text-theme-muted">
+          <div>
+            <h3 class="text-xl md:text-2xl font-medium mb-1 transition-opacity project-title">
+              <span class="lang-en" set:html={project.title}></span>
+              <span class="lang-ja" set:html={project.titleJa}></span>
+            </h3>
+            <div class="flex items-center gap-2 text-sm text-theme-muted">
+              <span>
                 <span class="lang-en">{project.category}</span>
                 <span class="lang-ja">{project.categoryJa}</span>
               </span>
+              <span>•</span>
+              <span>{project.year}</span>
             </div>
-            <span class="text-sm text-theme-muted">{project.year}</span>
           </div>
         </a>
       ))}
