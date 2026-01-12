@@ -39,6 +39,19 @@ const petals = [...Array(30)];
     </div>
   </div>
 
+  <!-- Instant Sakura Spinner (Light Mode Only) -->
+  <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+    <div class="sakura-spinner-container w-16 h-16 sm:w-20 sm:h-20">
+      <svg class="w-full h-full text-sakura animate-spin-slow" viewBox="0 0 100 100" fill="currentColor">
+        <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50"></path>
+        <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(72 50 50)"></path>
+        <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(144 50 50)"></path>
+        <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(216 50 50)"></path>
+        <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(288 50 50)"></path>
+      </svg>
+    </div>
+  </div>
+
   <!-- LIGHT MODE: Sakura Storm -->
   <div class="light-mode-elements absolute inset-0 pointer-events-none transition-opacity duration-1000 opacity-0">
     {petals.map((_, i) => (
@@ -52,7 +65,7 @@ const petals = [...Array(30)];
         }}
       >
         <svg 
-          class="petal text-sakura opacity-60" 
+          class="storm-petal text-sakura opacity-60" 
           viewBox="0 0 100 100" 
           width={Math.random() * 30 + 20} 
           height={Math.random() * 30 + 20}
@@ -66,7 +79,7 @@ const petals = [...Array(30)];
     ))}
   </div>
 
-  <div class="loading-text absolute bottom-24 text-white/40 text-[10px] uppercase tracking-[0.6em] font-bold">
+  <div class="loading-text absolute bottom-24 text-[10px] uppercase tracking-[0.6em] font-bold opacity-30">
     loading
   </div>
 </div>
@@ -79,6 +92,15 @@ const petals = [...Array(30)];
   
   :root[data-theme="light"] .light-mode-elements {
     opacity: 1;
+  }
+
+  /* Sakura Spinner Visibility */
+  .sakura-spinner-container {
+    opacity: 0;
+  }
+
+  :root[data-theme="light"] .sakura-spinner-container {
+    opacity: 0.8;
   }
 
   /* Force loading text color in light mode */
@@ -95,7 +117,7 @@ const petals = [...Array(30)];
     animation: fall linear infinite, sway ease-in-out infinite alternate;
   }
 
-  .petal {
+  .storm-petal {
     animation: rotate linear infinite, flutter ease-in-out infinite alternate;
     transform-origin: center;
   }
@@ -119,6 +141,10 @@ const petals = [...Array(30)];
   @keyframes rotate {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+  }
+
+  .animate-spin-slow {
+    animation: rotate 12s linear infinite;
   }
 
   /* Existing Animations */
