@@ -16,6 +16,9 @@ export const Journal: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'date', 'updatedAt'],
+    livePreview: {
+      url: ({ data }) => `http://localhost:4321/ma3world-redesign/journal/${data.slug}`,
+    },
   },
   access: {
     read: ({ req: { user } }) => {

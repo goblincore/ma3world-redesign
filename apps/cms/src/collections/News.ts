@@ -16,6 +16,9 @@ export const News: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'date', 'linkType', 'updatedAt'],
+    livePreview: {
+      url: ({ data }) => `http://localhost:4321/ma3world-redesign/news/${data.slug}`,
+    },
   },
   access: {
     read: ({ req: { user } }) => {

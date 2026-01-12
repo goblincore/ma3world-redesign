@@ -16,6 +16,9 @@ export const Projects: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'year', 'featured', 'updatedAt'],
+    livePreview: {
+      url: ({ data }) => `http://localhost:4321/ma3world-redesign/projects/${data.slug}`,
+    },
   },
   access: {
     read: ({ req: { user } }) => {
