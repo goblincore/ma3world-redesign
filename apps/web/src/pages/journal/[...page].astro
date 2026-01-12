@@ -42,7 +42,7 @@ function formatDate(dateString: string) {
 }
 ---
 
-<Layout title="Journal | MA3.0 World">
+<Layout title="Journal | MA3 World">
   <Header showNews={showNews} showJournal={showJournal} />
   <main class="bg-theme pt-32 pb-32 px-6 md:px-12 min-h-screen">
     <div class="max-w-3xl mx-auto">
@@ -72,8 +72,8 @@ function formatDate(dateString: string) {
                     <span class="lang-ja">{new Date(item.en.date).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                   </time>
                   <span class="w-1 h-1 bg-current rounded-full"></span>
-                  <span class="lang-en">MA3.0 Journal</span>
-                  <span class="lang-ja">MA3.0 ジャーナル</span>
+                  <span class="lang-en">MA3 Journal</span>
+                  <span class="lang-ja">MA3 ジャーナル</span>
                 </div>
                 <h2 class="text-3xl md:text-5xl font-serif mb-6 leading-tight">
                   <span class="lang-en">{item.en.title}</span>

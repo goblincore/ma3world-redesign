@@ -59,7 +59,7 @@ const formattedDate = new Date(journalItem.date).toLocaleDateString('en-US', {
 const base = import.meta.env.BASE_URL;
 ---
 
-<Layout title={`${journalItem.title} | Journal | MA3.0 World`}>
+<Layout title={`${journalItem.title} | Journal | MA3 World`}>
   <Header transparent={false} showNews={showNews} showJournal={showJournal} />
   
   <main class="bg-theme overflow-hidden">
@@ -73,8 +73,8 @@ const base = import.meta.env.BASE_URL;
             <span class="lang-ja">{new Date(journalItem.date).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
           </time>
           <span class="w-1 h-1 bg-current rounded-full"></span>
-          <span class="lang-en">MA3.0 Journal</span>
-          <span class="lang-ja">MA3.0 ジャーナル</span>
+          <span class="lang-en">MA3 Journal</span>
+          <span class="lang-ja">MA3 ジャーナル</span>
         </div>
         
         <!-- Title -->
