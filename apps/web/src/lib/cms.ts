@@ -148,9 +148,9 @@ function flattenObject(obj: any, prefix = ''): Record<string, string> {
  */
 async function fetchFromCMS<T>(
   endpoint: string, 
-  options: { locale?: 'en' | 'ja'; depth?: number; limit?: number; page?: number; where?: Record<string, unknown> } = {}
+  options: { locale?: 'en' | 'ja'; depth?: number; limit?: number; page?: number; where?: Record<string, unknown>; sort?: string } = {}
 ): Promise<PayloadResponse<T>> {
-  const { locale = 'en', depth = 1, limit = 100, page = 1, where } = options;
+  const { locale = 'en', depth = 1, limit = 100, page = 1, where, sort } = options;
   const CMS_URL = getCmsUrl();
   
   const params = new URLSearchParams({
@@ -159,6 +159,10 @@ async function fetchFromCMS<T>(
     limit: String(limit),
     page: String(page),
   });
+  
+  if (sort) {
+    params.append('sort', sort);
+  }
   
   if (where) {
     const flattened = flattenObject(where, 'where');
@@ -219,7 +223,8 @@ async function fetchGlobalFromCMS<T>(
 export async function getNews(locale: 'en' | 'ja' = 'en'): Promise<News[]> {
   const response = await fetchFromCMS<News>('news', { 
     locale, 
-    depth: 2 // Include related media and projects
+    depth: 2, // Include related media and projects
+    sort: '-date' // Sort by date in descending order (newest first)
   });
   return response.docs;
 }
