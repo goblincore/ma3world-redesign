@@ -12,66 +12,28 @@ const { class: className = "" } = Astro.props;
 
 <style>
   .fullpage-wrapper {
-    /* Mobile: normal scrolling */
-    height: auto;
-    overflow-y: visible;
+    width: 100%;
+    overflow-x: hidden;
   }
   
-  .fullpage-wrapper::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .fullpage-wrapper {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  
-  /* Mobile: sections can be any height */
+  /* Shared styles for sections */
   .fullpage-wrapper > :global(section),
   .fullpage-wrapper > :global(footer) {
+    width: 100%;
+    position: relative;
+    /* Maintain min-height for the "slide" feel without locking */
     min-height: 100vh;
     height: auto;
   }
   
-  /* Sections with no-snap class don't have min-height constraint on mobile */
+  /* Sections with no-snap class can be smaller if needed */
   .fullpage-wrapper > :global(section.no-snap) {
     min-height: auto;
-    height: auto;
-  }
-  
-  /* Desktop: fullpage scroll-snap */
-  @media (min-width: 1024px) {
-    .fullpage-wrapper {
-      height: 100vh;
-      overflow-y: scroll;
-      scroll-snap-type: y proximity; /* proximity allows stopping anywhere, prefers snap points */
-      scroll-behavior: smooth;
-    }
-    
-    .fullpage-wrapper > :global(section),
-    .fullpage-wrapper > :global(footer) {
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
-      height: 100vh;
-      min-height: 100vh;
-      overflow: hidden;
-    }
-    
-    /* No-snap sections: still a snap point but with natural height */
-    .fullpage-wrapper > :global(section.no-snap) {
-      scroll-snap-align: start;
-      scroll-snap-stop: normal; /* Allow scrolling through without stopping */
-      height: auto;
-      min-height: auto;
-      overflow: visible;
-    }
   }
 </style>
 
 <script>
-  const wrapper = document.getElementById('fullpage-wrapper');
-  if (!wrapper) throw new Error('Fullpage wrapper not found');
-  
+  // Expose sections for other components if needed
   const sections = ['hero', 'about', 'projects', 'contact'];
   let currentSlide = 0;
   
@@ -93,68 +55,45 @@ const { class: className = "" } = Astro.props;
   // Track scroll position
   let scrollTimeout: ReturnType<typeof setTimeout>;
   
-  wrapper.addEventListener('scroll', () => {
+  const handleScroll = () => {
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(() => {
-      const scrollTop = wrapper.scrollTop;
-      
+      // Use window.scrollY for natural scrolling
       let closestIndex = 0;
       let minDiff = Infinity;
       
       sections.forEach((id, i) => {
         const el = document.getElementById(id);
         if (!el) return;
-        const diff = Math.abs(el.offsetTop - scrollTop);
+        
+        // Calculate distance from top of viewport
+        const rect = el.getBoundingClientRect();
+        const diff = Math.abs(rect.top);
+        
         if (diff < minDiff) {
           minDiff = diff;
           closestIndex = i;
         }
       });
       
+      // Special case: if we're at the very bottom, highlight the last section (usually footer/contact)
+      const scrollBottom = window.scrollY + window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      if (Math.abs(documentHeight - scrollBottom) < 50) {
+        closestIndex = sections.length - 1;
+      }
+      
       if (closestIndex !== currentSlide) {
         currentSlide = closestIndex;
         window.dispatchEvent(new CustomEvent('section-changed', { detail: { index: currentSlide } }));
       }
-    }, 100);
-  });
+    }, 50); // Faster debounce for smoother updates
+  };
   
-  // Keyboard navigation
-  window.addEventListener('keydown', (e) => {
-    // Skip if user is typing in an input or textarea
-    const target = e.target as HTMLElement;
-    if (
-      target.tagName === 'INPUT' || 
-      target.tagName === 'TEXTAREA' || 
-      target.isContentEditable
-    ) {
-      return;
-    }
-
-    switch(e.key) {
-      case 'ArrowDown':
-      case 'PageDown':
-      case ' ':
-        e.preventDefault();
-        goToSlide(currentSlide + 1);
-        break;
-      case 'ArrowUp':
-      case 'PageUp':
-        e.preventDefault();
-        goToSlide(currentSlide - 1);
-        break;
-      case 'Home':
-        e.preventDefault();
-        goToSlide(0);
-        break;
-      case 'End':
-        e.preventDefault();
-        goToSlide(sections.length - 1);
-        break;
-    }
-  });
+  window.addEventListener('scroll', handleScroll, { passive: true });
   
-  // Initial state
+  // Initial state check
   setTimeout(() => {
-    window.dispatchEvent(new CustomEvent('section-changed', { detail: { index: 0 } }));
+    handleScroll();
   }, 100);
 </script>
