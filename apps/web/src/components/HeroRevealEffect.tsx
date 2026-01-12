@@ -315,8 +315,8 @@ export const HeroRevealEffect = ({
         width: '100%',
         height: '100%',
         zIndex: 15,
-        pointerEvents: 'auto', // Enable pointer events for interactivity
-        touchAction: 'none', // Prevent touch scrolling while interacting
+        pointerEvents: enableHoverEffect ? 'auto' : 'none', // Only intercept if effects are enabled
+        touchAction: enableHoverEffect ? 'pan-y' : 'auto', // Allow vertical scroll even with effects
       }}
       onPointerMove={enableHoverEffect ? handlePointerMove : undefined}
       onPointerEnter={enableHoverEffect ? handlePointerEnter : undefined}
