@@ -302,6 +302,18 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
     margin-left: auto !important;
     margin-right: auto !important;
   }
+
+  /* Prevent long URLs and text from breaking layout on mobile */
+  :global(.prose a) {
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+  }
+
+  :global(.prose) {
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+  }
   
   .hero-overlay {
     background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2), transparent);
