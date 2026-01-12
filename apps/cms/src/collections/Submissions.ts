@@ -14,25 +14,44 @@ export const Submissions: CollectionConfig = {
   },
   fields: [
     {
+      name: 'submissionDisplay',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '/components/SubmissionView#SubmissionView',
+        },
+      },
+    },
+    {
       name: 'name',
       type: 'text',
       required: true,
+      admin: {
+        hidden: true,
+      },
     },
     {
       name: 'email',
       type: 'email',
       required: true,
+      admin: {
+        hidden: true,
+      },
     },
     {
       name: 'message',
       type: 'textarea',
       required: true,
+      admin: {
+        hidden: true,
+      },
     },
     {
       name: 'source',
       type: 'text',
       admin: {
         position: 'sidebar',
+        readOnly: true,
       },
     },
   ],
