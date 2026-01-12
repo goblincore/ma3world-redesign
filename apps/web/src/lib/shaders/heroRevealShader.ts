@@ -1,5 +1,5 @@
-// Hero Video Reveal Shader - Strong/Trippy Effect
-// Creates a glitchy, liquid chromatic aberration reveal
+// Hero Video Reveal Shader - Strong/Trippy Effect + Interactive Distortion
+// Creates a glitchy, liquid chromatic aberration reveal with mouse/touch interactivity
 
 export const vertexShader = `
 varying vec2 vUv;
@@ -14,6 +14,9 @@ uniform float uTime;
 uniform float uProgress;
 uniform sampler2D uTexture;
 uniform vec2 uResolution;
+uniform vec2 uMouse;        // Mouse/touch position (0-1, -1 if not active)
+uniform float uMouseActive; // 1.0 when mouse/touch is over the element
+uniform vec2 uTextureSize;  // For aspect ratio correction
 varying vec2 vUv;
 
 // Permute function for simplex noise
@@ -58,6 +61,40 @@ void main() {
   intensity = pow(intensity, 0.5); // Faster falloff at end for snappier reveal
   
   // ========================
+  // MOUSE/TOUCH LIQUID RIPPLE
+  // ========================
+  float mouseIntensity = 0.0;
+  vec2 mouseDistort = vec2(0.0);
+  
+  // Use smooth mouseActive value (0-1) for gradual fade
+  float mouseStrength = uMouseActive;
+  
+  if (mouseStrength > 0.01) {
+    // Distance from mouse position
+    vec2 mouseDir = uv - uMouse;
+    float mouseDist = length(mouseDir);
+    
+    // Gentle ripple waves - slower, more subtle (like sand ripples)
+    float ripple = sin(mouseDist * 15.0 - uTime * 3.0) * 0.5 + 0.5;
+    float ripple2 = sin(mouseDist * 25.0 - uTime * 4.5) * 0.3 + 0.5;
+    float combinedRipple = ripple * 0.7 + ripple2 * 0.3;
+    
+    // Softer intensity falloff (wider, gentler radius)
+    float falloff = smoothstep(0.6, 0.0, mouseDist) * mouseStrength;
+    
+    // Gentle displacement - much smaller values for subtle effect
+    float noiseWarp = snoise(uv * 3.0 + uTime * 0.8);
+    mouseDistort = normalize(mouseDir + 0.001) * combinedRipple * falloff * 0.025 * (1.0 + noiseWarp * 0.3);
+    
+    // Subtle organic movement instead of harsh swirl
+    float angle = atan(mouseDir.y, mouseDir.x);
+    vec2 drift = vec2(cos(angle + combinedRipple * 1.5), sin(angle + combinedRipple * 1.5));
+    mouseDistort += drift * falloff * 0.008 * noiseWarp;
+    
+    mouseIntensity = falloff;
+  }
+  
+  // ========================
   // GLITCH BLOCK DISPLACEMENT
   // ========================
   float blockSize = 0.05 + 0.1 * intensity;
@@ -90,24 +127,31 @@ void main() {
   float vhsNoise = random(vec2(uv.y * 100.0, uTime * 100.0)) * 0.1 * intensity;
   
   // ========================
-  // APPLY DISTORTIONS TO UV
+  // APPLY ALL DISTORTIONS TO UV
   // ========================
-  vec2 distortedUv = uv + waveOffset;
+  vec2 distortedUv = uv + waveOffset + mouseDistort;
   distortedUv.x += glitchOffset + vhsNoise;
   
   // ========================
   // STRONG CHROMATIC ABERRATION
   // ========================
-  float aberrationStrength = 0.05 * intensity;
+  float aberrationStrength = 0.05 * intensity + 0.012 * mouseIntensity;
   
   // Radial chromatic aberration (stronger at edges)
   vec2 center = vec2(0.5, 0.5);
   vec2 dir = uv - center;
   float dist = length(dir);
   
+  // Add mouse-based chromatic shift
+  vec2 mouseChromaDir = uMouseActive > 0.5 ? normalize(uv - uMouse + 0.001) : vec2(0.0);
+  
   vec2 redOffset = distortedUv + dir * aberrationStrength * (1.0 + noise1 * 0.5);
   vec2 greenOffset = distortedUv;
   vec2 blueOffset = distortedUv - dir * aberrationStrength * (1.0 + noise2 * 0.5);
+  
+  // Subtle mouse-based RGB split (reduced for gentler effect)
+  redOffset += mouseChromaDir * 0.006 * mouseIntensity;
+  blueOffset -= mouseChromaDir * 0.006 * mouseIntensity;
   
   // Additional horizontal RGB split
   float rgbSplitH = 0.02 * intensity * sin(uTime * 5.0 + uv.y * 10.0);
@@ -134,12 +178,14 @@ void main() {
     color = mix(color, glitchColor, 0.4 * intensity);
   }
   
+  // Removed: Mouse-triggered color flash for gentler effect
+  
   // ========================
   // CYBERPUNK COLOR GRADE
   // ========================
   // Add subtle cyan/magenta tint during reveal
   vec3 tint = vec3(0.0, 0.8, 1.0) * noise1 + vec3(1.0, 0.0, 0.6) * noise2;
-  color = mix(color, color + tint * 0.15, intensity * 0.5);
+  color = mix(color, color + tint * 0.15, intensity * 0.5 + mouseIntensity * 0.08);
   
   // ========================
   // SCANLINE DARKENING
@@ -152,6 +198,16 @@ void main() {
   float vignette = 1.0 - dist * 0.5;
   float vignettePulse = 1.0 + sin(uTime * 8.0) * 0.1 * intensity;
   color *= vignette * vignettePulse;
+  
+  // ========================
+  // MOUSE HIGHLIGHT GLOW
+  // ========================
+  // Subtle highlight near cursor (reduced for gentler effect)
+  if (mouseIntensity > 0.01) {
+    float mouseDist = length(uv - uMouse);
+    float glow = smoothstep(0.25, 0.0, mouseDist) * 0.04 * uMouseActive;
+    color += vec3(0.4, 0.85, 1.0) * glow;
+  }
   
   // ========================
   // FINAL OUTPUT

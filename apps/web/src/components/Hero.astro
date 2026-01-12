@@ -15,6 +15,10 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
 // Video sources
 const darkVideoSrc = `${assetBase}video/loopingyua.mp4`;
 const lightVideoSrc = `${assetBase}video/lightloop2.mp4`;
+
+// Fallback image sources (for when video doesn't load)
+const darkFallbackSrc = `${assetBase}video/darkherostatic.jpg`;
+const lightFallbackSrc = `${assetBase}video/lightherostatic.jpg`;
 ---
 
 <section id="hero" class="relative h-[100svh] w-full flex items-center justify-center overflow-hidden">
@@ -35,10 +39,12 @@ const lightVideoSrc = `${assetBase}video/lightloop2.mp4`;
       client:load
       darkVideoSrc={darkVideoSrc}
       lightVideoSrc={lightVideoSrc}
+      darkFallbackSrc={darkFallbackSrc}
+      lightFallbackSrc={lightFallbackSrc}
     />
     
-    <!-- Overlays -->
-    <div class="absolute inset-0 bg-black/20 z-20"></div>
+    <!-- Overlays (pointer-events-none to allow interaction with Three.js effect below) -->
+    <div class="absolute inset-0 bg-black/20 z-20 pointer-events-none"></div>
     <div class="absolute inset-x-0 top-0 h-64 hero-top-gradient z-25 pointer-events-none"></div>
     
     <!-- Initial Loading Overlay -->
