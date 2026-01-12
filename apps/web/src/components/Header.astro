@@ -455,6 +455,21 @@ const contactHref = isHome ? "#contact" : base + "#contact";
   document.addEventListener('DOMContentLoaded', () => {
     const mainHeader = document.getElementById('main-header');
     const heroSection = document.getElementById('hero');
+    let heroHeight = 0;
+    
+    const updateHeroHeight = () => {
+      if (heroSection) {
+        heroHeight = heroSection.offsetHeight;
+      } else {
+        heroHeight = 0;
+      }
+    };
+    
+    // Initial and resize updates for height
+    updateHeroHeight();
+    window.addEventListener('resize', updateHeroHeight, { passive: true });
+    
+    let ticking = false;
     
     const checkScroll = () => {
       if (!mainHeader) return;
@@ -467,27 +482,37 @@ const contactHref = isHome ? "#contact" : base + "#contact";
       // Use whichever has a value (mobile uses window, desktop uses wrapper)
       const scrollTop = Math.max(wrapperScroll, windowScroll);
       
-      const threshold = heroSection ? heroSection.offsetHeight - 100 : 100;
+      const threshold = heroHeight > 0 ? heroHeight - 100 : 100;
       
       if (scrollTop > threshold) {
-        mainHeader.classList.add('scrolled');
+        if (!mainHeader.classList.contains('scrolled')) {
+          mainHeader.classList.add('scrolled');
+        }
       } else {
-        mainHeader.classList.remove('scrolled');
+         if (mainHeader.classList.contains('scrolled')) {
+          mainHeader.classList.remove('scrolled');
+        }
+      }
+      
+      ticking = false;
+    };
+    
+    const requestTick = () => {
+      if (!ticking) {
+        requestAnimationFrame(checkScroll);
+        ticking = true;
       }
     };
     
     // Listen to window scroll
-    window.addEventListener('scroll', checkScroll, { passive: true });
-    document.body.addEventListener('scroll', checkScroll, { passive: true });
+    window.addEventListener('scroll', requestTick, { passive: true });
+    document.body.addEventListener('scroll', requestTick, { passive: true });
     
     // Listen to fullpage wrapper scroll if it exists
     const fullpageWrapper = document.getElementById('fullpage-wrapper');
     if (fullpageWrapper) {
-      fullpageWrapper.addEventListener('scroll', checkScroll, { passive: true });
+      fullpageWrapper.addEventListener('scroll', requestTick, { passive: true });
     }
-    
-    // Also check periodically for section changes (works with fullpage snapping)
-    setInterval(checkScroll, 200);
     
     // Initial check
     checkScroll();

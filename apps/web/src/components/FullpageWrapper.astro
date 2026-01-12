@@ -37,6 +37,26 @@ const { class: className = "" } = Astro.props;
   const sections = ['hero', 'about', 'projects', 'contact'];
   let currentSlide = 0;
   
+  // Cache section positions
+  /** @type {{ id: string, top: number, height: number }[]} */
+  let sectionPositions = [];
+
+  const updateSectionPositions = () => {
+    sectionPositions = sections.map(id => {
+      const el = document.getElementById(id);
+      if (!el) return null;
+      const rect = el.getBoundingClientRect();
+      // Calculate absolute top position relative to document
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const top = rect.top + scrollTop;
+      return { id, top, height: rect.height };
+    }).filter(Boolean);
+  };
+
+  // Initial and resize updates
+  updateSectionPositions();
+  window.addEventListener('resize', updateSectionPositions, { passive: true });
+  
   const goToSlide = (index: number) => {
     if (index < 0 || index >= sections.length) return;
     currentSlide = index;
@@ -53,47 +73,54 @@ const { class: className = "" } = Astro.props;
   window.goToSlide = goToSlide;
   
   // Track scroll position
-  let scrollTimeout: ReturnType<typeof setTimeout>;
+  let ticking = false;
   
-  const handleScroll = () => {
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => {
-      // Use window.scrollY for natural scrolling
-      let closestIndex = 0;
-      let minDiff = Infinity;
+  const checkScroll = () => {
+    // Get current scroll position
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+    
+    let closestIndex = 0;
+    let minDiff = Infinity;
+    
+    // Use cached positions
+    sectionPositions.forEach((pos, i) => {
+      // Distance from current scroll top to section top
+      // We want the section that is closest to the top of the viewport
+      const diff = Math.abs(pos.top - scrollTop);
       
-      sections.forEach((id, i) => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        
-        // Calculate distance from top of viewport
-        const rect = el.getBoundingClientRect();
-        const diff = Math.abs(rect.top);
-        
-        if (diff < minDiff) {
-          minDiff = diff;
-          closestIndex = i;
-        }
-      });
-      
-      // Special case: if we're at the very bottom, highlight the last section (usually footer/contact)
-      const scrollBottom = window.scrollY + window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      if (Math.abs(documentHeight - scrollBottom) < 50) {
-        closestIndex = sections.length - 1;
+      if (diff < minDiff) {
+        minDiff = diff;
+        closestIndex = i;
       }
-      
-      if (closestIndex !== currentSlide) {
-        currentSlide = closestIndex;
-        window.dispatchEvent(new CustomEvent('section-changed', { detail: { index: currentSlide } }));
-      }
-    }, 50); // Faster debounce for smoother updates
+    });
+    
+    // Special case: if we're at the very bottom, highlight the last section
+    const scrollBottom = scrollTop + window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    if (Math.abs(documentHeight - scrollBottom) < 50) {
+      closestIndex = sections.length - 1;
+    }
+    
+    if (closestIndex !== currentSlide) {
+      currentSlide = closestIndex;
+      window.dispatchEvent(new CustomEvent('section-changed', { detail: { index: currentSlide } }));
+    }
+    
+    ticking = false;
   };
   
-  window.addEventListener('scroll', handleScroll, { passive: true });
+  const requestTick = () => {
+    if (!ticking) {
+      requestAnimationFrame(checkScroll);
+      ticking = true;
+    }
+  };
+  
+  window.addEventListener('scroll', requestTick, { passive: true });
   
   // Initial state check
   setTimeout(() => {
-    handleScroll();
+    updateSectionPositions();
+    checkScroll();
   }, 100);
 </script>

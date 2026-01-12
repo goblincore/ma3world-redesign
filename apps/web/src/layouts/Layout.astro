@@ -1,6 +1,20 @@
 ---
 import '../styles/global.css';
 
+// Fonts
+import '@fontsource/noto-sans-jp/100.css';
+import '@fontsource/noto-sans-jp/300.css';
+import '@fontsource/noto-sans-jp/400.css';
+import '@fontsource/noto-sans-jp/500.css';
+import '@fontsource/noto-sans-jp/700.css';
+import '@fontsource/noto-sans-jp/900.css';
+
+import '@fontsource/shippori-mincho/400.css';
+import '@fontsource/shippori-mincho/500.css';
+import '@fontsource/shippori-mincho/600.css';
+import '@fontsource/shippori-mincho/700.css';
+import '@fontsource/shippori-mincho/800.css';
+
 interface Props {
 	title: string;
 	description?: string;
@@ -21,10 +35,7 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
 		<meta name="generator" content={Astro.generator} />
 		<meta name="google" content="notranslate" />
 		<title>{title}</title>
-		<!-- Japanese Fonts -->
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 		
 		<script is:inline>
 			// Detect and apply initial language & theme preferences
