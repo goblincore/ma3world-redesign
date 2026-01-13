@@ -10,7 +10,8 @@ export default defineConfig({
   site: 'https://ma3world.com',
   build: {
     assets: 'assets',
-    assetsPrefix: 'https://ma3worldbunny.b-cdn.net'
+    assetsPrefix: 'https://ma3worldbunny.b-cdn.net',
+    inlineStylesheets: 'auto' // Inline critical CSS automatically
   },
   integrations: [react()],
   vite: {
@@ -19,6 +20,7 @@ export default defineConfig({
       dedupe: ['react', 'react-dom', '@react-three/fiber', '@react-three/drei']
     },
     build: {
+      cssCodeSplit: true, // Split CSS for better caching
       rollupOptions: {
         output: {
           manualChunks: {
