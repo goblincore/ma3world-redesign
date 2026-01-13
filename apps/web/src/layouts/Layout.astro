@@ -83,9 +83,12 @@ const isHome = Astro.url.pathname === base || Astro.url.pathname === base.replac
 				.sakura-spinner {
 					width: 64px;
 					height: 64px;
-					color: #FFB7C5;
-					animation: sakura-spin 12s linear infinite;
+					color: rgba(255, 255, 255, 0.8); /* White in dark mode */
 					opacity: 0.8;
+					animation: sakura-spin 12s linear infinite;
+				}
+				:root[data-theme="light"] .sakura-spinner {
+					color: #FFB7C5; /* Sakura pink in light mode */
 				}
 				@keyframes sakura-spin {
 					from { transform: rotate(0deg); }

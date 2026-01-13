@@ -278,17 +278,11 @@ export const HeroRevealEffect = ({
     setMouseActive(false);
   }, []);
 
-  // Start reveal animation after a short delay and hide the loader
+  // Start reveal animation after CSS zoom completes
   useEffect(() => {
-    const loader = document.getElementById('video-loader');
-    if (loader) {
-      loader.classList.add('opacity-0');
-      setTimeout(() => loader.style.display = 'none', 700);
-    }
-
     const timer = setTimeout(() => {
       setIsRevealing(false);
-    }, 500);
+    }, 2500); // Wait for zoom animation to complete
 
     return () => clearTimeout(timer);
   }, []);

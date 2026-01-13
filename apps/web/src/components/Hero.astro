@@ -46,15 +46,17 @@ const lightFallbackSrc = `${assetBase}video/lightherostatic.webp`;
     <div class="absolute inset-0 bg-black/20 z-20 pointer-events-none"></div>
     <div class="absolute inset-x-0 top-0 h-64 hero-top-gradient z-25 pointer-events-none"></div>
     
-    <!-- Initial Loading Overlay - CSS-only Sakura spinner -->
-    <div id="video-loader" class="absolute inset-0 bg-theme z-30 transition-opacity duration-700 flex items-center justify-center">
-      <svg class="sakura-spinner w-16 h-16" viewBox="0 0 100 100" fill="currentColor">
-        <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50"></path>
-        <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(72 50 50)"></path>
-        <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(144 50 50)"></path>
-        <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(216 50 50)"></path>
-        <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(288 50 50)"></path>
-      </svg>
+    <!-- Initial Loading Overlay - CSS-only Sakura spinner with zoom reveal -->
+    <div id="video-loader" class="absolute inset-0 bg-theme z-30 flex items-center justify-center">
+      <div class="sakura-zoom-wrapper">
+        <svg class="sakura-spinner w-16 h-16" viewBox="0 0 100 100" fill="currentColor">
+          <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50"></path>
+          <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(72 50 50)"></path>
+          <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(144 50 50)"></path>
+          <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(216 50 50)"></path>
+          <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(288 50 50)"></path>
+        </svg>
+      </div>
     </div>
   </div>
   
@@ -244,7 +246,11 @@ const lightFallbackSrc = `${assetBase}video/lightherostatic.webp`;
     }
   }
 
-  /* CSS-only Sakura spinner */
+  /* Sakura spinner zoom reveal animation */
+  .sakura-zoom-wrapper {
+    animation: sakura-zoom 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
   .sakura-spinner {
     color: rgba(255, 255, 255, 0.8);
     opacity: 0.8;
@@ -255,9 +261,45 @@ const lightFallbackSrc = `${assetBase}video/lightherostatic.webp`;
     color: #FFB7C5; /* Sakura pink in light mode */
   }
 
+  @keyframes sakura-zoom {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    60% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+    85% {
+      transform: scale(25);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scale(30);
+      opacity: 0;
+    }
+  }
+
   @keyframes sakura-spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+  }
+
+  /* Loader fade out */
+  #video-loader {
+    animation: loader-fade-out 1s ease-out 2s forwards;
+  }
+
+  @keyframes loader-fade-out {
+    0% {
+      opacity: 1;
+      filter: blur(0px);
+    }
+    100% {
+      opacity: 0;
+      filter: blur(10px);
+      pointer-events: none;
+    }
   }
 </style>
 
@@ -291,11 +333,17 @@ const lightFallbackSrc = `${assetBase}video/lightherostatic.webp`;
     attributeFilter: ['data-theme']
   });
 
-  // Trigger content fade-in after a short delay
+  // Trigger content fade-in after animation completes
   window.addEventListener('load', () => {
     setTimeout(() => {
       const hero = document.getElementById('hero');
       if (hero) hero.classList.add('hero-visible');
+      
+      // Remove loader after animation completes
+      const loader = document.getElementById('video-loader');
+      if (loader) {
+        setTimeout(() => loader.remove(), 3000);
+      }
     }, 500);
   });
 </script>
