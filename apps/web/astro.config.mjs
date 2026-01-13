@@ -14,6 +14,19 @@ export default defineConfig({
   },
   integrations: [react()],
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    resolve: {
+      dedupe: ['react', 'react-dom', '@react-three/fiber', '@react-three/drei']
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'react-vendor': ['react', 'react-dom'],
+            'three-vendor': ['three', '@react-three/fiber', '@react-three/drei']
+          }
+        }
+      }
+    }
   }
 });
