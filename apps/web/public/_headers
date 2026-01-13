@@ -12,6 +12,13 @@
 /video/*
   Cache-Control: public, max-age=31536000
 
+## Video extensions
+/*.mp4
+  Cache-Control: public, max-age=31536000
+
+/*.webm
+  Cache-Control: public, max-age=31536000
+
 ## Font files - Immutable
 /*.woff2
   Cache-Control: public, max-age=31536000, immutable
