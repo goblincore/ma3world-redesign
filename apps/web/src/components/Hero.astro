@@ -5,7 +5,6 @@ interface Props {
 }
 
 import LogoGlobe from './LogoGlobe.astro';
-import ButterflyLoader from './ButterflyLoader.astro';
 import HeroRevealEffect from './HeroRevealEffect.tsx';
 
 const { title = "Connecting creativity with culture, community, and industry", subtitle = "" } = Astro.props;
@@ -34,9 +33,9 @@ const lightFallbackSrc = `${assetBase}video/lightherostatic.webp`;
       class="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
     />
     
-    <!-- Three.js Hero Reveal Effect -->
+    <!-- Three.js Hero Reveal Effect - Deferred loading for performance -->
     <HeroRevealEffect 
-      client:load
+      client:idle
       darkVideoSrc={darkVideoSrc}
       lightVideoSrc={lightVideoSrc}
       darkFallbackSrc={darkFallbackSrc}
@@ -47,9 +46,15 @@ const lightFallbackSrc = `${assetBase}video/lightherostatic.webp`;
     <div class="absolute inset-0 bg-black/20 z-20 pointer-events-none"></div>
     <div class="absolute inset-x-0 top-0 h-64 hero-top-gradient z-25 pointer-events-none"></div>
     
-    <!-- Initial Loading Overlay -->
-    <div id="video-loader" class="absolute inset-0 bg-theme z-30 transition-opacity duration-700">
-      <ButterflyLoader />
+    <!-- Initial Loading Overlay - CSS-only Sakura spinner -->
+    <div id="video-loader" class="absolute inset-0 bg-theme z-30 transition-opacity duration-700 flex items-center justify-center">
+      <svg class="sakura-spinner w-16 h-16" viewBox="0 0 100 100" fill="currentColor">
+        <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50"></path>
+        <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(72 50 50)"></path>
+        <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(144 50 50)"></path>
+        <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(216 50 50)"></path>
+        <path d="M50 50 Q35 25 45 15 L50 20 L55 15 Q65 25 50 50" transform="rotate(288 50 50)"></path>
+      </svg>
     </div>
   </div>
   
@@ -237,6 +242,22 @@ const lightFallbackSrc = `${assetBase}video/lightherostatic.webp`;
         rgba(255, 255, 255, 0) 100%
       );
     }
+  }
+
+  /* CSS-only Sakura spinner */
+  .sakura-spinner {
+    color: rgba(255, 255, 255, 0.8);
+    opacity: 0.8;
+    animation: sakura-spin 2s linear infinite;
+  }
+
+  :root[data-theme="light"] .sakura-spinner {
+    color: #FFB7C5; /* Sakura pink in light mode */
+  }
+
+  @keyframes sakura-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 </style>
 

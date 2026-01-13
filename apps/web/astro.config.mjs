@@ -23,9 +23,20 @@ export default defineConfig({
       cssCodeSplit: true, // Split CSS for better caching
       rollupOptions: {
         output: {
-          manualChunks: {
-            'react-vendor': ['react', 'react-dom'],
-            'three-vendor': ['three', '@react-three/fiber', '@react-three/drei']
+          manualChunks: (id) => {
+            // More granular splitting for better progressive loading
+            if (id.includes('three') && !id.includes('@react-three')) {
+              return 'three-vendor';
+            }
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'react-vendor';
+            }
+            if (id.includes('@react-three')) {
+              return 'react-three-vendor';
+            }
+            if (id.includes('node_modules')) {
+              return 'vendor';
+            }
           }
         }
       }
