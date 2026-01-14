@@ -93,10 +93,6 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
       <!-- Content Overlay -->
       <div class="relative z-10 max-w-7xl w-full mx-auto pt-32">
         <div class="max-w-4xl space-y-6">
-          <span class="text-[10px] md:text-xs tracking-[0.4em] uppercase font-bold opacity-50 block mb-4">
-            <span class="lang-en">{projectEn?.category || project.category}</span>
-            <span class="lang-ja">{projectJa?.category || project.category}</span>
-          </span>
           <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl leading-[0.9]">
             <span class="lang-en">{projectEn?.title || project.title}</span>
             <span class="lang-ja">{projectJa?.title || project.title}</span>
@@ -105,10 +101,6 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
           <div class="flex flex-wrap items-center gap-x-8 gap-y-4 pt-8 border-t border-current/10">
             {(projectEn?.client || projectJa?.client) && (
               <div class="flex items-center gap-3">
-                <span class="text-[10px] uppercase tracking-[0.3em] font-bold opacity-50">
-                  <span class="lang-en">Client</span>
-                  <span class="lang-ja">クライアント</span>
-                </span>
                 <span class="text-sm md:text-base opacity-80">
                   <span class="lang-en">{projectEn?.client}</span>
                   <span class="lang-ja">{projectJa?.client || projectEn?.client}</span>
@@ -116,10 +108,6 @@ const assetBase = import.meta.env.PROD ? 'https://ma3worldbunny.b-cdn.net/' : ba
               </div>
             )}
             <div class="flex items-center gap-3">
-              <span class="text-[10px] uppercase tracking-[0.3em] font-bold opacity-50">
-                <span class="lang-en">Year</span>
-                <span class="lang-ja">年度</span>
-              </span>
               <span class="text-sm md:text-base opacity-80">{project.year}</span>
             </div>
           </div>

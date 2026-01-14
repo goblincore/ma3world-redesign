@@ -267,6 +267,9 @@ const contactHref = isHome ? "#contact" : base + "#contact";
   setupLangToggle('lang-en', 'lang-ja');
   setupLangToggle('mobile-lang-en', 'mobile-lang-ja');
 
+  // Header Swap Logic State
+  let currentlyShowingGreeting = false;
+
   // Greeting logic
   const updateGreeting = () => {
     const greetingEl = document.getElementById('header-greeting');
@@ -290,29 +293,30 @@ const contactHref = isHome ? "#contact" : base + "#contact";
       emoji = '🌙';
     }
 
+    // Only update text/opacity if we are actually supposed to be showing the greeting
+    const shouldBeVisible = currentlyShowingGreeting;
+    
     // Fade out, change text, fade in
     greetingEl.classList.remove('opacity-100');
     greetingEl.classList.add('opacity-0');
     
     setTimeout(() => {
       greetingEl.innerHTML = `${greeting} <span class="ml-1">${emoji}</span>`;
-      greetingEl.classList.remove('opacity-0');
-      greetingEl.classList.add('opacity-100');
+      // Check current state AFTER timeout to avoid race condition with state swap
+      if (currentlyShowingGreeting) {
+        greetingEl.classList.remove('opacity-0');
+        greetingEl.classList.add('opacity-100');
+      }
     }, 300);
   };
-
-  // Initial greeting
-  updateGreeting();
-
-  // Update greeting on language change
-  window.addEventListener('lang-changed', updateGreeting);
 
   // Header Swap Logic (Greeting vs Logo)
   const headerGreeting = document.getElementById('header-greeting');
   const headerLogo = document.getElementById('header-logo');
-  const heroSection = document.querySelector('section'); // Target first section (Hero)
+  const heroSection = document.getElementById('hero');
 
   const swapHeaderContent = (showGreeting: boolean) => {
+    currentlyShowingGreeting = showGreeting;
     if (showGreeting) {
       headerGreeting?.classList.remove('opacity-0');
       headerGreeting?.classList.add('opacity-100');
@@ -326,18 +330,40 @@ const contactHref = isHome ? "#contact" : base + "#contact";
     }
   };
 
-  if (heroSection && headerGreeting && headerLogo) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        swapHeaderContent(entry.isIntersecting);
-      });
-    }, { threshold: 0.1 });
+  // Initial greeting sequence
+  const initHeader = () => {
+    // Initial check for hero section intersection
+    if (heroSection && headerGreeting && headerLogo) {
+      const rect = heroSection.getBoundingClientRect();
+      const isHeroVisible = rect.top >= 0 && rect.bottom > 100; // Check if hero is substantially in view and hasn't transitioned past
+      swapHeaderContent(isHeroVisible);
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          swapHeaderContent(entry.isIntersecting);
+        });
+      }, { threshold: 0.1 });
 
-    observer.observe(heroSection);
+      observer.observe(heroSection);
+    } else {
+      // If no hero section (other routes) or elements missing, show logo immediately
+      swapHeaderContent(false);
+    }
+    
+    // Set initial text
+    updateGreeting();
+  };
+
+  // Run init
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHeader);
   } else {
-    // If no hero section (other routes), show logo immediately
-    swapHeaderContent(false);
+    initHeader();
   }
+
+  // Update greeting on language change
+  window.addEventListener('lang-changed', updateGreeting);
+
 
   // Mobile Menu Functionality
   const menuToggle = document.getElementById('mobile-menu-toggle');
@@ -380,6 +406,10 @@ const contactHref = isHome ? "#contact" : base + "#contact";
     }
 
     document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+    
+    // Toggle menu-open class on header for styling
+    const mainHeader = document.getElementById('main-header');
+    mainHeader?.classList.toggle('menu-open', isMenuOpen);
   };
 
   menuToggle?.addEventListener('click', toggleMenu);
@@ -390,7 +420,16 @@ const contactHref = isHome ? "#contact" : base + "#contact";
   header {
     font-family: var(--font-sans);
   }
+
+  /* Force white text over hero ONLY on home page by default */
+  :global(.is-home) header:not(.scrolled) {
+    color: white;
+  }
   
+  header.scrolled {
+    color: var(--color-text); /* Revert to theme text color when scrolled or on other pages */
+  }
+
   header > nav > a:first-child {
     font-family: var(--font-serif);
   }
@@ -418,15 +457,38 @@ const contactHref = isHome ? "#contact" : base + "#contact";
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
   }
   
-  /* Dark mode adjustments */
   :root:not([data-theme="light"]) header.scrolled .header-bubble {
     background-color: rgba(0, 0, 0, 0.75);
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
   }
 
+  /* Hide bubble background when mobile menu is open */
+  header.menu-open .header-bubble {
+    background-color: transparent !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+  }
+
   /* Sakura Flower Color in Light Mode */
   :root[data-theme="light"] .sakura-icon {
     color: #FFB7C5; /* Bright Light Sakura Pink */
+  }
+
+  /* Mobile menu background in light mode */
+  :root[data-theme="light"] #mobile-menu {
+    background-color: #FFB7C5;
+  }
+
+  /* Force white text in mobile menu when open in light mode */
+  :root[data-theme="light"] .menu-open .mobile-link,
+  :root[data-theme="light"] .menu-open .mobile-controls,
+  :root[data-theme="light"] .menu-open #mobile-menu-toggle {
+    color: white !important;
+  }
+
+  /* Ensure the sakura icon in the trigger also turns white when open */
+  :root[data-theme="light"] .menu-open #mobile-menu-toggle .sakura-icon {
+    color: white !important;
   }
 
   .animate-spin-slow {
