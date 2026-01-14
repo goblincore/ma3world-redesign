@@ -312,18 +312,16 @@ const lightFallbackSrc = `${assetBase}video/lightherostatic.webp`;
     attributeFilter: ['data-theme']
   });
 
-  // Trigger content fade-in after animation completes
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      const hero = document.getElementById('hero');
-      if (hero) hero.classList.add('hero-visible');
-      
-      // Remove loader after animation completes
-      const loader = document.getElementById('video-loader');
-      if (loader) {
-        setTimeout(() => loader.remove(), 3000);
-      }
-    }, 500);
+  // Trigger content fade-in when the WebGL transition starts
+  window.addEventListener('hero-reveal-start', () => {
+    const hero = document.getElementById('hero');
+    if (hero) hero.classList.add('hero-visible');
+    
+    // Remove loader after animation completes
+    const loader = document.getElementById('video-loader');
+    if (loader) {
+      setTimeout(() => loader.remove(), 3000);
+    }
   });
 </script>
 

@@ -32,8 +32,10 @@ const isHome = Astro.url.pathname === base || Astro.url.pathname === base.replac
 		)}
 
 		<!-- Preload critical local fonts for faster initial render -->
-		<link rel="preload" href="/src/fonts/HelveticaNowDisplay-Regular.woff2" as="font" type="font/woff2" crossorigin />
-		<link rel="preload" href="/src/fonts/PPLocomotiveNew-Light.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href={`${assetBase}fonts/HelveticaNowDisplay-Regular.woff2`} as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href={`${assetBase}fonts/PPLocomotiveNew-Light.woff2`} as="font" type="font/woff2" crossorigin />
+		
+
 
 		
 		<script is:inline>

@@ -141,7 +141,7 @@ const RevealPlane = ({
     // Update texture each frame for video
     if (isVideo && textureRef.current && mediaRef.current) {
       const video = mediaRef.current as HTMLVideoElement;
-      if (!video.paused) {
+      if (!video.paused && video.readyState >= 2) {
         (textureRef.current as THREE.VideoTexture).needsUpdate = true;
       }
     }
@@ -282,6 +282,7 @@ export const HeroRevealEffect = ({
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsRevealing(false);
+      window.dispatchEvent(new CustomEvent('hero-reveal-start'));
     }, 2500); // Wait for zoom animation to complete
 
     return () => clearTimeout(timer);
